@@ -31,13 +31,6 @@ class InvenioModularDetailPage(object):
         app.extensions["invenio-modular-detail-page"] = self
 
     def init_config(self, app):
-        """Initialize configuration."""
-        # Use theme's base template if theme is installed
-        if "BASE_TEMPLATE" in app.config:
-            app.config.setdefault(
-                "INVENIO_MODULAR_DETAIL_PAGE_BASE_TEMPLATE",
-                app.config["BASE_TEMPLATE"],
-            )
         for k in dir(config):
             if k.startswith("INVENIO_MODULAR_DETAIL_PAGE_"):
                 app.config.setdefault(k, getattr(config, k))
