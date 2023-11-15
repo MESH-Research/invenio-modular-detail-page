@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Pyenv version config file
+.python-version
+
 # Distribution / packaging
 .Python
 build/
