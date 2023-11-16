@@ -1,6 +1,7 @@
 import React from "react";
+import { i18next } from "@translations/invenio_app_rdm/i18next";
 
-const DetailSidebarRightsSection = ({ rights }) => {
+const SidebarRightsSection = ({ rights, section }) => {
   const licenseLink = (license) => {
     if (license.link) {
       return (
@@ -9,6 +10,7 @@ const DetailSidebarRightsSection = ({ rights }) => {
           href={license.link}
           target="_blank"
           rel="noopener noreferrer"
+          title={i18next.t("Opens in new tab")}
         >
           Read more
         </a>
@@ -20,6 +22,7 @@ const DetailSidebarRightsSection = ({ rights }) => {
           href={license.props.url}
           target="_blank"
           rel="noopener noreferrer"
+          title={i18next.t("Opens in new tab")}
         >
           Read more
         </a>
@@ -30,7 +33,7 @@ const DetailSidebarRightsSection = ({ rights }) => {
   return (
     rights && (
       <div className="sidebar-container">
-        <h2 className="ui medium top attached header mt-0">Rights</h2>
+        <h2 className="ui medium top attached header mt-0">{section}</h2>
         <div id="licenses" className="ui segment bottom attached rdm-sidebar">
           <ul className="details-list m-0 p-0">
             {rights.map((license, index) => (
@@ -52,7 +55,7 @@ const DetailSidebarRightsSection = ({ rights }) => {
                     <span className="icon-wrap">
                       <img
                         className="icon"
-                        src={`icons/licenses/${license.icon}.svg`}
+                        src={`/static/icons/licenses/${license.icon}.svg`}
                         alt={`${license.id} icon`}
                       />
                     </span>
@@ -90,4 +93,4 @@ const DetailSidebarRightsSection = ({ rights }) => {
   );
 };
 
-export { DetailSidebarRightsSection };
+export { SidebarRightsSection };

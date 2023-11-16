@@ -39,6 +39,7 @@ const componentsMap = {
     "SidebarDetailsSection": SidebarDetailsSection,
     "SidebarDownloadSection": SidebarDownloadSection,
     "SidebarExportSection": SidebarExportSection,
+    "SidebarRightsSection": SidebarRightsSection,
     "SidebarSharingSection": SidebarSharingSection,
     "VersionsListSection": VersionsListSection,
     "VersionsDropdownSection": VersionsDropdownSection,
