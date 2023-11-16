@@ -34,29 +34,31 @@
 {%- set is_preview_submission_request = preview_submission_request or false %}
 {%- set show_record_management_menu = can_manage_record and (not is_preview or is_preview_submission_request) %}
 
+
+{%- set has_previewable_files_flag = 'false' -%}
+{%- set preview_file_item = 'undefined' -%}
+{%- set preview_file_url = 'undefined' -%}
+{%- if files and record.files.enabled -%}
+  {%- set files = files|order_entries %}
+  {%- if permissions.can_read_files -%}
+    {%- if files|has_previewable_files -%}
+      {%- set has_previewable_files_flag = 'true' %}
+      {%- set preview_file_item = files|select_preview_file(default_preview=record.files.default_preview) -%}
+      {%- set preview_endpoint = 'invenio_app_rdm_records.record_file_preview' -%}
+      {%- set preview_file_url = url_for(preview_endpoint, pid_value=record.id, filename="") -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}
+
 {%- block head_meta %}
   {{ super() }}
-  {%- include "invenio_modular_detail_page/meta.html" %}
+  {%- include "invenio_app_rdm/records/details/meta.html" %}
 {%- endblock head_meta %}
 
 {%- block page_body %}
 
   <div class="ui container">
       {# Main Content #}
-      {%- set has_previewable_files_flag = 'false' -%}
-      {%- set preview_file_item = 'undefined' -%}
-      {%- set preview_file_url = 'undefined' -%}
-      {%- if files and record.files.enabled -%}
-        {%- set files = files|order_entries %}
-        {%- if permissions.can_read_files -%}
-          {%- if files|has_previewable_files -%}
-            {%- set has_previewable_files_flag = 'true' %}
-            {%- set preview_file_item = files|select_preview_file(default_preview=record.files.default_preview) -%}
-            {%- set preview_endpoint = 'invenio_app_rdm_records.record_file_preview' -%}
-            {%- set preview_file_url = url_for(preview_endpoint, pid_value=record.id, filename="") -%}
-          {%- endif -%}
-        {%- endif -%}
-      {%- endif -%}
       {%- set id_schemes = config.get("RDM_RECORDS_IDENTIFIERS_SCHEMES", {}) -%}
       {%- set my_schemes = dict() -%}
       {%- for my_scheme, content in id_schemes.items() -%}
@@ -402,7 +404,6 @@
 
   {{ webpack['invenio-app-rdm-landing-page-theme.js'] }}
   {{ webpack['invenio-app-rdm-landing-page.js'] }}
-  {{ webpack['knowledge-commons-repository-detail-theme.js'] }}
-  {{ webpack['knowledge-commons-repository-detail.js'] }}
-  {{ webpack['previewer_theme.js'] }}
+  {{ webpack['invenio-modular-detail-page-theme.js'] }}
+  {{ webpack['invenio-modular-detail-page.js'] }}
 {%- endblock javascript %}

@@ -9,8 +9,23 @@
 """Invenio extension that adds a modular record detail page."""
 
 from invenio_i18n import gettext as _
+from flask import Blueprint
 
 from . import config
+
+
+def create_blueprint(app):
+    """Blueprint for the routes and resources provided by Invenio-App-RDM."""
+    # routes = app.config.get("APP_RDM_ROUTES")
+
+    blueprint = Blueprint(
+        "invenio_modular_detail_page",
+        __name__,
+        template_folder="templates",
+        static_folder="static",
+    )
+
+    return blueprint
 
 
 class InvenioModularDetailPage(object):

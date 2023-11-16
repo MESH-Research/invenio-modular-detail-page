@@ -15,6 +15,7 @@ import { PublishingDetails } from "./components/PublishingDetails";
 import { SidebarDetailsSection } from "./sections/DetailSidebarDetailsSection";
 import { SidebarDownloadSection } from "./sections/DetailSidebarDownloadSection";
 import { SidebarExportSection } from "./sections/DetailSidebarExportSection";
+import { SidebarRightsSection } from "./sections/DetailSidebarRightsSection";
 import { SidebarSharingSection } from "./sections/DetailSidebarSharingSection";
 import { VersionsDropdownSection, VersionsListSection } from "./sections/DetailSidebarVersionsSection";
 

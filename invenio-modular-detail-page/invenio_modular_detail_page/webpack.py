@@ -13,6 +13,14 @@ theme = WebpackThemeBundle(
                 "invenio-modular-detail-page-theme": "./js/invenio_modular_detail_page/theme.js",
             },
             dependencies={},
+            aliases={
+                # Define Semantic-UI theme configuration needed by
+                # Invenio-Theme in order to build Semantic UI (in theme.js
+                # entry point). theme.config itself is provided by
+                # cookiecutter-invenio-rdm.
+                "@js/invenio_modular_detail_page": "js/invenio_modular_detail_page",
+                "@translations/invenio_modular_detail_page": "translations/invenio_modular_detail_page",
+            },
         ),
     },
 )
