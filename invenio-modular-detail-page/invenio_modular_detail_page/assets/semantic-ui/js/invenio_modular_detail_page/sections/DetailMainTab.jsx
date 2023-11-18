@@ -31,7 +31,6 @@ import { filterPropsToPass } from "../util";
 // sidebarSections,
 // totalFileSize
 const DetailMainTab = (topLevelProps) => {
-  console.log("****DetailMainTab component topLevelProps", topLevelProps);
   return (
     <>
       {!!topLevelProps.subsections.length &&

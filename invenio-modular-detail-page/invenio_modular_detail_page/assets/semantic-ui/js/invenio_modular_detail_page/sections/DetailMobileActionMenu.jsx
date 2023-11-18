@@ -6,6 +6,7 @@ import { FileListItemDropdown } from "../components/FileList";
 import { RecordManagementMenu } from "../components/RecordManagementMenu";
 import { ShareModal } from "../components/ShareModal";
 import { SidebarSharingSection } from "./DetailSidebarSharingSection";
+import Overridable from "react-overridable";
 
 const MobileActionMenu = (props) => {
   const {

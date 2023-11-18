@@ -5,8 +5,7 @@ import { CommunitiesBanner } from "./components/CommunitiesBanner";
 import { ContentWarning } from "./components/ContentWarning";
 import { Creatibutors, CreatibutorsShortList } from "./components/Creatibutors";
 import { Descriptions } from "./components/Descriptions";
-import { DetailMainTab } from "./components/DetailMainTab";
-import { DetailMainTabs } from "./components/DetailMainTabs";
+import { DetailMainTabs } from "./sections/DetailMainTabs";
 import { FileListBox } from "./components/FileList";
 import { FilePreview } from "./components/FilePreview";
 import { FilePreviewWrapper } from "./sections/FilePreviewWrapper";
@@ -32,7 +31,6 @@ const componentsMap = {
     "Creatibutors": Creatibutors,
     "CreatibutorsShortList": CreatibutorsShortList,
     "Descriptions": Descriptions,
-    "DetailMainTab": DetailMainTab,
     "DetailMainTabs": DetailMainTabs,
     "FileListBox": FileListBox,
     "FilePreview": FilePreview,
