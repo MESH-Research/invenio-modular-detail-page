@@ -20,7 +20,7 @@ import { i18next } from "@translations/invenio_app_rdm/i18next";
 import { http } from "react-invenio-forms";
 import PropTypes from "prop-types";
 
-export const ShareModal = ({ recid, open, handleClose }) => {
+const ShareModal = ({ recid, open, handleClose }) => {
   const [accessLinkObj, setAccessLinkObj] = useState();
   const [linkCreated, setLinkCreated] = useState(false);
   const [shareMode, setShareMode] = useState("view");
@@ -293,3 +293,5 @@ ShareModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
+
+export { ShareModal };

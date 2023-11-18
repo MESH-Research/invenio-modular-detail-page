@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Icon, Dropdown, Menu, Popup } from "semantic-ui-react";
+import { Icon, Menu, Popup } from "semantic-ui-react";
 import { CitationModal } from "./DetailSidebarCitationSection";
-import { ExportDropdown } from "./DetailSidebarExportSection";
+import { ExportDropdown } from "../components/ExportDropdown";
 import { FileListItemDropdown } from "../components/FileList";
 import { RecordManagementMenu } from "../components/RecordManagementMenu";
 import { ShareModal } from "../components/ShareModal";

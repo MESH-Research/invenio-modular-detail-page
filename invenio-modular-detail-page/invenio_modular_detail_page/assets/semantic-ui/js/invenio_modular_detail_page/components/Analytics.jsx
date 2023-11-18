@@ -2,6 +2,7 @@ import React from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
 import { Message, Statistic, Table, Popup, Icon } from "semantic-ui-react";
 import { formatBytes } from "../util";
+import Overridable from "react-overridable";
 
 function StatsPopup({ number }) {
   // number[0] is truncated; number[1] is raw localized

@@ -1,7 +1,8 @@
 import React from "react";
 import { Tab, Menu } from "semantic-ui-react";
 import { DetailMainTab } from "./DetailMainTab";
-import { addPropsFromChildren } from "../util";
+import { addPropsFromChildren, filterPropsToPass } from "../util";
+import Overridable from "react-overridable";
 
 const DetailMainTabs = (topLevelProps) => {
   const panes = topLevelProps.tabbedSections.map(
