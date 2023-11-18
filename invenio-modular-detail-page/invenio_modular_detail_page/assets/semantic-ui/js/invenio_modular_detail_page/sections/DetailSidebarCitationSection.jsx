@@ -15,14 +15,16 @@ import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
 import { Button, Modal } from "semantic-ui-react";
 import { Citation } from "../components/Citation";
+import Overridable from "react-overridable";
 
-const CitationModal = ({
-  record,
-  citationStyles,
-  citationStyleDefault,
-  onCloseHandler,
-  trigger,
-}) => {
+const CitationModal = (props) => {
+  const {
+    record,
+    citationStyles,
+    citationStyleDefault,
+    onCloseHandler,
+    trigger,
+  } = props;
   const [open, setOpen] = useState(false);
 
   const handleOnClose = () => {
@@ -32,52 +34,55 @@ const CitationModal = ({
   };
 
   return (
-    <Modal
-      closeIcon
-      trigger={trigger}
-      open={open}
-      onOpen={() => setOpen(true)}
-      onClose={handleOnClose}
-    >
-      <Modal.Header>Generate a citation for this work</Modal.Header>
-      <Modal.Content>
-        <Citation
-          passedClassNames={`ui`}
-          record={record}
-          citationStyles={citationStyles}
-          citationStyleDefault={citationStyleDefault}
-        />
-      </Modal.Content>
-    </Modal>
+    <Overridable id="InvenioModularDetailPage.CitationModal.layout" {...props}>
+      <Modal
+        closeIcon
+        trigger={trigger}
+        open={open}
+        onOpen={() => setOpen(true)}
+        onClose={handleOnClose}
+      >
+        <Modal.Header>Generate a citation for this work</Modal.Header>
+        <Modal.Content>
+          <Citation
+            passedClassNames={`ui`}
+            record={record}
+            citationStyles={citationStyles}
+            citationStyleDefault={citationStyleDefault}
+          />
+        </Modal.Content>
+      </Modal>
+    </Overridable>
   );
 };
 
-const CitationSection = ({
-  record,
-  citationStyles,
-  citationStyleDefault,
-  show,
-}) => {
+const CitationSection = (props) => {
+  const { record, citationStyles, citationStyleDefault, show } = props;
   return (
-    <div
-      id="citation"
-      className={`sidebar-container ${show}`}
-      aria-label={i18next.t("Cite this")}
+    <Overridable
+      id="InvenioModularDetailPage.CitationSection.layout"
+      {...props}
     >
-      <CitationModal
-        record={record}
-        citationStyles={citationStyles}
-        citationStyleDefault={citationStyleDefault}
-        trigger={
-          <Button
-            fluid
-            content={i18next.t("Cite this")}
-            icon="quote right"
-            labelPosition="right"
-          ></Button>
-        }
-      />
-    </div>
+      <div
+        id="citation"
+        className={`sidebar-container ${show}`}
+        aria-label={i18next.t("Cite this")}
+      >
+        <CitationModal
+          record={record}
+          citationStyles={citationStyles}
+          citationStyleDefault={citationStyleDefault}
+          trigger={
+            <Button
+              fluid
+              content={i18next.t("Cite this")}
+              icon="quote right"
+              labelPosition="right"
+            ></Button>
+          }
+        />
+      </div>
+    </Overridable>
   );
 };
 

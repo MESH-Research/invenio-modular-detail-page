@@ -2,10 +2,10 @@ import React from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
 import { Keywords } from "../components/Keywords";
 import { SubjectHeadings } from "../components/Subjects";
+import Overridable from "react-overridable";
 
-function DetailSidebarSubjectsSection({ record, showKeywords = true, show }) {
+function SidebarSubjectsSection({ record, showKeywords = true, show }) {
   const subjects = record.metadata.subjects;
-  console.log("****DetailSidebarSubjectsSection record", subjects);
 
   const subjectHeadings = subjects?.filter((subject) => !!subject.scheme);
   const subjectLabels = subjectHeadings?.map(({ subject }) =>
@@ -17,8 +17,8 @@ function DetailSidebarSubjectsSection({ record, showKeywords = true, show }) {
     ?.map(({ subject }) => subject)
     ?.concat(record.custom_fields["kcr:user_defined_tags"])
     ?.filter((keyword) => !subjectLabels.includes(keyword?.toLowerCase()));
-  console.log("****DetailSidebarSubjectsSection keywords", keywords);
 
+  //FIXME: restore optional grouping of subject headings
   // const groupedSubjects = subjectHeadings?.reduce((groups, subject) => {
   //   if (!groups[subject.scheme]) {
   //     groups[subject.scheme] = [];
@@ -28,7 +28,7 @@ function DetailSidebarSubjectsSection({ record, showKeywords = true, show }) {
   // }, {});
 
   return (
-    <>
+    <Overridable id="InvenioModularDetailPage.SidebarSubjectsSection.layout">
       {subjectHeadings?.length ? (
         <div
           id="subjects"
@@ -48,8 +48,8 @@ function DetailSidebarSubjectsSection({ record, showKeywords = true, show }) {
       ) : (
         ""
       )}
-    </>
+    </Overridable>
   );
 }
 
-export { DetailSidebarSubjectsSection };
+export { SidebarSubjectsSection };

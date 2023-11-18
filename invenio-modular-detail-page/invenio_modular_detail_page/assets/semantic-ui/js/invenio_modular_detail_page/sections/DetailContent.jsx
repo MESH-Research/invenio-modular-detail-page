@@ -1,221 +1,14 @@
 import React, { useState } from "react";
-import { Icon, Dropdown, Menu, Popup, Tab } from "semantic-ui-react";
 import Overridable from "react-overridable";
-import { CitationModal } from "./DetailSidebarCitationSection";
-import { DetailMainTab } from "./DetailMainTab";
+import { componentsMap } from "../componentsMap";
 import { DetailRightSidebar } from "./DetailRightSidebar";
 import { DetailLeftSidebar } from "./DetailLeftSidebar";
-import { ExportDropdown } from "./DetailSidebarExportSection";
-import { FileListItemDropdown } from "../components/FileList";
+import { MobileActionMenu } from "./DetailMobileActionMenu";
+import { DetailMainTabs } from "./DetailMainTabs";
 import { FlagNewerVersion } from "../components/FlagNewerVersion";
 import { DraftBackButton } from "../components/DraftBackButton";
 import { CommunitiesBanner } from "../components/CommunitiesBanner";
-import { RecordManagementMenu } from "../components/RecordManagementMenu";
-import { ShareModal } from "../components/ShareModal";
-import { SidebarSharingSection } from "./DetailSidebarSharingSection";
-import { componentsMap } from "../componentsMap";
 import { addPropsFromChildren, filterPropsToPass } from "../util";
-
-const MobileActionMenu = (props) => {
-  const {
-    canManage,
-    citationStyles,
-    citationStyleDefault,
-    currentUserId,
-    defaultPreviewFile,
-    files,
-    fileCountToShow,
-    fileTabIndex,
-    isPreview,
-    isDraft,
-    isPreviewSubmissionRequest,
-    permissions,
-    previewFileUrl,
-    record,
-    recordExporters,
-    setActiveTab,
-    totalFileSize,
-  } = props;
-  const [activeItem, setActiveItem] = useState(null);
-  const [manageOpen, setManageOpen] = useState(false);
-  const [shareModalOpen, setShareModalOpen] = React.useState(false);
-  const handleManageOpen = () => setManageOpen(true);
-  const handleManageClose = () => setManageOpen(false);
-  const handleShareModalOpen = () => setShareModalOpen(true);
-  const handleShareModalClose = () => setShareModalOpen(false);
-  const handleMobileMenuClick = (e, { name }) => {
-    activeItem === name ? setActiveItem(null) : setActiveItem(name);
-  };
-  return (
-    <Overridable
-      id="InvenioModularDetailPage.MobileActionMenu.layout"
-      {...props}
-    >
-      <Menu
-        className="mobile tablet only sixteen wide sticky bottom"
-        compact
-        icon="labeled"
-        size="mini"
-        inverted
-      >
-        {canManage && (
-          <>
-            {/* here to avoid the modal being closed on popup close */}
-            <ShareModal
-              recid={record.id}
-              open={shareModalOpen}
-              handleClose={handleShareModalClose}
-            />
-            <Popup
-              content={
-                <RecordManagementMenu
-                  record={record}
-                  permissions={permissions}
-                  isDraft={isDraft}
-                  isPreviewSubmissionRequest={isPreviewSubmissionRequest}
-                  currentUserId={currentUserId}
-                  handleShareModalOpen={handleShareModalOpen}
-                  handleParentPopupClose={handleManageClose}
-                />
-              }
-              trigger={
-                <Menu.Item
-                  name="manage"
-                  active={activeItem === "manage"}
-                  onClick={handleMobileMenuClick}
-                >
-                  <Icon name="cog" />
-                  Manage
-                </Menu.Item>
-              }
-              onClose={() => setActiveItem(null) && handleManageClose()}
-              on="click"
-              open={manageOpen}
-              onOpen={handleManageOpen}
-            />
-          </>
-        )}
-        <ExportDropdown
-          id="record-details-export"
-          {...{
-            asItem: true,
-            asButton: false,
-            asFluid: false,
-            icon: null,
-            record,
-            text: (
-              <>
-                <Icon name="share" />
-                Export
-              </>
-            ),
-            isPreview,
-            recordExporters,
-            classNames: "pointing",
-          }}
-        />
-
-        <CitationModal
-          record={record}
-          trigger={
-            <Menu.Item
-              name="cite"
-              active={activeItem === "cite"}
-              onClick={handleMobileMenuClick}
-            >
-              <Icon name="quote right" />
-              Cite
-            </Menu.Item>
-          }
-          citationStyles={citationStyles}
-          citationStyleDefault={citationStyleDefault}
-          onCloseHandler={() => setActiveItem(null)}
-        />
-
-        <Popup
-          content={<SidebarSharingSection record={record} />}
-          trigger={
-            <Menu.Item
-              name="share"
-              active={activeItem === "share"}
-              onClick={handleMobileMenuClick}
-            >
-              <Icon name="paper plane" />
-              Share
-            </Menu.Item>
-          }
-          onClose={() => setActiveItem(null)}
-          on="click"
-        />
-
-        <FileListItemDropdown
-          asItem={true}
-          id="record-details-download"
-          defaultPreviewFile={defaultPreviewFile}
-          files={files}
-          fileCountToShow={3}
-          fileTabIndex={fileTabIndex}
-          isPreview={isPreview}
-          permissions={permissions}
-          previewFileUrl={previewFileUrl}
-          record={record}
-          setActiveTab={setActiveTab}
-          totalFileSize={totalFileSize}
-        />
-      </Menu>
-    </Overridable>
-  );
-};
-
-const DetailMainTabs = (topLevelProps) => {
-  const panes = topLevelProps.tabbedSections.map(
-    ({ section, component_name, subsections, props, show }, idx) => {
-      // Because can't import DetailMainTab in componentsMap (circular)
-      const TabComponent =
-        component_name !== "DetailMainTab"
-          ? componentsMap[component_name]
-          : DetailMainTab;
-      props = addPropsFromChildren(subsections, props);
-      console.log("****DetailMainTabs props", props);
-      console.log("****DetailMainTabs topLevelProps", topLevelProps);
-      let passedProps =
-        !!props && props.length ? filterPropsToPass(topLevelProps, props) : {};
-      passedProps = {
-        ...passedProps,
-        section: section,
-        subsections: subsections,
-      };
-      return {
-        menuItem: (
-          <Menu.Item key={section} className={show} tabindex={idx}>
-            {section}
-          </Menu.Item>
-        ),
-        render: () => (
-          <Tab.Pane
-            key={section}
-            className={`record-details-tab ${section} ${show}`}
-          >
-            <TabComponent {...passedProps} key={section} />
-          </Tab.Pane>
-        ),
-      };
-    }
-  );
-  console.log("****DetailMainTabs panes", panes);
-
-  return (
-    <Tab
-      id="detail-main-tabs"
-      panes={panes}
-      menu={{ secondary: true, pointing: true }}
-      activeIndex={topLevelProps.activeTab}
-      onTabChange={(e, { activeIndex }) =>
-        topLevelProps.setActiveTab(activeIndex)
-      }
-    />
-  );
-};
 
 // React component for the main content of the detail page.
 // This is the main content of the detail page, which includes a central
@@ -322,91 +115,100 @@ const DetailContent = (rawProps) => {
   const topLevelProps = { ...rawProps, ...extraProps };
 
   return (
-    <div class="two column row top-padded">
-      <article className="sixteen wide tablet eleven wide computer column main-record-content">
-        <DraftBackButton
-          backPage={topLevelProps.backPage}
+    <Overridable
+      id="InvenioModularDetailPage.DetailContent.layout"
+      {...rawProps}
+    >
+      <div class="two column row top-padded">
+        <article className="sixteen wide tablet eleven wide computer column main-record-content">
+          <DraftBackButton
+            backPage={topLevelProps.backPage}
+            isPreview={topLevelProps.isPreview}
+            isDraft={topLevelProps.isDraft}
+            canManage={topLevelProps.canManage}
+            currentUserId={topLevelProps.currentUserId}
+            isPreviewSubmissionRequest={
+              topLevelProps.isPreviewSubmissionRequest
+            }
+            show={"mobile tablet only"}
+          />
+          <FlagNewerVersion
+            isLatest={topLevelProps.record.versions.is_latest}
+            isPublished={topLevelProps.record.is_published}
+            latestHtml={topLevelProps.record.links.latest_html}
+            show={"mobile tablet only"}
+          />
+          <CommunitiesBanner
+            community={topLevelProps.community}
+            isPreviewSubmissionRequest={
+              topLevelProps.isPreviewSubmissionRequest
+            }
+            show={"mobile tablet only"}
+          />
+          {rawProps.mainSections.map(
+            ({ section, component_name, subsections, props, show }) => {
+              const SectionComponent =
+                component_name === "DetailMainTabs"
+                  ? DetailMainTabs
+                  : componentsMap[component_name];
+              let passedProps;
+              if (component_name === "DetailMainTabs") {
+                passedProps = topLevelProps;
+              } else {
+                props = addPropsFromChildren(subsections, props);
+                passedProps =
+                  !!props && props.length
+                    ? filterPropsToPass(topLevelProps, props)
+                    : {};
+              }
+              console.log("****DetailContent component_name", component_name);
+              console.log("****DetailContent passedProps", passedProps);
+              passedProps = {
+                ...passedProps,
+                activePreviewFile: activePreviewFile,
+                activeTab: activeTab,
+                setActivePreviewFile: setActivePreviewFile,
+                setActiveTab: setActiveTab,
+                section: section,
+                show: show,
+                tabbedSections: tabbedSections,
+                subsections: subsections,
+              };
+              console.log("****DetailContent passedProps", passedProps);
+              return <SectionComponent {...passedProps} key={section} />;
+            }
+          )}
+        </article>
+        <DetailRightSidebar
+          activeTab={activeTab}
+          activePreviewFile={activePreviewFile}
+          {...topLevelProps}
+        />
+        <DetailLeftSidebar
+          activeTab={activeTab}
+          activePreviewFile={activePreviewFile}
+          {...topLevelProps}
+        />{" "}
+        <MobileActionMenu
+          canManage={topLevelProps.canManage}
+          citationStyleDefault={topLevelProps.citationStyleDefault}
+          citationStyles={topLevelProps.citationStyles}
+          defaultPreviewFile={topLevelProps.defaultPreviewFile}
+          files={topLevelProps.files}
+          fileCountToShow={topLevelProps.fileCountToShow}
+          fileTabIndex={topLevelProps.fileTabIndex}
           isPreview={topLevelProps.isPreview}
           isDraft={topLevelProps.isDraft}
-          canManage={topLevelProps.canManage}
-          currentUserId={topLevelProps.currentUserId}
           isPreviewSubmissionRequest={topLevelProps.isPreviewSubmissionRequest}
-          show={"mobile tablet only"}
+          permissions={topLevelProps.permissions}
+          previewFileUrl={topLevelProps.previewFileUrl}
+          record={topLevelProps.record}
+          recordExporters={topLevelProps.recordExporters}
+          setActiveTab={topLevelProps.setActiveTab}
+          totalFileSize={topLevelProps.totalFileSize}
         />
-        <FlagNewerVersion
-          isLatest={topLevelProps.record.versions.is_latest}
-          isPublished={topLevelProps.record.is_published}
-          latestHtml={topLevelProps.record.links.latest_html}
-          show={"mobile tablet only"}
-        />
-        <CommunitiesBanner
-          community={topLevelProps.community}
-          isPreviewSubmissionRequest={topLevelProps.isPreviewSubmissionRequest}
-          show={"mobile tablet only"}
-        />
-        {rawProps.mainSections.map(
-          ({ section, component_name, subsections, props, show }) => {
-            const SectionComponent =
-              component_name === "DetailMainTabs"
-                ? DetailMainTabs
-                : componentsMap[component_name];
-            let passedProps;
-            if (component_name === "DetailMainTabs") {
-              passedProps = topLevelProps;
-            } else {
-              props = addPropsFromChildren(subsections, props);
-              passedProps =
-                !!props && props.length
-                  ? filterPropsToPass(topLevelProps, props)
-                  : {};
-            }
-            console.log("****DetailContent component_name", component_name);
-            console.log("****DetailContent passedProps", passedProps);
-            passedProps = {
-              ...passedProps,
-              activePreviewFile: activePreviewFile,
-              activeTab: activeTab,
-              setActivePreviewFile: setActivePreviewFile,
-              setActiveTab: setActiveTab,
-              section: section,
-              show: show,
-              tabbedSections: tabbedSections,
-              subsections: subsections,
-            };
-            console.log("****DetailContent passedProps", passedProps);
-            return <SectionComponent {...passedProps} key={section} />;
-          }
-        )}
-      </article>
-      <DetailRightSidebar
-        activeTab={activeTab}
-        activePreviewFile={activePreviewFile}
-        {...topLevelProps}
-      />
-      <DetailLeftSidebar
-        activeTab={activeTab}
-        activePreviewFile={activePreviewFile}
-        {...topLevelProps}
-      />{" "}
-      <MobileActionMenu
-        canManage={topLevelProps.canManage}
-        citationStyleDefault={topLevelProps.citationStyleDefault}
-        citationStyles={topLevelProps.citationStyles}
-        defaultPreviewFile={topLevelProps.defaultPreviewFile}
-        files={topLevelProps.files}
-        fileCountToShow={topLevelProps.fileCountToShow}
-        fileTabIndex={topLevelProps.fileTabIndex}
-        isPreview={topLevelProps.isPreview}
-        isDraft={topLevelProps.isDraft}
-        isPreviewSubmissionRequest={topLevelProps.isPreviewSubmissionRequest}
-        permissions={topLevelProps.permissions}
-        previewFileUrl={topLevelProps.previewFileUrl}
-        record={topLevelProps.record}
-        recordExporters={topLevelProps.recordExporters}
-        setActiveTab={topLevelProps.setActiveTab}
-        totalFileSize={topLevelProps.totalFileSize}
-      />
-    </div>
+      </div>
+    </Overridable>
   );
 };
 

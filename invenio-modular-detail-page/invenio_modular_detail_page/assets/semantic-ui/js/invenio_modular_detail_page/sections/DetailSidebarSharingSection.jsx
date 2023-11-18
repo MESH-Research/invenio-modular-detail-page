@@ -20,6 +20,7 @@ import {
   Label,
   Popup,
 } from "semantic-ui-react";
+import Overridable from "react-overridable";
 
 function PopupInput({ message }) {
   const inputRef = useRef(null);
@@ -148,7 +149,8 @@ function SharingIconLink({ name, url, iconName }) {
   );
 }
 
-function SidebarSharingSection({ record, show }) {
+function SidebarSharingSection(props) {
+  const { record, show } = props;
   const pageLink = encodeURIComponent(record.links.self_html);
 
   const socialMediaLinks = [
@@ -193,19 +195,21 @@ function SidebarSharingSection({ record, show }) {
   ];
 
   return (
-    <div className={`sidebar-container ${show}`} id="social-sharing">
-      <div className="ui rdm-sidebar">
-        {/* <h2 className="ui medium top attached header mt-0">Share</h2> */}
-        {socialMediaLinks.map(({ name, url }) => (
-          <SharingIconLink
-            key={name}
-            name={name}
-            url={url}
-            iconName={name === "Email" ? "mail" : name.toLowerCase()}
-          />
-        ))}
+    <Overridable id="InvenioModularDetailPage.SidebarSharingSection.layout">
+      <div className={`sidebar-container ${show}`} id="social-sharing">
+        <div className="ui rdm-sidebar">
+          {/* <h2 className="ui medium top attached header mt-0">Share</h2> */}
+          {socialMediaLinks.map(({ name, url }) => (
+            <SharingIconLink
+              key={name}
+              name={name}
+              url={url}
+              iconName={name === "Email" ? "mail" : name.toLowerCase()}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </Overridable>
   );
 }
 

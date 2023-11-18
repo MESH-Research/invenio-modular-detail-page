@@ -116,21 +116,55 @@ In some cases, nested component dictionaries need only a `section` value because
 
 ## Built-in Components
 
+### Layout components
+
+In theory these components are available to be overridden, but generally this should be done with **extreme caution**. You will likely break the basic configurable framework of the modular page.
+
+#### DetailContent
+
+- override label: `InvenioModularDetailPage.DetailContent.layout`
+
+#### MobileActionMenu
+
+- override label: InvenioModularDetailPage.MobileActionMenu.layout`
+
+#### DetailSidebarRight
+
+- override label: `InvenioModularDetailPage.DetailRightSidebar.layout`
+
+#### DetailSidebarLeft
+
+- override label: `InvenioModularDetailPage.DetailLeftSidebar.layout`
+
+### Configurable layout components
+
+#### DetailMainTab
+
+#### DetailMainTabs
+
+- override label: `InvenioModularDetailPage.DetailMainTabs.layout`
 
 ### Analytics
 
+- override id: `InvenioModularDetailPage.Analytics.layout`
 
 ### Citation
 
 
 ### CitationSection
 
+- override id: `InvenioModularDetailPage.CitationSection.layout`
+- required props: "record", "citationStyles", "citationStyleDefault", "show"
+- does not allow nesting
 
 ### CommunitiesBanner
 
 
 ### ContentWarning
 
+- override id: `InvenioModularDetailPage.ContentWarning.layout`
+- required props: "record"
+- does not allow nesting
 
 ### Creatibutors
 
@@ -140,12 +174,11 @@ In some cases, nested component dictionaries need only a `section` value because
 
 ### Descriptions
 
+### ExportDropdown
 
-### DetailMainSubjectsSection
-
-
-### DetailSidebarSubjectsSection
-
+- override id: `InvenioModularDetailPage.ExportDropdown.layout`
+- required props: "record", "recordExporters", "isPreview"
+- does not allow nesting
 
 ### FileListBox
 
@@ -155,35 +188,68 @@ In some cases, nested component dictionaries need only a `section` value because
 
 ### FilePreviewWrapper
 
+- override id: `InvenioModularDetailPage.FilePreviewWrapper.layout`
+
+### MainSubjectsSection
+
+- override id: `InvenioModularDetailPage.MainSubjectsSection.layout`
 
 ### PublishingDetails
 
 
 ### RecordTitle
 
+### SidebarContentWarningSection
+
+- override id: `InvenioModularDetailPage.SidebarContentWarningSection.layout`
+- required props: "record"
+- does not allow nesting
 
 ### SidebarDetailsSection
 
+- override id: `InvenioModularDetailPage.SidebarDetailsSection.layout`
+- required props: "customFieldsUi", "doiBadgeUrl", "identifierSchemes", "landingUrls", "record", "subsections", "show", "show_heading"
+- **allows nesting**
 
 ### SidebarDownloadSection
 
+- override id: `InvenioModularDetailPage.SidebarDownloadSection.layout`
 
 ### SidebarExportSection
 
 This section provides a dropdown list of export formats. When a user selects an item from the dropdown, the record metadata is serialized appropriately and downloaded.
 
+- override id: `InvenioModularDetailPage.SidebarExportSection.layout`
 - required props: "isPreview", "recordExporters", "record"
+- does not allow nesting
+
+### SidebarRightsSection
+
+- override id: `InvenioModularDetailPage.SidebarRightsSection.layout`
+- required props: "rights"
 - does not allow nesting
 
 ### SidebarSharingSection
 
+- override id: `InvenioModularDetailPage.SidebarSharingSection.layout`
 - required props: "record"
+- does not allow nesting
+
+### SidebarSubjectsSection
+
+- override id: `InvenioModularDetailPage.SidebarSubjectsSection.layout`
+- required props: "record", "show"
 - does not allow nesting
 
 ### VersionsListSection
 
+- override id: `InvenioModularDetailPage.VersionsListSection.layout`
+- required props: "isPreview", "record"
 
 ### VersionsDropdownSection
+
+- override id: `InvenioModularDetailPage.VersionsDropdownSection.layout`
+- required props: "isPreview", "record"
 
 ## Overriding and Creating New Components
 

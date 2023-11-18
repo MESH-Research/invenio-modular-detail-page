@@ -13,6 +13,7 @@
 import React from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
 import { Icon, Message } from "semantic-ui-react";
+import Overridable from "react-overridable";
 import { componentsMap } from "../componentsMap";
 import { filterPropsToPass } from "../util";
 import {
@@ -49,76 +50,86 @@ const DetailRightSidebar = (topLevelProps) => {
       );
     }
   );
-  console.log("***DetailRightSidebar topLevelProps", topLevelProps);
   return (
-    <aside className="sixteen wide tablet five wide computer column right-sidebar">
-      <DraftBackButton
-        backPage={topLevelProps.backPage}
-        isPreview={topLevelProps.isPreview}
-        isDraft={topLevelProps.isDraft}
-        canManage={topLevelProps.canManage}
-        isPreviewSubmissionRequest={topLevelProps.isPreviewSubmissionRequest}
-        show={"computer large monitor widescreen only"}
-      />
-      <FlagNewerVersion
-        isLatest={topLevelProps.record.versions.is_latest}
-        isPublished={topLevelProps.record.is_published}
-        latestHtml={topLevelProps.record.links.latest_html}
-        show={"computer large monitor widescreen only"}
-      />
-      {topLevelProps.showRecordManagementMenu && (
-        <div
-          className={`sidebar-container computer large monitor widescreen only`}
-          id="record-management"
-        >
-          <RecordManagementPopup
-            record={topLevelProps.record}
-            permissions={topLevelProps.permissions}
-            isDraft={topLevelProps.isDraft}
-            isPreviewSubmissionRequest={
-              topLevelProps.isPreviewSubmissionRequest
-            }
-            currentUserId={topLevelProps.currentUserId}
-            handleShareModalOpen={handleShareModalOpen}
-          />
-          {/* here to avoid the modal being closed on popup close */}
-          <ShareModal
-            recid={topLevelProps.record.id}
-            open={shareModalOpen}
-            handleClose={handleShareModalClose}
-          />
-        </div>
-      )}
-      {activeSidebarSections.map(
-        ({
-          section,
-          component_name,
-          props,
-          subsections,
-          show_heading,
-          show,
-        }) => {
-          const SidebarSectionComponent = componentsMap[component_name];
-          console.log(
-            "***DetailRightSidebar SidebarSectionComponent",
-            SidebarSectionComponent
-          );
-          console.log("***DetailRightSidebar subsections", subsections);
-          console.log("***DetailRightSidebar props", props);
-          const SidebarSectionProps = filterPropsToPass(topLevelProps, props);
-          return (
-            <SidebarSectionComponent
-              {...SidebarSectionProps}
-              section={section}
-              subsections={subsections}
-              key={section}
-              show_heading={show_heading}
-              show={show}
+    <Overridable
+      id="InvenioModularDetailPage.DetailRightSidebar.layout"
+      {...{
+        ...topLevelProps,
+        handleShareModalOpen,
+        handleShareModalClose,
+        shareModalOpen,
+        activeSidebarSections,
+      }}
+    >
+      <aside className="sixteen wide tablet five wide computer column right-sidebar">
+        <DraftBackButton
+          backPage={topLevelProps.backPage}
+          isPreview={topLevelProps.isPreview}
+          isDraft={topLevelProps.isDraft}
+          canManage={topLevelProps.canManage}
+          isPreviewSubmissionRequest={topLevelProps.isPreviewSubmissionRequest}
+          show={"computer large monitor widescreen only"}
+        />
+        <FlagNewerVersion
+          isLatest={topLevelProps.record.versions.is_latest}
+          isPublished={topLevelProps.record.is_published}
+          latestHtml={topLevelProps.record.links.latest_html}
+          show={"computer large monitor widescreen only"}
+        />
+        {topLevelProps.showRecordManagementMenu && (
+          <div
+            className={`sidebar-container computer large monitor widescreen only`}
+            id="record-management"
+          >
+            <RecordManagementPopup
+              record={topLevelProps.record}
+              permissions={topLevelProps.permissions}
+              isDraft={topLevelProps.isDraft}
+              isPreviewSubmissionRequest={
+                topLevelProps.isPreviewSubmissionRequest
+              }
+              currentUserId={topLevelProps.currentUserId}
+              handleShareModalOpen={handleShareModalOpen}
             />
-          );
-        }
-      )}
-    </aside>
+            {/* here to avoid the modal being closed on popup close */}
+            <ShareModal
+              recid={topLevelProps.record.id}
+              open={shareModalOpen}
+              handleClose={handleShareModalClose}
+            />
+          </div>
+        )}
+        {activeSidebarSections.map(
+          ({
+            section,
+            component_name,
+            props,
+            subsections,
+            show_heading,
+            show,
+          }) => {
+            const SidebarSectionComponent = componentsMap[component_name];
+            console.log(
+              "***DetailRightSidebar SidebarSectionComponent",
+              SidebarSectionComponent
+            );
+            console.log("***DetailRightSidebar subsections", subsections);
+            console.log("***DetailRightSidebar props", props);
+            const SidebarSectionProps = filterPropsToPass(topLevelProps, props);
+            return (
+              <SidebarSectionComponent
+                {...SidebarSectionProps}
+                section={section}
+                subsections={subsections}
+                key={section}
+                show_heading={show_heading}
+                show={show}
+              />
+            );
+          }
+        )}
+      </aside>
+    </Overridable>
   );
 };
 

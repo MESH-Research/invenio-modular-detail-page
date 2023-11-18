@@ -1,38 +1,50 @@
 import React from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
-import { Dropdown, Icon } from "semantic-ui-react";
 import { RecordVersionsList } from "../components/RecordVersionList";
+import Overridable from "react-overridable";
 
-const VersionsListSection = ({ isPreview, record, showHeader = false }) => {
+const VersionsListSection = (props) => {
+  const { isPreview, record, showHeader = false } = props;
   return (
-    <div id="record-versions" className="sidebar-container">
-      <h2 className="ui medium top attached header mt-0">
-        {i18next.t("Versions")}
-      </h2>
-      <div className="ui segment rdm-sidebar bottom attached pl-0 pr-0 pt-0">
-        <div className="versions">
-          <div
-            id="recordVersions"
-            data-record={record}
-            data-preview={isPreview}
-          >
-            <RecordVersionsList record={record} isPreview={isPreview} />
+    <Overridable
+      id="InvenioModularDetailPage.VersionsListSection.layout"
+      {...props}
+    >
+      <div id="record-versions" className="sidebar-container">
+        <h2 className="ui medium top attached header mt-0">
+          {i18next.t("Versions")}
+        </h2>
+        <div className="ui segment rdm-sidebar bottom attached pl-0 pr-0 pt-0">
+          <div className="versions">
+            <div
+              id="recordVersions"
+              data-record={record}
+              data-preview={isPreview}
+            >
+              <RecordVersionsList record={record} isPreview={isPreview} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Overridable>
   );
 };
 
-const VersionsDropdownSection = ({ isPreview, record }) => {
+const VersionsDropdownSection = (props) => {
+  const { isPreview, record } = props;
   return (
-    <div className="sidebar-container" id="record-versions">
-      <RecordVersionsList
-        record={record}
-        isPreview={isPreview}
-        widgetStyle="dropdown"
-      />
-    </div>
+    <Overridable
+      id="InvenioModularDetailPage.VersionsDropdownSection.layout"
+      {...props}
+    >
+      <div className="sidebar-container" id="record-versions">
+        <RecordVersionsList
+          record={record}
+          isPreview={isPreview}
+          widgetStyle="dropdown"
+        />
+      </div>
+    </Overridable>
   );
 };
 

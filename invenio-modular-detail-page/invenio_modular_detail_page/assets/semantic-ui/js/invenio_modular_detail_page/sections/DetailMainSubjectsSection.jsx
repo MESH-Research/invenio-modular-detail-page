@@ -1,8 +1,10 @@
 import React from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
 import { SubjectHeadings } from "../components/Subjects";
+import Overridable from "react-overridable";
 
-function DetailMainSubjectsSection({ record, showKeywords = true, show }) {
+function MainSubjectsSection(props) {
+  const { record, showKeywords = true, show } = props;
   const subjects = record.metadata.subjects;
 
   const subjectHeadings = subjects?.filter((subject) => !!subject.scheme);
@@ -15,6 +17,7 @@ function DetailMainSubjectsSection({ record, showKeywords = true, show }) {
     .map(({ subject }) => subject)
     .concat(record.custom_fields["kcr:user_defined_tags"])
     .filter((keyword) => !subjectLabels.includes(keyword?.toLowerCase()));
+  // FIXME: restore optional grouping of subject headings
   // const groupedSubjects = subjectHeadings?.reduce((groups, subject) => {
   //   if (!groups[subject.scheme]) {
   //     groups[subject.scheme] = [];
@@ -24,7 +27,10 @@ function DetailMainSubjectsSection({ record, showKeywords = true, show }) {
   // }, {});
 
   return (
-    <>
+    <Overridable
+      id="InvenioModularDetailPage.MainSubjectsSection.layout"
+      {...props}
+    >
       {subjectHeadings?.length ? (
         <div
           id="subjects"
@@ -42,8 +48,8 @@ function DetailMainSubjectsSection({ record, showKeywords = true, show }) {
       ) : (
         ""
       )}
-    </>
+    </Overridable>
   );
 }
 
-export { DetailMainSubjectsSection };
+export { MainSubjectsSection };
