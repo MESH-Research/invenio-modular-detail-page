@@ -323,7 +323,7 @@ const FileListItemDropdown = ({
     <>
       {/* access is "restricted" also if record is metadata-only */}
       {!!permissions.can_read_files &&
-        files.enabled != false &&
+        files.enabled !== false &&
         (files?.length < 2 ? (
           <Menu.Item
             id={id}
@@ -432,7 +432,7 @@ const FileListBox = ({
   setActiveTab,
   setActivePreviewFile,
   showChecksum = true,
-  showEmbargoMessage = false,
+  showEmbargoMessage = true,
   showTableHeader = true,
   showTotalSize = true,
   stackedRows = false,
@@ -443,10 +443,9 @@ const FileListBox = ({
     <div className={`ui mb-10 ${record.ui.access_status.id}`}>
       <div className="content pt-0">
         {/* Note: "restricted" is the value also for metadata-only records */}
-        {record.access.files === "restricted" && showEmbargoMessage && (
-          <EmbargoMessage record={record} />
-        )}
-        {!!permissions.can_read_files && (
+        {(record.access.files === "restricted" || files.enabled === false) &&
+          showEmbargoMessage && <EmbargoMessage record={record} />}
+        {!!permissions.can_read_files && files.enabled !== false && (
           <FileListTable
             activePreviewFile={activePreviewFile}
             previewFileUrl={previewFileUrl}
