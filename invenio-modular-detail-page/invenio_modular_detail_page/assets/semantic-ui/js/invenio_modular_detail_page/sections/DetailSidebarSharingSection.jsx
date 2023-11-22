@@ -75,7 +75,7 @@ function PopupInput({ message }) {
           ref={inputRef}
           onChange={handleChangeDomain}
           value={domain}
-          size="tiny"
+          size="small"
         />
       </Form.Field>
       <Form.Field size="tiny">
