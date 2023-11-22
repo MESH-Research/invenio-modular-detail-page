@@ -22,7 +22,7 @@ const DetailMainTabs = (topLevelProps) => {
       };
       return {
         menuItem: (
-          <Menu.Item key={section} className={show} tabindex={idx}>
+          <Menu.Item key={section} className={show} tabIndex={idx}>
             {section}
           </Menu.Item>
         ),

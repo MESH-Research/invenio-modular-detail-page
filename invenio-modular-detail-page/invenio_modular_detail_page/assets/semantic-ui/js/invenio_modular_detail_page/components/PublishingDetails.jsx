@@ -11,9 +11,6 @@ function getCustomFieldComponents({
   customFields,
   detailOrder,
 }) {
-  console.log("****getCustomFieldComponents sectionFields", sectionFields);
-  console.log("****getCustomFieldComponents customFields", customFields);
-  console.log("****getCustomFieldComponents detailOrder", detailOrder);
   if (detailOrder) {
     sectionFields = detailOrder.map(({ section, subsections }) =>
       sectionFields.find((fieldCfg) => fieldCfg.field === section)
@@ -21,27 +18,19 @@ function getCustomFieldComponents({
   }
 
   return sectionFields.map((fieldCfg) => {
-    console.log("****getCustomFieldComponents fieldCfg", fieldCfg);
     const fieldValue = customFields[fieldCfg.field];
     if (!!fieldValue) {
-      console.log("****getCustomFieldComponents fieldValue", fieldValue);
       if (typeof fieldValue === "object") {
         let entries = Object.entries(fieldValue);
-        console.log("****getCustomFieldComponents entries", entries);
         const orderSubsections = detailOrder.find(
           ({ section }) => section === fieldCfg.field
         )?.subsections;
-        console.log(
-          "****getCustomFieldComponents orderSubsections",
-          orderSubsections
-        );
         if (orderSubsections) {
           entries = orderSubsections.reduce((acc, { section }) => {
             const match = entries.find(([key, value]) => key === section);
             return match ? [...acc, match] : acc;
           }, []);
         }
-        console.log("****getCustomFieldComponents entries", entries);
         return (
           <>
             {entries.map(([key, value]) => (
@@ -331,7 +320,6 @@ const getDetailsComponents = ({
   showDecimalSizes,
 }) => {
   const idDoi = record.pids.doi ? record.pids.doi.identifier : null;
-  console.log("****getDetailsComponents record", record);
   const detailsInfo = [
     {
       title: i18next.t("Analytics"),
@@ -587,8 +575,6 @@ const PublishingDetails = ({
   subsections: accordionSections,
 }) => {
   const [activeIndex, setActiveIndex] = React.useState([0]);
-  console.log("****PublishingDetails record", record);
-  console.log("****PublishingDetails customFieldsUi", customFieldsUi);
   const customFieldSectionNames = customFieldsUi.map(({ section }) => section);
   const sectionsArray = accordionSections.reduce(
     (acc, { section: sectionTitle, subsections, icon, show }) => {
@@ -602,7 +588,6 @@ const PublishingDetails = ({
           customFields: record.custom_fields,
           detailOrder: detailOrder,
         });
-        console.log("****PublishingDetails fieldContent", fieldContent);
         if (fieldContent[0]) {
           acc.push({
             key: sectionTitle,
@@ -640,7 +625,6 @@ const PublishingDetails = ({
     },
     []
   );
-  console.log("****PublishingDetails sectionsArray", sectionsArray);
 
   const handleHeaderClick = (index) => {
     const newIndex = activeIndex.includes(index)

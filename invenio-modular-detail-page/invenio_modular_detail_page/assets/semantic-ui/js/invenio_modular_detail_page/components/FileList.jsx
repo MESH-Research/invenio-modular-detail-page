@@ -323,6 +323,7 @@ const FileListItemDropdown = ({
     <>
       {/* access is "restricted" also if record is metadata-only */}
       {!!permissions.can_read_files &&
+        files.enabled != false &&
         (files?.length < 2 ? (
           <Menu.Item
             id={id}
@@ -384,9 +385,8 @@ const FileListDropdown = ({
   return (
     <>
       {/* access is "restricted" also if record is metadata-only */}
-      {record.access.files === "restricted" && showEmbargoMessage === true && (
-        <EmbargoMessage record={record} />
-      )}
+      {(record.access.files === "restricted") | !files &&
+        showEmbargoMessage === true && <EmbargoMessage record={record} />}
       {!!permissions.can_read_files &&
         (files?.length < 2 ? (
           <Button

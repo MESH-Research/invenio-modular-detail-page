@@ -109,12 +109,6 @@ const DetailRightSidebar = (topLevelProps) => {
             show,
           }) => {
             const SidebarSectionComponent = componentsMap[component_name];
-            console.log(
-              "***DetailRightSidebar SidebarSectionComponent",
-              SidebarSectionComponent
-            );
-            console.log("***DetailRightSidebar subsections", subsections);
-            console.log("***DetailRightSidebar props", props);
             const SidebarSectionProps = filterPropsToPass(topLevelProps, props);
             return (
               <SidebarSectionComponent

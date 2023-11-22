@@ -106,16 +106,6 @@ const VersionsContentDropdown = ({
   recordVersions,
 }) => {
   const [activeVersion, setActiveVersion] = useState(recid);
-  console.log("****VersionsContentDropdown recordVersions", recordVersions);
-  console.log(
-    "****VersionsContentDropdown currentRecordInResults",
-    currentRecordInResults
-  );
-  console.log(
-    "****VersionsContentDropdown recordDeserialized",
-    recordDeserialized
-  );
-  console.log("****VersionsContentDropdown isPreview", isPreview);
 
   let versionOptions = recordVersions?.hits?.map((item) => {
     let opt = {

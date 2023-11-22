@@ -57,8 +57,6 @@ function PopupInput({ message }) {
     } else {
       localStorage.removeItem("mastodon-instance");
     }
-    console.log(remember);
-    console.log(localStorage.getItem("mastodon-instance"));
   };
 
   const handleChangeDomain = (e) => {

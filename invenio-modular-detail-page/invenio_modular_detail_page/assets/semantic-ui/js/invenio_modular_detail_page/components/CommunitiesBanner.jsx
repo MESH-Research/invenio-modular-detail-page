@@ -3,7 +3,6 @@ import { i18next } from "@translations/invenio_app_rdm/i18next";
 import { Icon, Image, Grid } from "semantic-ui-react";
 
 const CommunitiesBanner = ({ community, isPreviewSubmissionRequest, show }) => {
-  console.log("****CommunitiesBanner community", community);
   const isCommunityRestricted = community
     ? community.access.visibility == "restricted"
     : false;

@@ -119,7 +119,7 @@ const DetailContent = (rawProps) => {
       id="InvenioModularDetailPage.DetailContent.layout"
       {...rawProps}
     >
-      <div class="two column row top-padded">
+      <div className="two column row top-padded">
         <article className="sixteen wide tablet eleven wide computer column main-record-content">
           <DraftBackButton
             backPage={topLevelProps.backPage}
@@ -161,8 +161,6 @@ const DetailContent = (rawProps) => {
                     ? filterPropsToPass(topLevelProps, props)
                     : {};
               }
-              console.log("****DetailContent component_name", component_name);
-              console.log("****DetailContent passedProps", passedProps);
               passedProps = {
                 ...passedProps,
                 activePreviewFile: activePreviewFile,
@@ -174,7 +172,6 @@ const DetailContent = (rawProps) => {
                 tabbedSections: tabbedSections,
                 subsections: subsections,
               };
-              console.log("****DetailContent passedProps", passedProps);
               return <SectionComponent {...passedProps} key={section} />;
             }
           )}

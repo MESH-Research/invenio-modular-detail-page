@@ -58,7 +58,6 @@ export const EditButton = ({ recid, onError }) => {
       await http.post(`/api/records/${recid}/draft`);
       window.location = `/uploads/${recid}`;
     } catch (error) {
-      console.log("***EditButton error", error);
       setLoading(false);
       onError(error.response.data.message);
     }
@@ -136,16 +135,6 @@ const RecordManagementMenu = ({
     console.error(errorMessage);
     setError(errorMessage);
   };
-  console.log("***RecordManagementMenu record", record);
-  console.log("***RecordManagementMenu permissions", permissions);
-  console.log("***RecordManagementMenu isDraft", isDraft);
-  console.log(
-    "***RecordManagementMenu isPreviewSubmissionRequest",
-    isPreviewSubmissionRequest
-  );
-  console.log("***RecordManagementMenu currentUserId", currentUserId);
-  console.log("***RecordManagementMenu recid", recid);
-  console.log("***RecordManagementMenu error", error);
 
   return (
     <section

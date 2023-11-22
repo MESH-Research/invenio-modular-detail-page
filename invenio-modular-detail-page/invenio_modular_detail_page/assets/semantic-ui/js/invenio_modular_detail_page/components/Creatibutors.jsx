@@ -35,7 +35,6 @@ const makeSchemeStrings = (
       landingUrls.hcommons_username,
     ],
   };
-  console.log("****makeSchemeStrings mystrings", mystrings);
   return mystrings;
 };
 
@@ -196,13 +195,10 @@ const Creatibutors = ({
   subsections,
 }) => {
   const show_affiliations = true;
-  console.log("****Creatibutors creators", creators.creators);
-  console.log("****Creatibutors contributors", contributors);
   const creatibutors =
     contributors !== undefined
       ? creators?.creators?.concat(contributors?.contributors)
       : creators?.creators;
-  console.log("****Creatibutors creatibutors", creatibutors);
   let ids = creatibutors.reduce((acc, creatibutor) => {
     acc[creatibutor.person_or_org.name] = IdentifiersList(
       creatibutor.person_or_org.identifiers

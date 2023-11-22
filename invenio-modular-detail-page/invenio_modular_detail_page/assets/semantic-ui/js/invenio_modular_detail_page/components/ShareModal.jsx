@@ -256,7 +256,7 @@ const ShareModal = ({ recid, open, handleClose }) => {
 
           <Modal.Description>
             <Message className="share-description info">
-              <Icon name="warning circle large" />
+              <Icon name="warning circle" size="large" />
               {!accessLinkObj
                 ? i18next.t(
                     "No link has been created. Click on 'Get a Link' to make a new link."

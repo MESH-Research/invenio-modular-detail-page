@@ -29,7 +29,6 @@ const CitationModal = (props) => {
 
   const handleOnClose = () => {
     setOpen(false);
-    console.log("****CitationModal onClose", onCloseHandler);
     onCloseHandler && onCloseHandler();
   };
 
