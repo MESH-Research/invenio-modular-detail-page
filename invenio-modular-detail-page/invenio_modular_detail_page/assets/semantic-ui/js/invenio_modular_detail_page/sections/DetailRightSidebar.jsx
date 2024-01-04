@@ -76,7 +76,7 @@ const DetailRightSidebar = (topLevelProps) => {
           latestHtml={topLevelProps.record.links.latest_html}
           show={"computer large monitor widescreen only"}
         />
-        {topLevelProps.showRecordManagementMenu && (
+        {topLevelProps.showRecordManagementMenu ? (
           <div
             className={`sidebar-container computer large monitor widescreen only`}
             id="record-management"
@@ -98,7 +98,7 @@ const DetailRightSidebar = (topLevelProps) => {
               handleClose={handleShareModalClose}
             />
           </div>
-        )}
+        ) : null}
         {activeSidebarSections.map(
           ({
             section,

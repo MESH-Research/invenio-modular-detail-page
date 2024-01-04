@@ -378,15 +378,15 @@ const FileListDropdown = ({
   previewFileUrl,
   record,
   setActiveTab,
-  showEmbargoMessage,
+  showEmbargoMessage = true,
   totalFileSize,
 }) => {
   const previewUrlFlag = isPreview ? "&preview=1" : "";
   return (
     <>
       {/* access is "restricted" also if record is metadata-only */}
-      {(record.access.files === "restricted") | !files &&
-        showEmbargoMessage === true && <EmbargoMessage record={record} />}
+      {(record.access.files === "restricted" || files.enabled === false) &&
+        showEmbargoMessage && <EmbargoMessage record={record} />}
       {!!permissions.can_read_files &&
         (files?.length < 2 ? (
           <Button
