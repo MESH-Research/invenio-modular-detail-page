@@ -1,4 +1,3 @@
-
 const filterPropsToPass = (topLevelProps, propList) => {
   const passedProps = Object.keys(topLevelProps)
     .filter((key) => propList.includes(key))
@@ -24,16 +23,26 @@ const addPropsFromChildren = (children, props) => {
     }, []);
   }
   return props;
-}
+};
 
-const formatBytes = (bytes, decimals=2) => {
+const formatBytes = (bytes, decimals = 2) => {
   if (!+bytes) return "0 Bytes";
-  const k = 1024
-  const dm = decimals < 0 ? 0 : decimals
-  const sizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
-}
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = [
+    "Bytes",
+    "KiB",
+    "MiB",
+    "GiB",
+    "TiB",
+    "PiB",
+    "EiB",
+    "ZiB",
+    "YiB",
+  ];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+};
 
 // FIXME: duplicating idutils/__init__.py:to_url which calls
 // idutils/__init__.py:normalize_pid but we aren't doing the normalization
@@ -59,36 +68,66 @@ function toPidUrl(pid, scheme, landingUrls) {
 }
 
 function getFileTypeIconName(filename) {
-  const extension = filename.split('.').pop().toLowerCase();
+  const extension = filename.split(".").pop().toLowerCase();
   switch (extension) {
-    case 'pdf':
-      return 'file pdf outline';
-    case 'doc':
-    case 'docx':
-      return 'file word outline';
-    case 'xls':
-    case 'xlsx':
-      return 'file excel outline';
-    case 'ppt':
-    case 'pptx':
-      return 'file powerpoint outline';
-    case 'jpg':
-    case 'jpeg':
-    case 'png':
-    case 'gif':
-      return 'file image outline';
-    case 'mp3':
-    case 'wav':
-      return 'file audio outline';
-    case 'mp4':
-    case 'avi':
-    case 'mov':
-      return 'file video outline';
-    case 'txt':
-      return 'file text outline';
+    case "pdf":
+      return "file pdf outline";
+    case "doc":
+    case "docx":
+      return "file word outline";
+    case "xls":
+    case "xlsx":
+      return "file excel outline";
+    case "ppt":
+    case "pptx":
+      return "file powerpoint outline";
+    case "jpg":
+    case "jpeg":
+    case "png":
+    case "gif":
+      return "file image outline";
+    case "mp3":
+    case "wav":
+      return "file audio outline";
+    case "mp4":
+    case "avi":
+    case "mov":
+      return "file video outline";
+    case "txt":
+      return "file text outline";
     default:
-      return 'file outline';
+      return "file outline";
   }
 }
 
-export { addPropsFromChildren, filterPropsToPass, formatBytes, getFileTypeIconName, toPidUrl };
+/**
+ * Groups a list of objects by a key
+ *
+ * Duplicates the functionality of lodash's groupBy function
+ * @param {*} objectList
+ * @param {*} keyGetter
+ * @returns
+ */
+function groupObjectsBy(objectList, keyGetter) {
+  const result = objectList
+    ? objectList.reduce((acc, obj) => {
+        const key = keyGetter(obj);
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(obj);
+        return acc;
+      }, {})
+    : {};
+
+  return result;
+}
+
+export {
+  addPropsFromChildren,
+  filterPropsToPass,
+  formatBytes,
+  getFileTypeIconName,
+  groupObjectsBy,
+  toPidUrl,
+};

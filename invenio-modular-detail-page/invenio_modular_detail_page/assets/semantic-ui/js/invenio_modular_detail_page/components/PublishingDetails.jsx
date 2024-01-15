@@ -3,7 +3,7 @@ import { i18next } from "@translations/invenio_app_rdm/i18next";
 import { Accordion, Icon } from "semantic-ui-react";
 import { Creatibutors } from "./Creatibutors";
 import { Doi } from "../components/Doi";
-import { toPidUrl } from "../util";
+import { groupObjectsBy, toPidUrl } from "../util";
 import { Analytics } from "./Analytics";
 
 function getCustomFieldComponents({
@@ -181,7 +181,7 @@ function RelatedIdentifiers({
   identifierSchemes,
   landingUrls,
 }) {
-  const groups = Object.groupBy(
+  const groups = groupObjectsBy(
     relatedIdentifiers,
     ({ relation_type }) => relation_type.title_l10n
   );
@@ -243,7 +243,8 @@ const AlternateIdentifiers = ({
   identifierSchemes,
   landingUrls,
 }) => {
-  const groups = Object.groupBy(alternateIdentifiers, ({ scheme }) => scheme);
+  console.log("altids", alternateIdentifiers);
+  const groups = groupObjectsBy(alternateIdentifiers, ({ scheme }) => scheme);
   return Object.keys(groups)
     .filter((scheme) => scheme !== "url")
     .map((scheme) => (
