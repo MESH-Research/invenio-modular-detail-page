@@ -323,6 +323,30 @@ const getDetailsComponents = ({
   const idDoi = record.pids.doi ? record.pids.doi.identifier : null;
   const detailsInfo = [
     {
+      title: i18next.t("Additional dates"),
+      value: record.ui.dates ? (
+        <AdditionalDates dates={record.ui.dates} />
+      ) : null,
+    },
+    {
+      title: i18next.t("Additional titles"),
+      value: record.ui.additional_titles ? (
+        <AdditionalTitles addTitles={record.ui.additional_titles} />
+      ) : null,
+    },
+    {
+      title: i18next.t("Alternate identifiers"),
+      value: record.metadata.identifiers?.filter(
+        (id) => id.scheme !== "url"
+      ) ? (
+        <AlternateIdentifiers
+          alternateIdentifiers={record.metadata.identifiers}
+          identifierSchemes={identifierSchemes}
+          landingUrls={landingUrls}
+        />
+      ) : null,
+    },
+    {
       title: i18next.t("Analytics"),
       value: (
         <Analytics
@@ -332,6 +356,20 @@ const getDetailsComponents = ({
           showDecimalSizes={showDecimalSizes}
         />
       ),
+    },
+    {
+      title: i18next.t("Awarding university"),
+      value:
+        record.ui.publishing_information &&
+        record.ui.publishing_information.thesis
+          ? record.ui.publishing_information.thesis
+          : null,
+    },
+    {
+      title: i18next.t("Conference"),
+      value: record.ui.conference ? (
+        <ConferenceDetailSection conference={record.ui.conference} />
+      ) : null,
     },
     {
       title: i18next.t("Contributors"),
@@ -346,6 +384,12 @@ const getDetailsComponents = ({
           landingUrls={landingUrls}
         />
       ),
+    },
+    {
+      title: i18next.t("Development status"),
+      value: record.ui.custom_fields["code:developmentStatus"]
+        ? record.ui.custom_fields["code:developmentStatus"]["title_l10n"]
+        : null,
     },
     {
       title: i18next.t("DOI badge"),
@@ -366,12 +410,66 @@ const getDetailsComponents = ({
         ) : null,
     },
     {
-      title: i18next.t("Resource type"),
-      value: record.ui.resource_type.title_l10n,
+      title: i18next.t("Frameworks or runtimes"),
+      value: record.custom_fields["code:runtimePlatform"]
+        ? record.custom_fields["code:runtimePlatform"]
+        : null,
+    },
+    {
+      title: i18next.t("Funding"),
+      value: record.ui.funding ? <Funding funding={record.ui.funding} /> : null,
+    },
+    {
+      title: i18next.t("Imprint"),
+      value:
+        record.ui.publishing_information &&
+        record.ui.publishing_information.imprint
+          ? record.ui.publishing_information.imprint
+          : null,
+    },
+    {
+      title: i18next.t("Formats"),
+      value: record.metadata.formats ? record.metadata.formats.join(",") : null,
+    },
+    {
+      title: i18next.t("Languages"),
+      value: record.ui.languages
+        ? record.ui.languages.map(({ title_l10n }) => title_l10n).join(",")
+        : null,
+    },
+    {
+      title: i18next.t("Media and materials"),
+      value: record.custom_fields["kcr:media"]
+        ? record.custom_fields["kcr:media"].join(",")
+        : null,
+    },
+    {
+      title: i18next.t("Operating systems supported"),
+      value: record.custom_fields["code:operatingSystem"]
+        ? record.custom_fields["code:operatingSystem"]
+        : null,
+    },
+    {
+      title: i18next.t("Programming languages"),
+      value: record.custom_fields["code:programmingLanguage"]
+        ? record.custom_fields["code:programmingLanguage"]
+        : null,
+    },
+    {
+      title: i18next.t("Project title"),
+      value: record.custom_fields["kcr:project_title"]
+        ? record.custom_fields["kcr:project_title"]
+        : null,
     },
     {
       title: i18next.t("Publication date"),
       value: record.ui.publication_date_l10n_long,
+    },
+    {
+      title: i18next.t("Project or publication website"),
+      value: record.custom_fields["kcr:publication_url"]
+        ? record.custom_fields["kcr:publication_url"]
+        : null,
     },
     { title: i18next.t("Publisher"), value: record.metadata.publisher },
     {
@@ -383,64 +481,11 @@ const getDetailsComponents = ({
           : null,
     },
     {
-      title: i18next.t("Imprint"),
-      value:
-        record.ui.publishing_information &&
-        record.ui.publishing_information.imprint
-          ? record.ui.publishing_information.imprint
-          : null,
-    },
-    {
-      title: i18next.t("Awarding university"),
-      value:
-        record.ui.publishing_information &&
-        record.ui.publishing_information.thesis
-          ? record.ui.publishing_information.thesis
-          : null,
-    },
-    {
-      title: i18next.t("Conference"),
-      value: record.ui.conference ? (
-        <ConferenceDetailSection conference={record.ui.conference} />
-      ) : null,
-    },
-    {
-      title: i18next.t("Languages"),
-      value: record.ui.languages
-        ? record.ui.languages.map(({ title_l10n }) => title_l10n).join(",")
-        : null,
-    },
-    {
-      title: i18next.t("Formats"),
-      value: record.metadata.formats ? record.metadata.formats.join(",") : null,
-    },
-    {
-      title: i18next.t("Sizes"),
-      value: record.metadata.sizes ? record.metadata.sizes.join(",") : null,
-    },
-    {
-      title: i18next.t("Additional titles"),
-      value: record.ui.additional_titles ? (
-        <AdditionalTitles addTitles={record.ui.additional_titles} />
-      ) : null,
-    },
-    {
-      title: i18next.t("URLs"),
-      value: record.metadata.identifiers?.filter(
-        (id) => id.scheme === "url"
-      ) ? (
-        <URLs identifiers={record.metadata.identifiers} />
-      ) : null,
-    },
-    {
-      title: i18next.t("Alternate identifiers"),
-      value: record.metadata.identifiers?.filter(
-        (id) => id.scheme !== "url"
-      ) ? (
-        <AlternateIdentifiers
-          alternateIdentifiers={record.metadata.identifiers}
+      title: i18next.t("References"),
+      value: record.ui.references ? (
+        <References
+          references={record.ui.references}
           identifierSchemes={identifierSchemes}
-          landingUrls={landingUrls}
         />
       ) : null,
     },
@@ -455,23 +500,36 @@ const getDetailsComponents = ({
       ) : null,
     },
     {
-      title: i18next.t("Funding"),
-      value: record.ui.funding ? <Funding funding={record.ui.funding} /> : null,
+      title: i18next.t("Source code repository"),
+      value: record.custom_fields["code:codeRepository"]
+        ? record.custom_fields["code:codeRepository"]
+        : null,
     },
     {
-      title: i18next.t("Additional dates"),
-      value: record.ui.dates ? (
-        <AdditionalDates dates={record.ui.dates} />
+      title: i18next.t("Resource type"),
+      value: record.ui.resource_type.title_l10n,
+    },
+    {
+      title: i18next.t("Sizes"),
+      value: record.metadata.sizes ? record.metadata.sizes.join(",") : null,
+    },
+    {
+      title: i18next.t("Sponsoring institution"),
+      value: record.custom_fields["kcr:sponsoring_institution"]
+        ? record.custom_fields["kcr:sponsoring_institution"]
+        : null,
+    },
+    {
+      title: i18next.t("URLs"),
+      value: record.metadata.identifiers?.filter(
+        (id) => id.scheme === "url"
+      ) ? (
+        <URLs identifiers={record.metadata.identifiers} />
       ) : null,
     },
     {
-      title: i18next.t("References"),
-      value: record.ui.references ? (
-        <References
-          references={record.ui.references}
-          identifierSchemes={identifierSchemes}
-        />
-      ) : null,
+      title: i18next.t("Version"),
+      value: record.metadata.version ? record.metadata.version : null,
     },
   ];
 
@@ -575,7 +633,8 @@ const PublishingDetails = ({
   showAccordionIcons = false,
   subsections: accordionSections,
 }) => {
-  const [activeIndex, setActiveIndex] = React.useState([0]);
+  const [activeIndex, setActiveIndex] = React.useState([1]);
+  console.log("PublishingDetails activeIndex", activeIndex);
   const customFieldSectionNames = customFieldsUi.map(({ section }) => section);
   const sectionsArray = accordionSections.reduce(
     (acc, { section: sectionTitle, subsections, icon, show }) => {
@@ -626,6 +685,14 @@ const PublishingDetails = ({
     },
     []
   );
+  console.log("PublishingDetails", record);
+  console.log(
+    "PublishingDetails customFieldsUi",
+    customFieldsUi,
+    customFieldSectionNames
+  );
+  console.log("PublishingDetails accordionSections", accordionSections);
+  console.log("PublishingDetails sectionsArray", sectionsArray);
 
   const handleHeaderClick = (index) => {
     const newIndex = activeIndex.includes(index)
@@ -635,16 +702,18 @@ const PublishingDetails = ({
   };
 
   return (
-    <Accordion fluid exclusive={false} defaultActiveIndex={[0]}>
+    <Accordion fluid exclusive={false} defaultActiveIndex={[1]}>
       {sectionsArray.map(
         ({ title, content, show }, idx) =>
           content.content && (
             <>
               <Accordion.Title
+                as="button"
                 active={activeIndex.includes(idx)}
                 index={idx}
                 onClick={() => handleHeaderClick(idx)}
                 className={`${title.content} ${show}`}
+                tabindex={20 + idx}
               >
                 <Icon
                   name={
