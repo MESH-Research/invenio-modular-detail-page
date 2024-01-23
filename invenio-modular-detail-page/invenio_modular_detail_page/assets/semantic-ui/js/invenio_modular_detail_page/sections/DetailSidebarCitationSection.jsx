@@ -13,7 +13,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
-import { Button, Modal } from "semantic-ui-react";
+import { Button, Icon, Modal } from "semantic-ui-react";
 import { Citation } from "../components/Citation";
 import Overridable from "react-overridable";
 
@@ -26,6 +26,12 @@ const CitationModal = (props) => {
     trigger,
   } = props;
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    window.setTimeout(() => {
+      document.querySelector(".citation-dropdown").focus();
+    }, 20);
+  }, [open]);
 
   const handleOnClose = () => {
     setOpen(false);
@@ -40,6 +46,7 @@ const CitationModal = (props) => {
         open={open}
         onOpen={() => setOpen(true)}
         onClose={handleOnClose}
+        className="citation-modal"
       >
         <Modal.Header>Generate a citation for this work</Modal.Header>
         <Modal.Content>
@@ -49,6 +56,10 @@ const CitationModal = (props) => {
             citationStyles={citationStyles}
             citationStyleDefault={citationStyleDefault}
           />
+          <Button icon floated="right" onClick={handleOnClose}>
+            <Icon name="close" />
+            Close
+          </Button>
         </Modal.Content>
       </Modal>
     </Overridable>
@@ -56,7 +67,8 @@ const CitationModal = (props) => {
 };
 
 const CitationSection = (props) => {
-  const { record, citationStyles, citationStyleDefault, show } = props;
+  const { record, citationStyles, citationStyleDefault, sectionIndex, show } =
+    props;
   return (
     <Overridable
       id="InvenioModularDetailPage.CitationSection.layout"
@@ -77,6 +89,7 @@ const CitationSection = (props) => {
               content={i18next.t("Cite this")}
               icon="quote right"
               labelPosition="right"
+              tabIndex={sectionIndex}
             ></Button>
           }
         />

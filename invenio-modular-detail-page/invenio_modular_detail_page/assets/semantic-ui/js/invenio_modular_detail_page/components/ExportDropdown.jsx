@@ -13,6 +13,7 @@ const ExportDropdown = (props) => {
     classNames = "",
     record,
     recordExporters,
+    sectionIndex,
     isPreview,
   } = props;
   const formats = [];
@@ -35,14 +36,19 @@ const ExportDropdown = (props) => {
         text={text}
         icon={icon}
         className={classNames}
+        tabIndex={sectionIndex}
+        as="button"
+        openOnFocus={false}
+        closeOnBlur={false}
       >
         <Dropdown.Menu>
           {formats.map((format, index) => (
             <Dropdown.Item
-              as="a"
+              as="button"
               key={index}
               text={format.name}
               href={format.exportUrl}
+              tabIndex={sectionIndex + index + 1}
             />
           ))}
         </Dropdown.Menu>

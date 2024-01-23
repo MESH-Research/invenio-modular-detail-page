@@ -100,14 +100,10 @@ const DetailRightSidebar = (topLevelProps) => {
           </div>
         ) : null}
         {activeSidebarSections.map(
-          ({
-            section,
-            component_name,
-            props,
-            subsections,
-            show_heading,
-            show,
-          }) => {
+          (
+            { section, component_name, props, subsections, show_heading, show },
+            idx
+          ) => {
             const SidebarSectionComponent = componentsMap[component_name];
             const SidebarSectionProps = filterPropsToPass(topLevelProps, props);
             return (
@@ -118,6 +114,9 @@ const DetailRightSidebar = (topLevelProps) => {
                 key={section}
                 show_heading={show_heading}
                 show={show}
+                sectionIndex={
+                  40 + idx + idx + idx + idx + idx + idx + idx + idx + idx + idx
+                }
               />
             );
           }

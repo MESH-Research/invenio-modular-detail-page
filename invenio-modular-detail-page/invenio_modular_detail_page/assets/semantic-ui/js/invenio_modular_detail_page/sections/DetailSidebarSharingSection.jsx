@@ -111,7 +111,7 @@ function PopupButton({ trigger, message }) {
   );
 }
 
-function SharingIconLink({ name, url, iconName }) {
+function SharingIconLink({ name, tabIndex, url, iconName }) {
   return name === "Mastodon" ? (
     <PopupButton
       trigger={
@@ -122,6 +122,7 @@ function SharingIconLink({ name, url, iconName }) {
           compact
           basic
           size="big"
+          tabIndex={tabIndex}
         >
           <i className="icon mastodon">
             <svg alt="Mastodon" viewBox="0 0 24 24">
@@ -141,6 +142,7 @@ function SharingIconLink({ name, url, iconName }) {
       compact
       basic
       size="big"
+      tabIndex={tabIndex}
     >
       <Icon name={iconName} />
     </Button>
@@ -148,8 +150,9 @@ function SharingIconLink({ name, url, iconName }) {
 }
 
 function SidebarSharingSection(props) {
-  const { record, show } = props;
+  const { record, sectionIndex, show } = props;
   const pageLink = encodeURIComponent(record.links.self_html);
+  console.log("pageLink", pageLink);
 
   const socialMediaLinks = [
     {
@@ -197,12 +200,13 @@ function SidebarSharingSection(props) {
       <div className={`sidebar-container ${show}`} id="social-sharing">
         <div className="ui rdm-sidebar">
           {/* <h2 className="ui medium top attached header mt-0">Share</h2> */}
-          {socialMediaLinks.map(({ name, url }) => (
+          {socialMediaLinks.map(({ name, url }, idx) => (
             <SharingIconLink
               key={name}
               name={name}
               url={url}
               iconName={name === "Email" ? "mail" : name.toLowerCase()}
+              tabIndex={sectionIndex + idx + 1}
             />
           ))}
         </div>

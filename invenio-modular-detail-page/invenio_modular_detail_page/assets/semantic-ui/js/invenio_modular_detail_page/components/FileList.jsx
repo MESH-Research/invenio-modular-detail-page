@@ -254,6 +254,7 @@ const FileListDropdownMenu = ({
   previewFileUrl,
   previewUrlFlag,
   record,
+  sectionIndex,
   setActiveTab,
   text = "Download",
   totalFileSize,
@@ -268,15 +269,21 @@ const FileListDropdownMenu = ({
       fluid={asFluid}
       className={classNames}
       item={asItem}
+      tabIndex={sectionIndex}
+      as="button"
+      openOnFocus={false}
+      closeOnBlur={false}
     >
       <Dropdown.Menu>
         {/* <Dropdown.Header>Choose a file</Dropdown.Header> */}
-        {files.map(({ key, size }) => (
+        {files.map(({ key, size }, idx) => (
           <Dropdown.Item
             href={`${previewFileUrl.replace(
               "/preview/",
               "/files/"
             )}/${key}?download=1${previewUrlFlag}`}
+            as="button"
+            tabIndex={idx + sectionIndex + 1}
           >
             <span className="text">{key}</span>
             <small className="description filesize">
@@ -291,12 +298,16 @@ const FileListDropdownMenu = ({
           icon={"archive"}
           text={i18next.t(`Download all`)}
           description={totalFileSize}
+          as="button"
+          tabIndex={files.length + sectionIndex + 1}
         ></Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item
           text="File details and previews"
           icon={"eye"}
           onClick={() => setActiveTab(fileTabIndex)}
+          as="button"
+          tabIndex={files.length + 1 + sectionIndex + 1}
         ></Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
@@ -377,6 +388,7 @@ const FileListDropdown = ({
   permissions,
   previewFileUrl,
   record,
+  sectionIndex,
   setActiveTab,
   showEmbargoMessage = true,
   totalFileSize,
@@ -393,13 +405,14 @@ const FileListDropdown = ({
             id="record-details-download"
             positive
             fluid
-            as="a"
+            as="button"
             href={`${previewFileUrl.replace("/preview/", "/files/")}/${
               defaultPreviewFile.key
             }?download=1${previewUrlFlag}`}
             content={i18next.t("Download")}
             icon="download"
             labelPosition="right"
+            tabIndex={sectionIndex}
           ></Button>
         ) : (
           <FileListDropdownMenu
@@ -409,6 +422,7 @@ const FileListDropdown = ({
               previewFileUrl,
               previewUrlFlag,
               record,
+              sectionIndex,
               setActiveTab,
               totalFileSize,
             }}

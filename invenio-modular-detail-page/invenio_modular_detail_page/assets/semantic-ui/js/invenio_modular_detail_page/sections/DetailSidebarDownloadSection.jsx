@@ -15,6 +15,7 @@ const SidebarDownloadSection = (props) => {
     previewFileUrl,
     previewTabIndex,
     record,
+    sectionIndex,
     setActiveTab,
     show,
     show_heading,
@@ -49,6 +50,7 @@ const SidebarDownloadSection = (props) => {
           previewFileUrl={previewFileUrl}
           previewTabIndex={previewTabIndex}
           record={record}
+          sectionIndex={sectionIndex}
           setActiveTab={setActiveTab}
           showChecksum={false}
           showHeading={show_heading}

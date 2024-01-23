@@ -12,6 +12,7 @@ const ShareButton = ({
   recid,
   handleShareModalOpen,
   handleParentPopupClose,
+  tabIndex,
 }) => {
   const handleClick = () => {
     handleShareModalOpen();
@@ -31,6 +32,7 @@ const ShareButton = ({
           aria-haspopup="dialog"
           icon
           labelPosition="left"
+          tabIndex={tabIndex}
         >
           <Icon name="share square" />
           {i18next.t("Share")}
@@ -49,7 +51,7 @@ ShareButton.defaultProps = {
   disabled: false,
 };
 
-export const EditButton = ({ recid, onError }) => {
+export const EditButton = ({ recid, onError, tabIndex }) => {
   const [loading, setLoading] = useState(false);
 
   const handleClick = async () => {
@@ -72,6 +74,7 @@ export const EditButton = ({ recid, onError }) => {
       loading={loading}
       icon
       labelPosition="left"
+      tabIndex={tabIndex}
     >
       <Icon name="edit" />
       {i18next.t("Edit")}
@@ -127,6 +130,7 @@ const RecordManagementMenu = ({
   currentUserId,
   handleShareModalOpen,
   handleParentPopupClose,
+  tabIndex,
 }) => {
   const [error, setError] = useState(null);
   const recid = record.id;
@@ -145,7 +149,11 @@ const RecordManagementMenu = ({
       <Grid columns={1} className="record-management" id="recordManagement">
         {permissions.can_edit && !isDraft && (
           <Grid.Column className="pb-5">
-            <EditButton recid={recid} onError={handleError} />
+            <EditButton
+              recid={recid}
+              onError={handleError}
+              tabIndex={tabIndex + 2}
+            />
           </Grid.Column>
         )}
         {isPreviewSubmissionRequest && isDraft && (
@@ -157,6 +165,7 @@ const RecordManagementMenu = ({
               onClick={() => (window.location = `/uploads/${recid}`)}
               icon
               labelPosition="left"
+              tabIndex={tabIndex + 4}
             >
               <Icon name="edit" />
               {i18next.t("Edit")}
@@ -172,6 +181,7 @@ const RecordManagementMenu = ({
                 record={record}
                 onError={handleError}
                 disabled={!permissions.can_new_version}
+                tabIndex={tabIndex + 6}
               />
             </Grid.Column>
 
@@ -182,6 +192,7 @@ const RecordManagementMenu = ({
                   recid={recid}
                   handleShareModalOpen={handleShareModalOpen}
                   handleParentPopupClose={handleParentPopupClose}
+                  tabIndex={tabIndex + 8}
                 />
               )}
             </Grid.Column>
@@ -230,6 +241,7 @@ const RecordManagementPopup = ({
           icon="cog"
           content="Manage this work"
           basic
+          tabIndex={40}
         />
       }
       on="click"
@@ -243,6 +255,7 @@ const RecordManagementPopup = ({
           currentUserId={currentUserId}
           handleShareModalOpen={handleShareModalOpen}
           handleParentPopupClose={handleClose}
+          tabIndex={40}
         />
       }
     />

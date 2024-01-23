@@ -104,6 +104,7 @@ const VersionsContentDropdown = ({
   recordDeserialized,
   recordPublicationDate,
   recordVersions,
+  sectionIndex,
 }) => {
   const [activeVersion, setActiveVersion] = useState(recid);
 
@@ -162,15 +163,24 @@ const VersionsContentDropdown = ({
         </h3>
         {recordVersions.total > 1 && (
           <Dropdown
+            as="button"
             button
             basic
             text="other versions"
             direction="left"
             className="right floated"
+            tabIndex={sectionIndex}
+            closeOnBlur={false}
+            openOnFocus={false}
           >
             <Dropdown.Menu>
-              {versionOptions.map((opt) => (
-                <Dropdown.Item as="a" key={opt.key} href={opt.href}>
+              {versionOptions.map((opt, idx) => (
+                <Dropdown.Item
+                  as="button"
+                  key={opt.key}
+                  href={opt.href}
+                  tabIndex={sectionIndex + idx + 1}
+                >
                   <span className="text">{opt.text}</span>
                   <small className="pubdate description">{opt.pubdate}</small>
                   <small className="doi description">{opt.description}</small>
@@ -178,8 +188,10 @@ const VersionsContentDropdown = ({
               ))}
               <Dropdown.Divider />
               <Dropdown.Item
+                as="button"
                 href={`/search?q=parent.id:${recordDeserialized.parent_id}&sort=version&f=allversions:true`}
                 text={i18next.t(`View all ${recordVersions.total} versions`)}
+                tabIndex={sectionIndex + versionOptions.length + 2}
               />
             </Dropdown.Menu>
           </Dropdown>
@@ -246,7 +258,12 @@ const VersionsContentList = ({
   );
 };
 
-const RecordVersionsList = ({ record, isPreview, widgetStyle = "list" }) => {
+const RecordVersionsList = ({
+  record,
+  isPreview,
+  sectionIndex,
+  widgetStyle = "list",
+}) => {
   const recordDeserialized = deserializeRecord(record);
   const recid = recordDeserialized.id;
   const [loading, setLoading] = useState(true);
@@ -292,6 +309,7 @@ const RecordVersionsList = ({ record, isPreview, widgetStyle = "list" }) => {
       recordPublicationDate={recordDeserialized.publication_date}
       recordVersions={recordVersions}
       currentRecordInResults={currentRecordInResults}
+      sectionIndex={sectionIndex}
     />
   );
 };

@@ -3,7 +3,7 @@ import { ExportDropdown } from "../components/ExportDropdown";
 import Overridable from "react-overridable";
 
 const SidebarExportSection = (props) => {
-  const { isPreview, recordExporters, record, show } = props;
+  const { isPreview, recordExporters, record, sectionIndex, show } = props;
   return (
     <Overridable
       id="InvenioModularDetailPage.SidebarExportSection.layout"
@@ -15,7 +15,9 @@ const SidebarExportSection = (props) => {
         id="export-record"
         className="ui segment bottom attached exports rdm-sidebar"
       > */}
-        <ExportDropdown {...{ record, isPreview, recordExporters }} />
+        <ExportDropdown
+          {...{ record, isPreview, recordExporters, sectionIndex }}
+        />
         {/* </div> */}
       </div>
     </Overridable>

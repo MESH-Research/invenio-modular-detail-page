@@ -31,7 +31,7 @@ const VersionsListSection = (props) => {
 };
 
 const VersionsDropdownSection = (props) => {
-  const { isPreview, record } = props;
+  const { isPreview, record, sectionIndex } = props;
   return (
     <Overridable
       id="InvenioModularDetailPage.VersionsDropdownSection.layout"
@@ -42,6 +42,7 @@ const VersionsDropdownSection = (props) => {
           record={record}
           isPreview={isPreview}
           widgetStyle="dropdown"
+          sectionIndex={sectionIndex}
         />
       </div>
     </Overridable>
