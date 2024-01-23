@@ -429,12 +429,14 @@ const getDetailsComponents = ({
     },
     {
       title: i18next.t("Formats"),
-      value: record.metadata.formats ? record.metadata.formats.join(",") : null,
+      value: record.metadata.formats
+        ? record.metadata.formats.join(", ")
+        : null,
     },
     {
       title: i18next.t("Languages"),
       value: record.ui.languages
-        ? record.ui.languages.map(({ title_l10n }) => title_l10n).join(",")
+        ? record.ui.languages.map(({ title_l10n }) => title_l10n).join(", ")
         : null,
     },
     {
@@ -511,7 +513,7 @@ const getDetailsComponents = ({
     },
     {
       title: i18next.t("Sizes"),
-      value: record.metadata.sizes ? record.metadata.sizes.join(",") : null,
+      value: record.metadata.sizes ? record.metadata.sizes.join(", ") : null,
     },
     {
       title: i18next.t("Sponsoring institution"),
