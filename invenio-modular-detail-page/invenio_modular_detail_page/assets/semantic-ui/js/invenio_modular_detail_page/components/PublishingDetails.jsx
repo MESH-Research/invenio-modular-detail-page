@@ -296,6 +296,25 @@ const AdditionalTitles = ({ addTitles }) => {
   );
 };
 
+const Volumes = ({ volumes }) => {
+  let volString = "";
+  const this_vol = volumes["volume"] ? `Volume ${volumes["volume"]}` : null;
+  const vols = volumes["total_volumes"] ? volumes["total_volumes"] : null;
+  if (this_vol && vols) {
+    volString = `${this_vol} of ${vols}`;
+  } else if (this_vol) {
+    volString = this_vol;
+  } else {
+    volString = `${vols} volumes`;
+  }
+  return (
+    <React.Fragment key="volumes">
+      <dt className="ui tiny header">Volumes</dt>
+      <dd>{volString}</dd>
+    </React.Fragment>
+  );
+};
+
 /** Function to get the list of publication details for display.
  *
  * @param {*} record The record object
@@ -366,10 +385,22 @@ const getDetailsComponents = ({
           : null,
     },
     {
+      title: i18next.t("Chapter label"),
+      value: record.ui.custom_fields["kcr:chapter_label"]
+        ? record.ui.custom_fields["kcr:chapter_label"]
+        : null,
+    },
+    {
       title: i18next.t("Conference"),
       value: record.ui.conference ? (
         <ConferenceDetailSection conference={record.ui.conference} />
       ) : null,
+    },
+    {
+      title: i18next.t("Conference organization"),
+      value: record.ui.custom_fields["kcr:meeting_organization"]
+        ? record.ui.custom_fields["kcr:meeting_organization"]
+        : null,
     },
     {
       title: i18next.t("Contributors"),
@@ -384,6 +415,24 @@ const getDetailsComponents = ({
           landingUrls={landingUrls}
         />
       ),
+    },
+    {
+      title: i18next.t("Course title"),
+      value: record.custom_fields["kcr:course_title"]
+        ? record.custom_fields["kcr:course_title"]
+        : null,
+    },
+    {
+      title: i18next.t("Degree"),
+      value: record.custom_fields["kcr:degree"]
+        ? record.custom_fields["kcr:degree"]
+        : null,
+    },
+    {
+      title: i18next.t("Department"),
+      value: record.custom_fields["kcr:institution_department"]
+        ? record.custom_fields["kcr:institution_department"]
+        : null,
     },
     {
       title: i18next.t("Development status"),
@@ -408,6 +457,12 @@ const getDetailsComponents = ({
         idDoi !== null ? (
           <DOITextLink doiLink={record.links.doi} doi={idDoi} />
         ) : null,
+    },
+    {
+      title: i18next.t("Edition"),
+      value: record.custom_fields["kcr:edition"]
+        ? record.custom_fields["kcr:edition"]
+        : null,
     },
     {
       title: i18next.t("Frameworks or runtimes"),
@@ -512,6 +567,12 @@ const getDetailsComponents = ({
       value: record.ui.resource_type.title_l10n,
     },
     {
+      title: i18next.t("Series"),
+      value: record.custom_fields["kcr:series"]
+        ? record.custom_fields["kcr:series"]
+        : null,
+    },
+    {
       title: i18next.t("Sizes"),
       value: record.metadata.sizes ? record.metadata.sizes.join(", ") : null,
     },
@@ -532,6 +593,12 @@ const getDetailsComponents = ({
     {
       title: i18next.t("Version"),
       value: record.metadata.version ? record.metadata.version : null,
+    },
+    {
+      title: i18next.t("Volumes"),
+      value: record.custom_fields["kcr:volumes"] ? (
+        <Volumes volumes={record.custom_fields["kcr:volumes"]} />
+      ) : null,
     },
   ];
 
@@ -587,7 +654,7 @@ const ConferenceDetailSection = ({ conference }) => {
       <i className="fa fa-external-link"></i> {conference.title}
     </a>
   ) : (
-    `"${conference.title}"`
+    `${conference.title}`
   );
   let conferencePieces = [
     titlePiece,
