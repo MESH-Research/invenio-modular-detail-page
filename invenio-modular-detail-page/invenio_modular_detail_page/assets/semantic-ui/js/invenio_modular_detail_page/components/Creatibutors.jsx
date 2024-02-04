@@ -20,6 +20,7 @@ const IdentifiersList = (ids) => {
 const makeSchemeStrings = (
   iconsGnd,
   iconsHcUsername,
+  iconsIsni,
   iconsOrcid,
   iconsRor,
   landingUrls
@@ -34,6 +35,7 @@ const makeSchemeStrings = (
       iconsHcUsername.replace(".svg", ".jpg"),
       landingUrls.hcommons_username,
     ],
+    isni: ["ISNI", iconsIsni, landingUrls.isni],
   };
   return mystrings;
 };
@@ -44,6 +46,7 @@ const CreatibutorIcon = ({
   iconsOrcid,
   iconsGnd,
   iconsHcUsername,
+  iconsIsni,
   landingUrls,
 }) => {
   let ids = IdentifiersList(creatibutor.person_or_org.identifiers);
@@ -52,6 +55,7 @@ const CreatibutorIcon = ({
     iconsHcUsername,
     iconsOrcid,
     iconsRor,
+    iconsIsni,
     landingUrls
   );
   return (
@@ -95,6 +99,7 @@ const Creatibutor = ({
   iconsOrcid,
   iconsGnd,
   iconsHcUsername,
+  iconsIsni,
   itemIndex,
   listLength,
   landingUrls,
@@ -135,6 +140,7 @@ const Creatibutor = ({
           iconsOrcid={iconsOrcid}
           iconsGnd={iconsGnd}
           iconsHcUsername={iconsHcUsername}
+          iconsIsni={iconsIsni}
           landingUrls={landingUrls}
         />
       )}
@@ -149,6 +155,7 @@ const CreatibutorsShortList = ({
   iconsOrcid,
   iconsGnd,
   iconsHcUsername,
+  iconsIsni,
   landingUrls,
 }) => {
   const show_affiliations = false;
@@ -174,6 +181,7 @@ const CreatibutorsShortList = ({
                 iconsOrcid={iconsOrcid}
                 iconsGnd={iconsGnd}
                 iconsHcUsername={iconsHcUsername}
+                iconsIsni={iconsIsni}
                 landingUrls={landingUrls}
               />
             ))
@@ -190,6 +198,7 @@ const Creatibutors = ({
   iconsOrcid,
   iconsGnd,
   iconsHcUsername,
+  iconsIsni,
   landingUrls,
   section,
   subsections,
@@ -208,6 +217,7 @@ const Creatibutors = ({
   const schemeStrings = makeSchemeStrings(
     iconsGnd,
     iconsHcUsername,
+    iconsIsni,
     iconsOrcid,
     iconsRor,
     landingUrls
@@ -227,6 +237,7 @@ const Creatibutors = ({
                 iconsOrcid={iconsOrcid}
                 iconsGnd={iconsGnd}
                 iconsHcUsername={iconsHcUsername}
+                iconsIsni={iconsIsni}
                 landingUrls={landingUrls}
               />
             </Card.Header>

@@ -2,10 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { DetailContent } from "./sections/DetailContent";
 
-const detailMainDiv = document.getElementById('detail-main-content');
+const detailMainDiv = document.getElementById("detail-main-content");
 
 ReactDOM.render(
-    <DetailContent
+  <DetailContent
     backPage={detailMainDiv.dataset.backPage}
     community={JSON.parse(detailMainDiv.dataset.community)}
     citationStyles={JSON.parse(detailMainDiv.dataset.citationStyles)}
@@ -17,13 +17,20 @@ ReactDOM.render(
     files={JSON.parse(detailMainDiv.dataset.files)}
     isDraft={JSON.parse(detailMainDiv.dataset.isDraft)}
     isPreview={JSON.parse(detailMainDiv.dataset.isPreview)}
-    hasPreviewableFiles={JSON.parse(detailMainDiv.dataset.hasPreviewableFiles) === 'true' ? true : false}
+    hasPreviewableFiles={
+      JSON.parse(detailMainDiv.dataset.hasPreviewableFiles) === "true"
+        ? true
+        : false
+    }
     iconsRor={detailMainDiv.dataset.iconsRor}
     iconsOrcid={detailMainDiv.dataset.iconsOrcid}
     iconsGnd={detailMainDiv.dataset.iconsGnd}
     iconsHcUsername={detailMainDiv.dataset.iconsHcUsername}
+    iconsIsni={detailMainDiv.dataset.iconsIsni}
     identifierSchemes={JSON.parse(detailMainDiv.dataset.identifierSchemes)}
-    isPreviewSubmissionRequest={JSON.parse(detailMainDiv.dataset.isPreviewSubmissionRequest)}
+    isPreviewSubmissionRequest={JSON.parse(
+      detailMainDiv.dataset.isPreviewSubmissionRequest
+    )}
     landingUrls={JSON.parse(detailMainDiv.dataset.landingUrls)}
     localizedStats={JSON.parse(detailMainDiv.dataset.localizedStats)}
     mainSections={JSON.parse(detailMainDiv.dataset.mainSections)}
@@ -33,9 +40,13 @@ ReactDOM.render(
     record={JSON.parse(detailMainDiv.dataset.record)}
     recordExporters={JSON.parse(detailMainDiv.dataset.recordExporters)}
     showDecimalSizes={JSON.parse(detailMainDiv.dataset.showDecimalSizes)}
-    showRecordManagementMenu={JSON.parse(detailMainDiv.dataset.showRecordManagementMenu)}
+    showRecordManagementMenu={JSON.parse(
+      detailMainDiv.dataset.showRecordManagementMenu
+    )}
     sidebarSectionsLeft={JSON.parse(detailMainDiv.dataset.sidebarSectionsLeft)}
-    sidebarSectionsRight={JSON.parse(detailMainDiv.dataset.sidebarSectionsRight)}
+    sidebarSectionsRight={JSON.parse(
+      detailMainDiv.dataset.sidebarSectionsRight
+    )}
     totalFileSize={detailMainDiv.dataset.totalFileSize}
     // badge_png
     // badge_svg
@@ -53,6 +64,6 @@ ReactDOM.render(
     // search_app_communities_members_config
     // search_app_communities_records_config
     // search_app_communities_requests_config
-    />,
-    detailMainDiv
+  />,
+  detailMainDiv
 );

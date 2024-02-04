@@ -113,6 +113,7 @@ const DetailContent = (rawProps) => {
     title: record.metadata.title,
   };
   const topLevelProps = { ...rawProps, ...extraProps };
+  console.log("DetailContent", topLevelProps);
 
   return (
     <Overridable
