@@ -1,28 +1,28 @@
 import React from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
 import Overridable from "react-overridable";
-import { ContentWarning } from "../components/ContentWarning";
+import { AIUsageAlert } from "../components/AIUsageAlert";
 
-const SidebarContentWarningSection = (props) => {
+const SidebarAISection = (props) => {
   const { record, section } = props;
   return (
     <Overridable
-      id="InvenioModularDetailPage.SidebarContentWarningSection.layout"
+      id="InvenioModularDetailPage.SidebarAISection.layout"
       {...props}
     >
-      {record.custom_fields["kcr:content_warning"] && (
-        <div id="content-warning-container" className="sidebar-container">
+      {record.custom_fields["kcr:ai_usage"] && (
+        <div id="ai-alert-container" className="sidebar-container">
           <h2
-            id="content-warning-header"
+            id="ai-alert-header"
             className="ui medium top attached header mt-0"
           >
             {section}
           </h2>
           <div
-            id="content-warning-content"
+            id="ai-alert-content"
             className="ui segment bottom attached rdm-sidebar"
           >
-            <ContentWarning record={record} />
+            <AIUsageAlert record={record} />
           </div>
         </div>
       )}
@@ -30,4 +30,4 @@ const SidebarContentWarningSection = (props) => {
   );
 };
 
-export { SidebarContentWarningSection };
+export { SidebarAISection };

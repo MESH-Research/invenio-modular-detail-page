@@ -1,3 +1,4 @@
+import { AIUsageAlert } from "./components/AIUsageAlert";
 import { Analytics } from "./components/Analytics";
 import { Citation } from "./components/Citation";
 import { CitationSection } from "./sections/DetailSidebarCitationSection";
@@ -12,6 +13,7 @@ import { FilePreviewWrapper } from "./sections/FilePreviewWrapper";
 import { MainSubjectsSection } from "./sections/DetailMainSubjectsSection";
 import { PublishingDetails } from "./components/PublishingDetails";
 import { RecordTitle } from "./components/RecordTitle";
+import { SidebarAISection } from "./sections/DetailSidebarAISection";
 import { SidebarContentWarningSection } from "./sections/DetailSidebarContentWarningSection";
 import { SidebarDetailsSection } from "./sections/DetailSidebarDetailsSection";
 import { SidebarDownloadSection } from "./sections/DetailSidebarDownloadSection";
@@ -24,6 +26,7 @@ import { VersionsDropdownSection, VersionsListSection } from "./sections/DetailS
 
 const componentsMap = {
     "Analytics": Analytics,
+    "AIUsageAlert": AIUsageAlert,
     "Citation": Citation,
     "CitationSection": CitationSection,
     "CommunitiesBanner": CommunitiesBanner,
@@ -38,6 +41,7 @@ const componentsMap = {
     "MainSubjectsSection": MainSubjectsSection,
     "PublishingDetails": PublishingDetails,
     "RecordTitle": RecordTitle,
+    "SidebarAISection": SidebarAISection,
     "SidebarContentWarningSection": SidebarContentWarningSection,
     "SidebarDetailsSection": SidebarDetailsSection,
     "SidebarDownloadSection": SidebarDownloadSection,
