@@ -21,6 +21,7 @@ import {
   Popup,
 } from "semantic-ui-react";
 import Overridable from "react-overridable";
+import { i18next } from "@translations/invenio_app_rdm/i18next";
 
 function PopupInput({ message }) {
   const inputRef = useRef(null);
@@ -70,7 +71,7 @@ function PopupInput({ message }) {
   return (
     <Form>
       <Form.Field>
-        <label>Your Mastadon domain</label>
+        <label>Your Mastodon domain</label>
         <Input
           ref={inputRef}
           onChange={handleChangeDomain}
@@ -112,47 +113,66 @@ function PopupButton({ trigger, message }) {
 }
 
 function SharingIconLink({ name, tabIndex, url, iconName }) {
+  const [mastodonHover, setMastodonHover] = useState(false);
+  const mastodonRef = useRef();
+
   return name === "Mastodon" ? (
-    <PopupButton
-      trigger={
-        <Button
-          target="_blank"
-          rel="noopener noreferrer"
-          icon
-          compact
-          basic
-          size="big"
-          tabIndex={tabIndex}
-        >
-          <i className="icon mastodon">
-            <svg alt="Mastodon" viewBox="0 0 24 24">
-              <use xlinkHref="/static/images/mastodon.svg#mastodon" />
-            </svg>
-          </i>
-        </Button>
-      }
-      message={url}
-    />
+    <>
+      <Popup
+        content={name}
+        position="top center"
+        on={['hover', 'focus']}
+        open={mastodonHover}
+        trigger={<span className="mastodon-popup" />}
+      />
+      <PopupButton
+        ref={mastodonRef}
+        trigger={
+          <Button
+            target="_blank"
+            rel="noopener noreferrer"
+            icon
+            compact
+            basic
+            size="big"
+            tabIndex={tabIndex}
+            onMouseEnter={() => setMastodonHover(true)}
+            onMouseLeave={() => setMastodonHover(false)}
+          >
+            <i className="icon mastodon">
+              <svg alt="Mastodon" viewBox="0 0 24 24">
+                <use xlinkHref="/static/images/mastodon.svg#mastodon" />
+              </svg>
+            </i>
+          </Button>
+        }
+        message={url}
+      />
+    </>
   ) : (
-    <Button
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      icon
-      compact
-      basic
-      size="big"
-      tabIndex={tabIndex}
-    >
-      <Icon name={iconName} />
-    </Button>
+    <Popup content={name} position="top center"
+     trigger={
+      <Button
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        on={['hover', 'click', 'focus']}
+        icon
+        compact
+        basic
+        size="big"
+        tabIndex={tabIndex}
+      >
+        <Icon name={iconName} />
+      </Button>
+     }
+    />
   );
 }
 
 function SidebarSharingSection(props) {
-  const { record, sectionIndex, show } = props;
+  const { record, sectionIndex, show, showHeading = true } = props;
   const pageLink = encodeURIComponent(record.links.self_html);
-  console.log("pageLink", pageLink);
 
   const socialMediaLinks = [
     {
@@ -198,6 +218,11 @@ function SidebarSharingSection(props) {
   return (
     <Overridable id="InvenioModularDetailPage.SidebarSharingSection.layout">
       <div className={`sidebar-container ${show}`} id="social-sharing">
+        {showHeading === true && (
+          <h2 className="ui medium top attached header mt-0">
+            {i18next.t("Share this work")}
+          </h2>
+        )}
         <div className="ui rdm-sidebar">
           {/* <h2 className="ui medium top attached header mt-0">Share</h2> */}
           {socialMediaLinks.map(({ name, url }, idx) => (

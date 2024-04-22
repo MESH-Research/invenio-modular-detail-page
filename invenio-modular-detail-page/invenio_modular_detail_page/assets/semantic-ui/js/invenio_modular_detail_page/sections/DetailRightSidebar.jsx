@@ -63,7 +63,7 @@ const DetailRightSidebar = (topLevelProps) => {
     >
       <aside className="sixteen wide tablet five wide computer column right-sidebar">
         <DraftBackButton
-          backPage={topLevelProps.backPage}
+          backPage={`${topLevelProps.backPage}?depositFormPage=page-7`}
           isPreview={topLevelProps.isPreview}
           isDraft={topLevelProps.isDraft}
           canManage={topLevelProps.canManage}

@@ -122,8 +122,9 @@ const DetailContent = (rawProps) => {
     >
       <div className="two column row top-padded">
         <article className="sixteen wide tablet eleven wide computer column main-record-content">
+          {/* Mobile version of these components. Computer version is in sidebar */}
           <DraftBackButton
-            backPage={topLevelProps.backPage}
+            backPage={`${topLevelProps.backPage}?depositFormPage=page-7`}
             isPreview={topLevelProps.isPreview}
             isDraft={topLevelProps.isDraft}
             canManage={topLevelProps.canManage}
