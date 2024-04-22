@@ -176,7 +176,7 @@ const VersionsContentDropdown = ({
             <Dropdown.Menu>
               {versionOptions.map((opt, idx) => (
                 <Dropdown.Item
-                  as="button"
+                  as="a"
                   key={opt.key}
                   href={opt.href}
                   tabIndex={sectionIndex + idx + 1}
@@ -188,7 +188,7 @@ const VersionsContentDropdown = ({
               ))}
               <Dropdown.Divider />
               <Dropdown.Item
-                as="button"
+                as="a"
                 href={`/search?q=parent.id:${recordDeserialized.parent_id}&sort=version&f=allversions:true`}
                 text={i18next.t(`View all ${recordVersions.total} versions`)}
                 tabIndex={sectionIndex + versionOptions.length + 2}

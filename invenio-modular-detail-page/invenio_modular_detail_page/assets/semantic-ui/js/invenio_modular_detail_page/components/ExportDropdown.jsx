@@ -44,7 +44,7 @@ const ExportDropdown = (props) => {
         <Dropdown.Menu>
           {formats.map((format, index) => (
             <Dropdown.Item
-              as="button"
+              as="a"
               key={index}
               text={format.name}
               href={format.exportUrl}
