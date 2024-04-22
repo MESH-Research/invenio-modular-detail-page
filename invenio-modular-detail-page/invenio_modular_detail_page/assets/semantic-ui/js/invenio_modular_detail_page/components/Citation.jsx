@@ -146,6 +146,7 @@ const Citation = ({
               (event, data) => getCitation(record, data.value),
               500
             )}
+            upward={false}
           />
         </Grid.Column>
         <Grid.Column computer={4} className="" textAlign="right">

@@ -29,7 +29,7 @@ const CitationModal = (props) => {
 
   useEffect(() => {
     window.setTimeout(() => {
-      document.querySelector(".citation-dropdown").focus();
+      document.querySelector(".citation-dropdown")?.focus();
     }, 20);
   }, [open]);
 

@@ -11,7 +11,7 @@ const AIUsageAlert = ({ record, section }) => {
   const hasLongText = AIUsage?.ai_description.length > 60;
   const shortText =
     !hasLongText
-      ? AIUsage.ai_description
+      ? AIUsage?.ai_description
       : _truncate(AIUsage?.ai_description, {
           length: 60,
           separator: " ",
