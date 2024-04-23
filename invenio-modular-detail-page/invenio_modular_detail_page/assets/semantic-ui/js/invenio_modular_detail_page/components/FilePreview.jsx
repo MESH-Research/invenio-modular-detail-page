@@ -63,7 +63,7 @@ const FilePreview = ({
                 className={`preview-iframe ${
                   loading ? "hidden" : ""
                 } ${fileExtension}`}
-                id={record.id}
+                id={"preview-iframe"}
                 ref={iFrameRef}
                 name={record.id}
                 src={`${previewFileUrl}${fileToShow.key}?${previewUrlFlag}`}
