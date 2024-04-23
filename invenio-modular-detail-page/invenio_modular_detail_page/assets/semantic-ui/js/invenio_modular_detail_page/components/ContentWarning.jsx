@@ -7,7 +7,7 @@ const ContentWarning = ({ record, section }) => {
   const [visible, setVisible] = React.useState(true);
   const [expanded, setExpanded] = React.useState(false);
   const contentWarning = record.custom_fields["kcr:content_warning"];
-  const hasLongText = contentWarning.length > 60;
+  const hasLongText = contentWarning?.length > 60;
   const shortText =
     ( !hasLongText || !contentWarning )
       ? contentWarning
