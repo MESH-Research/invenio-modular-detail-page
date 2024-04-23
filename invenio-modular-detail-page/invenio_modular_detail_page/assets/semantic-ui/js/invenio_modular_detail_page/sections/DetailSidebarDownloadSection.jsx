@@ -44,6 +44,7 @@ const SidebarDownloadSection = (props) => {
           fileCountToShow={3}
           fileTabIndex={fileTabIndex}
           fullWordButtons={false}
+          hasFiles={hasFiles}
           withPreview={false}
           isPreview={isPreview}
           permissions={permissions}

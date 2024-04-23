@@ -259,6 +259,7 @@ const FileListDropdownMenu = ({
   text = "Download",
   totalFileSize,
 }) => {
+  console.log(files);
   return (
     <Dropdown
       id={id}
@@ -270,7 +271,6 @@ const FileListDropdownMenu = ({
       className={classNames}
       item={asItem}
       tabIndex={sectionIndex}
-      as="button"
       openOnFocus={false}
       closeOnBlur={false}
     >
@@ -282,7 +282,7 @@ const FileListDropdownMenu = ({
               "/preview/",
               "/files/"
             )}/${key}?download=1${previewUrlFlag}`}
-            as="button"
+            as="a"
             tabIndex={idx + sectionIndex + 1}
           >
             <span className="text">{key}</span>
@@ -298,7 +298,7 @@ const FileListDropdownMenu = ({
           icon={"archive"}
           text={i18next.t(`Download all`)}
           description={totalFileSize}
-          as="button"
+          as="a"
           tabIndex={files.length + sectionIndex + 1}
         ></Dropdown.Item>
         <Dropdown.Divider />
@@ -306,7 +306,7 @@ const FileListDropdownMenu = ({
           text="File details and previews"
           icon={"eye"}
           onClick={() => setActiveTab(fileTabIndex)}
-          as="button"
+          as="a"
           tabIndex={files.length + 1 + sectionIndex + 1}
         ></Dropdown.Item>
       </Dropdown.Menu>
@@ -320,6 +320,7 @@ const FileListItemDropdown = ({
   files,
   fileTabIndex,
   handleMobileMenuClick,
+  hasFiles,
   id,
   isPreview,
   permissions,
@@ -330,11 +331,14 @@ const FileListItemDropdown = ({
   totalFileSize,
 }) => {
   const previewUrlFlag = isPreview ? "&preview=1" : "";
+  console.log(files.enabled);
+  console.log(files.length);
+  console.log(permissions.can_read_files);
   return (
     <>
       {/* access is "restricted" also if record is metadata-only */}
       {!!permissions.can_read_files &&
-        files.enabled !== false &&
+        hasFiles !== false &&
         (files?.length < 2 ? (
           <Menu.Item
             id={id}
@@ -384,6 +388,7 @@ const FileListDropdown = ({
   fileCountToShow,
   files,
   fileTabIndex,
+  hasFiles,
   isPreview,
   permissions,
   previewFileUrl,
@@ -400,6 +405,7 @@ const FileListDropdown = ({
       {(record.access.files === "restricted" || files.enabled === false) &&
         showEmbargoMessage && <EmbargoMessage record={record} />}
       {!!permissions.can_read_files &&
+       !!hasFiles &&
         (files?.length < 2 ? (
           <Button
             id="record-details-download"
@@ -419,6 +425,7 @@ const FileListDropdown = ({
             {...{
               files,
               fileTabIndex,
+              hasFiles,
               previewFileUrl,
               previewUrlFlag,
               record,

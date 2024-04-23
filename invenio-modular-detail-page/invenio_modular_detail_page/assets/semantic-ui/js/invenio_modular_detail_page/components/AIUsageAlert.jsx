@@ -1,8 +1,7 @@
 import React from "react";
 import Overridable from "react-overridable";
-import { Button } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
-import { has } from "lodash";
 
 const AIUsageAlert = ({ record, section }) => {
   const [visible, setVisible] = React.useState(true);
@@ -28,7 +27,7 @@ const AIUsageAlert = ({ record, section }) => {
           onClick={() => setVisible(false)}
         ></i>
         <div class="content">
-          <div class="header">{section}</div>
+          <div class="header"><Icon name="microchip" /> {section}</div>
           <p>{descriptionText}</p>
           {hasLongText && (
             <div class="buttons row">

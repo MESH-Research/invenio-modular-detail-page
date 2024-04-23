@@ -40,6 +40,7 @@ const ExportDropdown = (props) => {
         as="button"
         openOnFocus={false}
         closeOnBlur={false}
+        scrolling
       >
         <Dropdown.Menu>
           {formats.map((format, index) => (
