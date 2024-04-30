@@ -795,7 +795,7 @@ const PublishingDetails = ({
               </Accordion.Title>
               <Accordion.Content
                 active={activeIndex.includes(idx)}
-                className={`${title.content} ${show}`}
+                className={`ui ${title.content} ${show}`}
               >
                 <dl className="details-list mt-0">
                   {content.content.map((component) => component)}

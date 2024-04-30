@@ -37,7 +37,7 @@ const SidebarDetailsSection = (props) => {
           <div className="badges-row">
             {record.ui.resource_type && (
               <span
-                className="ui label horizontal small neutral mb-5"
+                className="ui label horizontal small primary basic mb-5"
                 title={i18next.t("Resource type")}
               >
                 {record.ui.resource_type.title_l10n}
