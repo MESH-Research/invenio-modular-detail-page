@@ -246,7 +246,7 @@ const FileListDropdownMenu = ({
   asLabeled = true,
   asFluid = true,
   asItem = false,
-  classNames = "icon positive right labeled",
+  classNames = "icon primary right labeled",
   files,
   fileTabIndex,
   icon = "download",
@@ -409,7 +409,7 @@ const FileListDropdown = ({
         (files?.length < 2 ? (
           <Button
             id="record-details-download"
-            positive
+            primary
             fluid
             as="button"
             href={`${previewFileUrl.replace("/preview/", "/files/")}/${

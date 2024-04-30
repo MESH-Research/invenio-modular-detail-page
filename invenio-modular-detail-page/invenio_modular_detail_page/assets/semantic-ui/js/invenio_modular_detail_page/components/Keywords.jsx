@@ -7,7 +7,7 @@ function Keywords({ passedClassNames, keywords }) {
       <li className="item">
         <a
           href={`/search?q=custom_fields['kcr:user_defined_tags']:"${keyword}"`}
-          className="subject"
+          className="subject ui label basic secondary"
           title={i18next.t("Search results for ") + keyword}
         >
           {keyword}

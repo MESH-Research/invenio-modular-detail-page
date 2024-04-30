@@ -15,7 +15,7 @@ function SubjectHeadings({
           <li className="item">
             <a
               href={`/search?q=metadata.subjects.id:"${id}"`}
-              className="subject"
+              className="subject ui label basic secondary"
               title={i18next.t("Search results for ") + subject}
             >
               {subject}

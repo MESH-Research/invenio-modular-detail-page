@@ -223,7 +223,7 @@ function SidebarSharingSection(props) {
             {i18next.t("Share this work")}
           </h2>
         )}
-        <div className="ui rdm-sidebar">
+        <div className="ui segment bottom attached rdm-sidebar">
           {/* <h2 className="ui medium top attached header mt-0">Share</h2> */}
           {socialMediaLinks.map(({ name, url }, idx) => (
             <SharingIconLink
