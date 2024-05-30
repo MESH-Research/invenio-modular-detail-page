@@ -25,7 +25,7 @@ ReactDOM.render(
     iconsRor={detailMainDiv.dataset.iconsRor}
     iconsOrcid={detailMainDiv.dataset.iconsOrcid}
     iconsGnd={detailMainDiv.dataset.iconsGnd}
-    iconsHcUsername={detailMainDiv.dataset.iconsHcUsername}
+    iconsKcUsername={detailMainDiv.dataset.iconsKcUsername}
     iconsIsni={detailMainDiv.dataset.iconsIsni}
     identifierSchemes={JSON.parse(detailMainDiv.dataset.identifierSchemes)}
     isPreviewSubmissionRequest={JSON.parse(

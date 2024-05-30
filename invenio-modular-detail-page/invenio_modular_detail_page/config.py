@@ -108,7 +108,11 @@ INVENIO_MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_LEFT = []
 # available subsections defined in DetailMainTab.jsx:
 # "descriptions", "preview"
 INVENIO_MODULAR_DETAIL_PAGE_MAIN_SECTIONS = [
-    {"section": _("Title"), "component_name": "RecordTitle", "props": ["title"]},
+    {
+        "section": _("Title"),
+        "component_name": "RecordTitle",
+        "props": ["title"],
+    },
     {
         "section": _("Contributors"),
         "component_name": "CreatibutorsShortList",
@@ -118,7 +122,7 @@ INVENIO_MODULAR_DETAIL_PAGE_MAIN_SECTIONS = [
             "iconsRor",
             "iconsOrcid",
             "iconsGnd",
-            "iconsHcUsername",
+            "iconsKcUsername",
             "landingUrls",
         ],
     },
@@ -173,7 +177,7 @@ INVENIO_MODULAR_DETAIL_PAGE_MAIN_SECTIONS = [
                             "customFieldsUi",
                             "doiBadgeUrl",
                             "hasFiles",
-                            "iconsHcUsername",
+                            "iconsKcUsername",
                             "iconsGnd",
                             "iconsOrcid",
                             "iconsRor",
@@ -277,7 +281,7 @@ INVENIO_MODULAR_DETAIL_PAGE_MAIN_SECTIONS = [
                             "iconsRor",
                             "iconsOrcid",
                             "iconsGnd",
-                            "iconsHcUsername",
+                            "iconsKcUsername",
                             "landingUrls",
                         ],
                     }

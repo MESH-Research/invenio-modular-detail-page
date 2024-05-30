@@ -270,7 +270,7 @@ This section provides a dropdown list of export formats. When a user selects an 
 - iconsRor (string): url for the ROR icon
 - iconsOrcid (string): url for the ORDIC icon
 - iconsGnd (string): url for the GND icon
-- iconsHcUsername (string): url for the Humanities Commons icon
+- iconsKcUsername (string): url for the Knowledge Commons icon
 - identifierSchemes
 - isPreviewSubmissionRequest (boolean)
 - landingUrls

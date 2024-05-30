@@ -45,7 +45,7 @@ import { addPropsFromChildren, filterPropsToPass } from "../util";
 // - hasPreviewableFiles: whether the record has previewable files
 // - iconsRor: path to the ROR icon
 // - iconsGnd: path to the GND icon
-// - iconsHcUsername: path to the Humanities Commons username icon
+// - iconsKcUsername: path to the Knowledge Commons username icon
 // - iconsOrcid: path to the ORCID icon
 // - isDraft: whether the record is in draft mode
 // - isPreview: whether the record is in preview mode

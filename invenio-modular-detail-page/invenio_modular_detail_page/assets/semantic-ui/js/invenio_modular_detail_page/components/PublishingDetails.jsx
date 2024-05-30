@@ -329,7 +329,7 @@ const getDetailsComponents = ({
   detailOrder,
   doiBadgeUrl,
   hasFiles,
-  iconsHcUsername,
+  iconsKcUsername,
   iconsGnd,
   iconsOrcid,
   iconsRor,
@@ -410,7 +410,7 @@ const getDetailsComponents = ({
           contributors={record.ui.contributors}
           iconsRor={iconsRor}
           iconsOrcid={iconsOrcid}
-          iconsHcUsername={iconsHcUsername}
+          iconsKcUsername={iconsKcUsername}
           iconsGnd={iconsGnd}
           landingUrls={landingUrls}
         />
@@ -688,7 +688,7 @@ const PublishingDetails = ({
   customFieldsUi,
   doiBadgeUrl,
   hasFiles,
-  iconsHcUsername,
+  iconsKcUsername,
   iconsGnd,
   iconsOrcid,
   iconsRor,
@@ -736,7 +736,7 @@ const PublishingDetails = ({
               detailOrder: detailOrder,
               doiBadgeUrl: doiBadgeUrl,
               hasFiles: hasFiles,
-              iconsHcUsername: iconsHcUsername,
+              iconsKcUsername: iconsKcUsername,
               iconsGnd: iconsGnd,
               iconsOrcid: iconsOrcid,
               iconsRor: iconsRor,

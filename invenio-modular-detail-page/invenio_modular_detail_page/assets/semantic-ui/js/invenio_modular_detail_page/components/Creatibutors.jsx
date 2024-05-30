@@ -19,7 +19,7 @@ const IdentifiersList = (ids) => {
 
 const makeSchemeStrings = (
   iconsGnd,
-  iconsHcUsername,
+  iconsKcUsername,
   iconsIsni,
   iconsOrcid,
   iconsRor,
@@ -29,11 +29,10 @@ const makeSchemeStrings = (
     orcid: ["ORCID", iconsOrcid, landingUrls.orcid],
     ror: ["ROR", iconsRor, landingUrls.ror],
     gnd: ["GND", iconsGnd, landingUrls.gnd],
-    hc_username: [
-      "Humanities Commons",
-      // FIXME: temporary until we get a proper icon
-      iconsHcUsername.replace(".svg", ".jpg"),
-      landingUrls.hcommons_username,
+    kc_username: [
+      "Knowledge Commons",
+      iconsKcUsername,
+      landingUrls.kcommons_username,
     ],
     isni: ["ISNI", iconsIsni, landingUrls.isni],
   };
@@ -45,14 +44,14 @@ const CreatibutorIcon = ({
   iconsRor,
   iconsOrcid,
   iconsGnd,
-  iconsHcUsername,
+  iconsKcUsername,
   iconsIsni,
   landingUrls,
 }) => {
   let ids = IdentifiersList(creatibutor.person_or_org.identifiers);
   const schemeStrings = makeSchemeStrings(
     iconsGnd,
-    iconsHcUsername,
+    iconsKcUsername,
     iconsOrcid,
     iconsRor,
     iconsIsni,
@@ -64,14 +63,14 @@ const CreatibutorIcon = ({
         ? ids.map(({ scheme, identifier }) => (
             <a
               href={`${schemeStrings[scheme][2]}${identifier}`}
-              className="no-text-decoration"
+              className={`no-text-decoration ${scheme}-icon-link`}
               key={`${scheme}-${identifier}`}
               aria-label={`${creatibutor.person_or_org.name}'s ${
                 schemeStrings[scheme][0]
               } ${i18next.t("profile")}`}
             >
               <img
-                className="ml-5 inline-id-icon"
+                className={`ml-5 inline-id-icon ${scheme}`}
                 src={schemeStrings[scheme][1]}
                 alt={`${schemeStrings[scheme][0]} icon`}
                 title={`${creatibutor.person_or_org.name}'s ${
@@ -98,7 +97,7 @@ const Creatibutor = ({
   iconsRor,
   iconsOrcid,
   iconsGnd,
-  iconsHcUsername,
+  iconsKcUsername,
   iconsIsni,
   itemIndex,
   listLength,
@@ -139,7 +138,7 @@ const Creatibutor = ({
           iconsRor={iconsRor}
           iconsOrcid={iconsOrcid}
           iconsGnd={iconsGnd}
-          iconsHcUsername={iconsHcUsername}
+          iconsKcUsername={iconsKcUsername}
           iconsIsni={iconsIsni}
           landingUrls={landingUrls}
         />
@@ -154,7 +153,7 @@ const CreatibutorsShortList = ({
   iconsRor,
   iconsOrcid,
   iconsGnd,
-  iconsHcUsername,
+  iconsKcUsername,
   iconsIsni,
   landingUrls,
 }) => {
@@ -180,7 +179,7 @@ const CreatibutorsShortList = ({
                 iconsRor={iconsRor}
                 iconsOrcid={iconsOrcid}
                 iconsGnd={iconsGnd}
-                iconsHcUsername={iconsHcUsername}
+                iconsKcUsername={iconsKcUsername}
                 iconsIsni={iconsIsni}
                 landingUrls={landingUrls}
               />
@@ -197,7 +196,7 @@ const Creatibutors = ({
   iconsRor,
   iconsOrcid,
   iconsGnd,
-  iconsHcUsername,
+  iconsKcUsername,
   iconsIsni,
   landingUrls,
   section,
@@ -216,7 +215,7 @@ const Creatibutors = ({
   }, {});
   const schemeStrings = makeSchemeStrings(
     iconsGnd,
-    iconsHcUsername,
+    iconsKcUsername,
     iconsIsni,
     iconsOrcid,
     iconsRor,
@@ -236,7 +235,7 @@ const Creatibutors = ({
                 iconsRor={iconsRor}
                 iconsOrcid={iconsOrcid}
                 iconsGnd={iconsGnd}
-                iconsHcUsername={iconsHcUsername}
+                iconsKcUsername={iconsKcUsername}
                 iconsIsni={iconsIsni}
                 landingUrls={landingUrls}
               />
@@ -269,7 +268,7 @@ const Creatibutors = ({
                   } ${i18next.t("profile")}`}
                 />
                 <small>
-                  {scheme === "hc_username" ? "Humanities Commons" : scheme}{" "}
+                  {scheme === "kc_username" ? "Knowledge Commons" : scheme}{" "}
                   {i18next.t("profile")}
                 </small>
               </a>

@@ -19,7 +19,7 @@ import { filterPropsToPass } from "../util";
 // hasPreviewableFiles,
 // iconsRor,
 // iconsGnd,
-// iconsHcUsername,
+// iconsKcUsername,
 // iconsOrcid,
 // isDraft,
 // isPreview,
