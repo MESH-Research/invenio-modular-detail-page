@@ -29,6 +29,11 @@ const makeSchemeStrings = (
     orcid: ["ORCID", iconsOrcid, landingUrls.orcid],
     ror: ["ROR", iconsRor, landingUrls.ror],
     gnd: ["GND", iconsGnd, landingUrls.gnd],
+    hc_username: [
+      "Knowledge Commons",
+      iconsKcUsername,
+      landingUrls.kcommons_username,
+    ],
     kc_username: [
       "Knowledge Commons",
       iconsKcUsername,
@@ -268,7 +273,7 @@ const Creatibutors = ({
                   } ${i18next.t("profile")}`}
                 />
                 <small>
-                  {scheme === "kc_username" ? "Knowledge Commons" : scheme}{" "}
+                  {["kc_username", "hc_username"].includes(scheme) ? "Knowledge Commons" : scheme}{" "}
                   {i18next.t("profile")}
                 </small>
               </a>
