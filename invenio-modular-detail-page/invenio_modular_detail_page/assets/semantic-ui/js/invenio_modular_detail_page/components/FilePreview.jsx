@@ -48,7 +48,7 @@ const FilePreview = ({
                   <div className="placeholder-header-bar" />
                   <Placeholder fluid>
                     {[...Array(8).keys()].map((e) => (
-                      <Placeholder.Paragraph>
+                      <Placeholder.Paragraph key={e}>
                         {[...Array(8).keys()].map((e) => (
                           <Placeholder.Line key={e} />
                         ))}

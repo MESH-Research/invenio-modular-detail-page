@@ -338,7 +338,7 @@ const FileListItemDropdown = ({
     <>
       {/* access is "restricted" also if record is metadata-only */}
       {!!permissions.can_read_files &&
-        hasFiles !== false &&
+        hasFiles !== false && files?.length !== undefined &&
         (files?.length < 2 ? (
           <Menu.Item
             id={id}
