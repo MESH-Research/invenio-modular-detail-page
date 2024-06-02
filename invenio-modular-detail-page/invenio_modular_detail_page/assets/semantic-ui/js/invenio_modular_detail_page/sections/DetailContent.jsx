@@ -91,6 +91,9 @@ const DetailContent = (rawProps) => {
     additionalDescriptions: record.ui.additional_descriptions
       ? record.ui.additional_descriptions
       : null,
+    additionalCommunities: record.parent.communities.ids?.length > 1 ? (
+      record.parent.communities.entries.filter(e => e.id != record.parent.communities.default))
+      : null,
     creators: record.ui.creators,
     contributors: record.ui.contributors,
     canManage: canManageFlag,
@@ -142,6 +145,7 @@ const DetailContent = (rawProps) => {
           />
           <CommunitiesBanner
             community={topLevelProps.community}
+            additionalCommunities={topLevelProps.additionalCommunities}
             isPreviewSubmissionRequest={
               topLevelProps.isPreviewSubmissionRequest
             }
