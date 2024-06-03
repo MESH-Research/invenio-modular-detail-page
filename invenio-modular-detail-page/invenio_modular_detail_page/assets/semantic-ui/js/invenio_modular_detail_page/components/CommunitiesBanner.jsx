@@ -9,7 +9,7 @@ const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissi
     ? community.access.visibility == "restricted"
     : false;
 
-  const communityLogoUrl = community.links.logo;
+  const communityLogoUrl = community.links ? community.links.logo : `/api/communities/${community.id}/logo`;
   const communityTitle = community.metadata.title;
   console.log("additionalCommunities", additionalCommunities);
   const [showAll, setShowAll] = useState(false);
