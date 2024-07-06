@@ -133,8 +133,6 @@ function SharingIconLink({ name, tabIndex, url, iconName }) {
             rel="noopener noreferrer"
             icon
             compact
-            basic
-            secondary
             size="big"
             tabIndex={tabIndex}
             onMouseEnter={() => setMastodonHover(true)}
@@ -160,8 +158,6 @@ function SharingIconLink({ name, tabIndex, url, iconName }) {
         on={['hover', 'click', 'focus']}
         icon
         compact
-        basic
-        secondary
         size="big"
         tabIndex={tabIndex}
       >
