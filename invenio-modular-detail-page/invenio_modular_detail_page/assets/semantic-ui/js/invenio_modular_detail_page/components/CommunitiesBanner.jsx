@@ -11,7 +11,6 @@ const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissi
 
   const communityLogoUrl = community?.links ? community?.links?.logo : `/api/communities/${community?.id}/logo`;
   const communityTitle = community?.metadata.title;
-  console.log("additionalCommunities", additionalCommunities);
   const [showAll, setShowAll] = useState(false);
 
   const makePattern = (el, slug) => {
@@ -27,8 +26,6 @@ const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissi
         wrapper.style = `background: rgba( ${r}, ${g}, ${b}, 0.1); border-color: rgba( ${r}, ${g}, ${b}, 0.3); color: ${pattern.color};`;
       }
     }
-    console.log("pattern", pattern.toDataUri());
-    console.log("wrapper", wrapper);
 
     return pattern.toDataUri();
   };

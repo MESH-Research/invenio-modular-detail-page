@@ -243,7 +243,6 @@ const AlternateIdentifiers = ({
   identifierSchemes,
   landingUrls,
 }) => {
-  console.log("altids", alternateIdentifiers);
   const groups = groupObjectsBy(alternateIdentifiers, ({ scheme }) => scheme);
   return Object.keys(groups)
     .filter((scheme) => scheme !== "url")
@@ -703,7 +702,6 @@ const PublishingDetails = ({
   subsections: accordionSections,
 }) => {
   const [activeIndex, setActiveIndex] = React.useState([1]);
-  console.log("PublishingDetails activeIndex", activeIndex);
   const customFieldSectionNames = customFieldsUi.map(({ section }) => section);
   const sectionsArray = accordionSections.reduce(
     (acc, { section: sectionTitle, subsections, icon, show }) => {
@@ -754,14 +752,6 @@ const PublishingDetails = ({
     },
     []
   );
-  console.log("PublishingDetails", record);
-  console.log(
-    "PublishingDetails customFieldsUi",
-    customFieldsUi,
-    customFieldSectionNames
-  );
-  console.log("PublishingDetails accordionSections", accordionSections);
-  console.log("PublishingDetails sectionsArray", sectionsArray);
 
   const handleHeaderClick = (index) => {
     const newIndex = activeIndex.includes(index)

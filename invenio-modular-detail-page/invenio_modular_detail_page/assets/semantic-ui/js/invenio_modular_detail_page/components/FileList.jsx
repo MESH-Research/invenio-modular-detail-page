@@ -259,7 +259,6 @@ const FileListDropdownMenu = ({
   text = "Download",
   totalFileSize,
 }) => {
-  console.log(files);
   return (
     <Dropdown
       id={id}
@@ -331,9 +330,6 @@ const FileListItemDropdown = ({
   totalFileSize,
 }) => {
   const previewUrlFlag = isPreview ? "&preview=1" : "";
-  console.log(files.enabled);
-  console.log(files.length);
-  console.log(permissions.can_read_files);
   return (
     <>
       {/* access is "restricted" also if record is metadata-only */}
