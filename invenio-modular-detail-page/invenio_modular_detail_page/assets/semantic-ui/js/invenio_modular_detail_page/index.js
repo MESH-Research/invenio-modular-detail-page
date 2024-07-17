@@ -1,13 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { DetailContent } from "./sections/DetailContent";
+import { _isEmpty } from "lodash/isEmpty";
 
 const detailMainDiv = document.getElementById("detail-main-content");
+
+console.log("community", JSON.parse(detailMainDiv.dataset.community));
+// const community = detailMainDiv.dataset.community === '{}' ? undefined : JSON.parse(detailMainDiv.dataset.community);
+let community = JSON.parse(detailMainDiv.dataset.community);
+if ( community.length === 0 ) {
+  community = undefined;
+}
 
 ReactDOM.render(
   <DetailContent
     backPage={detailMainDiv.dataset.backPage}
-    community={JSON.parse(detailMainDiv.dataset.community)}
+    community={community}
     citationStyles={JSON.parse(detailMainDiv.dataset.citationStyles)}
     citationStyleDefault={detailMainDiv.dataset.citationStyleDefault}
     currentUserId={detailMainDiv.dataset.currentUserId}
@@ -18,7 +26,7 @@ ReactDOM.render(
     isDraft={JSON.parse(detailMainDiv.dataset.isDraft)}
     isPreview={JSON.parse(detailMainDiv.dataset.isPreview)}
     hasPreviewableFiles={
-      JSON.parse(detailMainDiv.dataset.hasPreviewableFiles) === "true"
+      JSON.parse(detailMainDiv.dataset.hasPreviewableFiles) === true
         ? true
         : false
     }
@@ -30,7 +38,7 @@ ReactDOM.render(
     identifierSchemes={JSON.parse(detailMainDiv.dataset.identifierSchemes)}
     isPreviewSubmissionRequest={JSON.parse(
       detailMainDiv.dataset.isPreviewSubmissionRequest
-    )}
+    ) === true ? true : false }
     landingUrls={JSON.parse(detailMainDiv.dataset.landingUrls)}
     localizedStats={JSON.parse(detailMainDiv.dataset.localizedStats)}
     mainSections={JSON.parse(detailMainDiv.dataset.mainSections)}

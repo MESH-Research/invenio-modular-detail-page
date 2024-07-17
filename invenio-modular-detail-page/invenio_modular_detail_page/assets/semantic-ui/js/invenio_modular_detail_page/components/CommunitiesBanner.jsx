@@ -31,8 +31,8 @@ const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissi
   };
 
   return (
-    !isPreviewSubmissionRequest &&
-    community && (
+    (!isPreviewSubmissionRequest &&
+    community) ? (
       <div
         id="communities"
         className={`sidebar-container ${show}`}
@@ -128,6 +128,7 @@ const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissi
         </div>
       </div>
     )
+    : null
   );
 };
 

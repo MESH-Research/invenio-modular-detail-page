@@ -169,7 +169,7 @@ function SharingIconLink({ name, tabIndex, url, iconName }) {
 }
 
 function SidebarSharingSection(props) {
-  const { record, sectionIndex, show, showHeading = true } = props;
+  const { record, sectionIndex, show, isPreview, isPreviewSubmissionRequest, showHeading = true } = props;
   const pageLink = encodeURIComponent(record.links.self_html);
 
   const socialMediaLinks = [
@@ -212,8 +212,9 @@ function SidebarSharingSection(props) {
       }%0A${pageLink}%0A${record.metadata.description}`,
     },
   ];
+  console.log("isPreview: ", isPreview, isPreviewSubmissionRequest);
 
-  return (
+  return ( (isPreview || isPreviewSubmissionRequest) ? null : (
     <Overridable id="InvenioModularDetailPage.SidebarSharingSection.layout">
       <div className={`sidebar-container ${show}`} id="social-sharing">
         {showHeading === true && (
@@ -235,6 +236,7 @@ function SidebarSharingSection(props) {
         </div>
       </div>
     </Overridable>
+  )
   );
 }
 
