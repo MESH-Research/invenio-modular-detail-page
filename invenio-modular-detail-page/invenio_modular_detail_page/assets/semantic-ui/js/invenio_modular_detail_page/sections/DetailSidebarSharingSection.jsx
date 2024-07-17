@@ -212,7 +212,6 @@ function SidebarSharingSection(props) {
       }%0A${pageLink}%0A${record.metadata.description}`,
     },
   ];
-  console.log("isPreview: ", isPreview, isPreviewSubmissionRequest);
 
   return ( (isPreview || isPreviewSubmissionRequest) ? null : (
     <Overridable id="InvenioModularDetailPage.SidebarSharingSection.layout">

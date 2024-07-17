@@ -5,8 +5,6 @@ import { _isEmpty } from "lodash/isEmpty";
 
 const detailMainDiv = document.getElementById("detail-main-content");
 
-console.log("community", JSON.parse(detailMainDiv.dataset.community));
-// const community = detailMainDiv.dataset.community === '{}' ? undefined : JSON.parse(detailMainDiv.dataset.community);
 let community = JSON.parse(detailMainDiv.dataset.community);
 if ( community.length === 0 ) {
   community = undefined;
