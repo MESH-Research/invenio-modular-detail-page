@@ -24,7 +24,7 @@ ReactDOM.render(
     isDraft={JSON.parse(detailMainDiv.dataset.isDraft)}
     isPreview={JSON.parse(detailMainDiv.dataset.isPreview)}
     hasPreviewableFiles={
-      JSON.parse(detailMainDiv.dataset.hasPreviewableFiles) === true
+      JSON.parse(detailMainDiv.dataset.hasPreviewableFiles) === "true"
         ? true
         : false
     }
