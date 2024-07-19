@@ -120,7 +120,7 @@ const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissi
                 </Grid.Row>
               )
             )}
-              <Grid.Row className="additional-communities">
+              <Grid.Row className={`additional-communities ${showAll && "open"}`}>
                 {!showAll && (
                   `and ${additionalCommunities.length} more collections...`
                 ) }
