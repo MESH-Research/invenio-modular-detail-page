@@ -161,13 +161,14 @@ const CreatibutorsShortList = ({
   iconsKcUsername,
   iconsIsni,
   landingUrls,
+  isPreviewSubmissionRequest,
 }) => {
   const show_affiliations = false;
   const show_roles = false;
   const creatibutors = contributors
     ? creators?.creators?.concat(contributors?.contributors)
     : creators?.creators;
-  return (
+  return isPreviewSubmissionRequest ? null : (
     <section
       id="creatibutors-list-section"
       className="ui mb-10 mt-10 sixteen wide mobile twelve wide tablet thirteen wide computer column"
