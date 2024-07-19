@@ -5,6 +5,8 @@ import Geopattern from "geopattern";
 import { set } from "lodash";
 
 const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissionRequest, show }) => {
+
+  console.log("CommunitiesBanner", additionalCommunities, community, isPreviewSubmissionRequest);
   const isCommunityRestricted = community
     ? community.access.visibility == "restricted"
     : false;
@@ -119,7 +121,9 @@ const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissi
               )
             )}
               <Grid.Row className="additional-communities">
-                and {additionalCommunities.length} more collections...
+                {!showAll && (
+                  `and ${additionalCommunities.length} more collections...`
+                ) }
                 <Button size="small" basic onClick={() => setShowAll(!showAll)}>{showAll ? "Hide" : "Show"}</Button>
               </Grid.Row>
             </>

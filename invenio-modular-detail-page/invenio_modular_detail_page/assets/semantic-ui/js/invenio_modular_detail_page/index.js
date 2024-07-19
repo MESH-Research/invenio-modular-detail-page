@@ -6,7 +6,7 @@ import { _isEmpty } from "lodash/isEmpty";
 const detailMainDiv = document.getElementById("detail-main-content");
 
 let community = JSON.parse(detailMainDiv.dataset.community);
-if ( community.length === 0 ) {
+if ( Object.keys(community).length === 0 ) {
   community = undefined;
 }
 
