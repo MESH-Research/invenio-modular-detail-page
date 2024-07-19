@@ -6,7 +6,6 @@ import { set } from "lodash";
 
 const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissionRequest, show }) => {
 
-  console.log("CommunitiesBanner", additionalCommunities, community, isPreviewSubmissionRequest);
   const isCommunityRestricted = community
     ? community.access.visibility == "restricted"
     : false;

@@ -6,8 +6,8 @@ import _truncate from "lodash/truncate";
 const AIUsageAlert = ({ record, section }) => {
   const [visible, setVisible] = React.useState(true);
   const [expanded, setExpanded] = React.useState(false);
-  const AIUsage = record.custom_fields["kcr:ai_usage"];
-  const hasLongText = AIUsage?.ai_description.length > 60;
+  const AIUsage = !record.custom_fields["kcr:ai_usage"]?.ai_used ? undefined : record.custom_fields["kcr:ai_usage"];
+  const hasLongText = AIUsage?.ai_description?.length > 60;
   const shortText =
     !hasLongText
       ? AIUsage?.ai_description
@@ -17,9 +17,9 @@ const AIUsageAlert = ({ record, section }) => {
         });
   const descriptionText = expanded ? AIUsage?.ai_description : shortText;
 
-  return !(visible && AIUsage) ? null : (
+  return !(visible && !!AIUsage) ? null : (
     <Overridable
-      id="InvenioModularDetailPage.ContentWarning.layout"
+      id="InvenioModularDetailPage.AIUsageAlert.layout"
       {...{ record, section }}
     >
       <div class="ai-usage-alert ui message warning">
