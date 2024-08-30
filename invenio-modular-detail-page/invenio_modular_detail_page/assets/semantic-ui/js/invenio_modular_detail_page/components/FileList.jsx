@@ -20,9 +20,7 @@ const FileListTableRow = ({
   // FIXME: restrict to previewable file types
   const file_type = file.key.split(".").pop().toLowerCase();
   const previewUrlFlag = isPreview ? "&preview=1" : "";
-  const downloadUrl = `${previewFileUrl.replace("/preview/", "/files/")}/${
-    file.key
-  }?download=1${previewUrlFlag}`;
+  const downloadUrl = `${file.links.content}`;
 
   const handlePreviewChange = (file) => {
     // this was originally used when files list was on a different tab
@@ -256,9 +254,10 @@ const FileListDropdownMenu = ({
   record,
   sectionIndex,
   setActiveTab,
-  text = "Download",
+  text = i18next.t("Download"),
   totalFileSize,
 }) => {
+
   return (
     <Dropdown
       id={id}
@@ -275,14 +274,14 @@ const FileListDropdownMenu = ({
     >
       <Dropdown.Menu>
         {/* <Dropdown.Header>Choose a file</Dropdown.Header> */}
-        {files.map(({ key, size }, idx) => (
+        {files.map(({ key, size, links }, idx) => {
+          return(
           <Dropdown.Item
-            href={`${previewFileUrl.replace(
-              "/preview/",
-              "/files/"
-            )}/${key}?download=1${previewUrlFlag}`}
+            href={links.content}
             as="a"
             tabIndex={idx + sectionIndex + 1}
+            key={idx}
+            download={key}
           >
             <span className="text">{key}</span>
             <small className="description filesize">
@@ -290,7 +289,7 @@ const FileListDropdownMenu = ({
               {formatBytes(size)}
             </small>
           </Dropdown.Item>
-        ))}
+        )})}
         <Dropdown.Divider />
         <Dropdown.Item
           href={record.links.archive}
@@ -302,7 +301,7 @@ const FileListDropdownMenu = ({
         ></Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item
-          text="File details and previews"
+          text={i18next.t("File details and previews")}
           icon={"eye"}
           onClick={() => setActiveTab(fileTabIndex)}
           as="a"
@@ -330,6 +329,8 @@ const FileListItemDropdown = ({
   totalFileSize,
 }) => {
   const previewUrlFlag = isPreview ? "&preview=1" : "";
+  const downloadUrl = defaultPreviewFile !== undefined ? defaultPreviewFile?.links?.content : files[0]?.links.content;
+
   return (
     <>
       {/* access is "restricted" also if record is metadata-only */}
@@ -339,15 +340,13 @@ const FileListItemDropdown = ({
           <Menu.Item
             id={id}
             as="a"
-            href={`${previewFileUrl.replace("/preview/", "/files/")}/${
-              defaultPreviewFile.key
-            }?download=1${previewUrlFlag}`}
+            href={downloadUrl}
             name="download"
             // active={activeItem === "video play"}
             onClick={handleMobileMenuClick}
           >
             <Icon name="download" />
-            Download
+            {i18next.t("Download")}
           </Menu.Item>
         ) : (
           <FileListDropdownMenu
@@ -395,6 +394,8 @@ const FileListDropdown = ({
   totalFileSize,
 }) => {
   const previewUrlFlag = isPreview ? "&preview=1" : "";
+  const downloadUrl = defaultPreviewFile !== undefined ? defaultPreviewFile?.links?.content : files[0]?.links.content;
+
   return (
     <>
       {/* access is "restricted" also if record is metadata-only */}
@@ -408,9 +409,7 @@ const FileListDropdown = ({
             primary
             fluid
             as="button"
-            href={`${previewFileUrl.replace("/preview/", "/files/")}/${
-              defaultPreviewFile.key
-            }?download=1${previewUrlFlag}`}
+            href={downloadUrl}
             content={i18next.t("Download")}
             icon="download"
             labelPosition="right"
