@@ -57,11 +57,17 @@ const CreatibutorIcon = ({
   const schemeStrings = makeSchemeStrings(
     iconsGnd,
     iconsKcUsername,
+    iconsIsni,
     iconsOrcid,
     iconsRor,
-    iconsIsni,
     landingUrls
   );
+  console.log("CreatibutorIcon ids", ids);
+  console.log("CreatibutorIcon schemeStrings", schemeStrings);
+  console.log("CreatibutorIcon creatibutor", creatibutor);
+  console.log("CreatibutorIcon iconsOrcid", iconsOrcid);
+
+
   return (
     <>
       {!!ids
@@ -168,6 +174,10 @@ const CreatibutorsShortList = ({
   const creatibutors = contributors
     ? creators?.creators?.concat(contributors?.contributors)
     : creators?.creators;
+  console.log("CreatibutorsShortList creatibutors", creatibutors);
+  console.log("CreatibutorsShortList iconsOrcid", iconsOrcid);
+
+
   return isPreviewSubmissionRequest ? null : (
     <section
       id="creatibutors-list-section"
