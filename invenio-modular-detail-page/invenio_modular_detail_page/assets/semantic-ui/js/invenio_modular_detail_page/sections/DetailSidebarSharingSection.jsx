@@ -101,9 +101,10 @@ function PopupInput({ message }) {
   );
 }
 
-function PopupButton({ trigger, message }) {
+function PopupButton({ trigger, message, innerRef }) {
   return (
     <Popup
+      ref={innerRef}
       trigger={trigger}
       content={<PopupInput message={message} />}
       on="click"
@@ -126,7 +127,7 @@ function SharingIconLink({ name, tabIndex, url, iconName }) {
         trigger={<span className="mastodon-popup" />}
       />
       <PopupButton
-        ref={mastodonRef}
+        innerRef={mastodonRef}
         trigger={
           <Button
             target="_blank"

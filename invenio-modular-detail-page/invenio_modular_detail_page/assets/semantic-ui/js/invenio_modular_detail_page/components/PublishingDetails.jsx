@@ -444,6 +444,7 @@ const getDetailsComponents = ({
       value:
         idDoi !== null ? (
           <Doi
+            key={"doi_badge"}
             idDoi={idDoi}
             doiBadgeUrl={doiBadgeUrl}
             doiLink={record.links.doi}
@@ -454,7 +455,7 @@ const getDetailsComponents = ({
       title: i18next.t("DOI"),
       value:
         idDoi !== null ? (
-          <DOITextLink doiLink={record.links.doi} doi={idDoi} />
+          <DOITextLink key={"doi"} doiLink={record.links.doi} doi={idDoi} />
         ) : null,
     },
     {
@@ -640,10 +641,10 @@ const DetailItem = ({ title, value, trueLabel, falseLabel, isVocabulary }) => {
   }
 
   return (
-    <>
+    <React.Fragment key={title}>
       <dt className="ui tiny header">{title}</dt>
       {valueComponent}
-    </>
+    </React.Fragment>
   );
 };
 

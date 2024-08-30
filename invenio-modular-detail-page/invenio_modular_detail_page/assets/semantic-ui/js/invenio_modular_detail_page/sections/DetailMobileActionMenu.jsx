@@ -57,6 +57,7 @@ const MobileActionMenu = (props) => {
               recid={record.id}
               open={shareModalOpen}
               handleClose={handleShareModalClose}
+              sectionIndex={50}
             />
             <Popup
               content={
@@ -68,6 +69,7 @@ const MobileActionMenu = (props) => {
                   currentUserId={currentUserId}
                   handleShareModalOpen={handleShareModalOpen}
                   handleParentPopupClose={handleManageClose}
+                  sectionIndex={70}
                 />
               }
               trigger={
@@ -104,6 +106,7 @@ const MobileActionMenu = (props) => {
             isPreview,
             recordExporters,
             classNames: "pointing",
+            sectionIndex: 70,
           }}
         />
 
@@ -122,6 +125,7 @@ const MobileActionMenu = (props) => {
           citationStyles={citationStyles}
           citationStyleDefault={citationStyleDefault}
           onCloseHandler={() => setActiveItem(null)}
+          sectionIndex={80}
         />
 
         <Popup
@@ -138,6 +142,7 @@ const MobileActionMenu = (props) => {
           }
           onClose={() => setActiveItem(null)}
           on="click"
+          sectionIndex={90}
         />
 
         <FileListItemDropdown
@@ -153,6 +158,7 @@ const MobileActionMenu = (props) => {
           record={record}
           setActiveTab={setActiveTab}
           totalFileSize={totalFileSize}
+          sectionIndex={100}
         />
       </Menu>
     </Overridable>

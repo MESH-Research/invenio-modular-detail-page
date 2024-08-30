@@ -1,7 +1,6 @@
 import React from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
 import { getDetailsComponents } from "../components/PublishingDetails";
-import { Doi } from "../components/Doi";
 import Overridable from "react-overridable";
 
 const SidebarDetailsSection = (props) => {
