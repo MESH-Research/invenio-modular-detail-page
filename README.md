@@ -42,9 +42,9 @@ This replaces the default InvenioRDM detail page template with the template prov
 By default the page is divided into three regions: a central column of content and two sidebars, one on either side. The order and contents of each region is set via three config variables in the same file:
 
 ```
-APP_RDM_DETAIL_SIDEBAR_SECTIONS_RIGHT
-APP_RDM_DETAIL_SIDEBAR_SECTIONS_LEFT
-APP_RDM_DETAIL_MAIN_SECTIONS
+MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT
+MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_LEFT
+MODULAR_DETAIL_PAGE_MAIN_SECTIONS
 ```
 
 ### Configuration of individual components

@@ -18,13 +18,13 @@ import { addPropsFromChildren, filterPropsToPass } from "../util";
 // The main column is divided into sections, which are either tabs or
 // untabbed sections. These are defined in the mainSections prop which
 // passes the object defined in the InvenioRDM config variable
-// APP_RDM_DETAIL_MAIN_SECTIONS. Sections are displayed as tabs if they
+// MODULAR_DETAIL_PAGE_MAIN_SECTIONS. Sections are displayed as tabs if they
 // have a "tab" property defined with a true value.
 //
 // The left and right sidebars are defined in the sidebarSectionsLeft
 // and sidebarSectionsRight props, which pass the objects defined in
-// the InvenioRDM config variables APP_RDM_DETAIL_SIDEBAR_SECTIONS_LEFT
-// and APP_RDM_DETAIL_SIDEBAR_SECTIONS_RIGHT.
+// the InvenioRDM config variables MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_LEFT
+// and MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT.
 //
 // The config for each section includes a string with the name of the
 // React component to use for the section, and a list of subsections to
@@ -56,6 +56,7 @@ import { addPropsFromChildren, filterPropsToPass } from "../util";
 // - permissions: permissions for the record
 // - previewFile: object with information about the default preview file
 // - previewFileUrl: URL of the endpoint for file previews
+// - previewableExtensions: list of previewable file extensions
 // - record: record to display
 // - sidebarSectionsLeft: list of left sidebar sections to display
 // - sidebarSectionsRight: list of right sidebar sections to display

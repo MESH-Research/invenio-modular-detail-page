@@ -9,7 +9,8 @@
 """Invenio extension that adds a modular record detail page."""
 
 from invenio_i18n import gettext as _
-from flask import Blueprint
+from flask import Blueprint, current_app
+from .filters.previewable_extensions import previewable_extensions
 
 from . import config
 
@@ -28,24 +29,35 @@ def create_blueprint(app):
     return blueprint
 
 
+class _InvenioModularDetailPageState(object):
+    """Invenio Modular Detail Page state object."""
+
+    def __init__(self, app):
+        """Initialize state."""
+        self.app = app
+
+
 class InvenioModularDetailPage(object):
     """Invenio Modular Detail Page extension."""
 
     def __init__(self, app=None):
         """Extension initialization."""
-        # TODO: This is an example of translation string with comment. Please
-        # remove it.
-        # NOTE: This is a note to a translator.
-        _("A translation string")
         if app:
             self.init_app(app)
 
     def init_app(self, app):
         """Flask application initialization."""
         self.init_config(app)
-        app.extensions["invenio-modular-detail-page"] = self
+
+        app.add_template_filter(previewable_extensions)
+
+        state = _InvenioModularDetailPageState(app)
+
+        app.extensions["invenio-modular-detail-page"] = state
+
+        return state
 
     def init_config(self, app):
         for k in dir(config):
-            if k.startswith("INVENIO_MODULAR_DETAIL_PAGE_"):
+            if k.startswith("MODULAR_DETAIL_PAGE_"):
                 app.config.setdefault(k, getattr(config, k))

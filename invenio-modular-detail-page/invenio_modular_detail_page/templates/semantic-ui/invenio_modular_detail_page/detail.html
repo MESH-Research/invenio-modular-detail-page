@@ -55,10 +55,10 @@
     {%- if files|has_previewable_files -%}
       {%- set has_previewable_files_flag = 'true' %}
       {%- set preview_file_item = files|select_preview_file(default_preview=record.files.default_preview) -%}
-      {%- set preview_endpoint = 'invenio_app_rdm_records.record_file_preview' -%}
-      {%- set preview_file_url = url_for(preview_endpoint, pid_value=record.id, filename="") -%}
     {%- endif -%}
   {%- endif -%}
+  {%- set preview_endpoint = 'invenio_app_rdm_records.record_file_preview' -%}
+  {%- set preview_file_url = url_for(preview_endpoint, pid_value=record.id, filename="") -%}
 {%- endif -%}
 
 {%- set community_dict = community if community else {} -%}
@@ -110,15 +110,16 @@
         data-is-draft='{{ is_draft | tojson }}'
         data-landing-urls='{{ config["LANDING_URLS"] | tojson }}'
         data-localized-stats='{{ localized_stats | tojson }}'
-        data-main-sections='{{config["APP_RDM_DETAIL_MAIN_SECTIONS"] | tojson }}'
+        data-main-sections='{{config["MODULAR_DETAIL_PAGE_MAIN_SECTIONS"] | tojson }}'
         data-permissions='{{ permissions | tojson }}'
         data-preview-file-url='{{ preview_file_url }}'
+        data-previewable-extensions='{{ "" | previewable_extensions | tojson }}'
         data-record='{{ record | tojson }}'
         data-record-exporters='{{ config.get("APP_RDM_RECORD_EXPORTERS", {}) | tojson }}'
         data-show-decimal-sizes='{{ config["APP_RDM_DISPLAY_DECIMAL_FILE_SIZES"] | tojson }}'
         data-show-record-management-menu='{{ show_record_management_menu | tojson }}'
-        data-sidebar-sections-left='{{config.get("APP_RDM_DETAIL_SIDEBAR_SECTIONS_LEFT", []) | tojson }}'
-        data-sidebar-sections-right='{{config.get("APP_RDM_DETAIL_SIDEBAR_SECTIONS_RIGHT", []) | tojson }}'
+        data-sidebar-sections-left='{{config.get("MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_LEFT", []) | tojson }}'
+        data-sidebar-sections-right='{{config.get("MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT", []) | tojson }}'
         data-total-file-size='{{ ( files|sum(attribute="size")|filesizeformat(binary=config["APP_RDM_DISPLAY_DECIMAL_FILE_SIZES"]) ) if (files and record.files.enabled) else 0 }}'
       >
       </div>

@@ -59,6 +59,7 @@ const FileListTableRow = ({
             role="button"
             className="ui compact mini button"
             href={downloadUrl}
+            download={file.key}
           >
             <i className="download icon"></i>
             <span className="tablet computer only">
@@ -117,16 +118,18 @@ const FileListTableRow = ({
               </span>
             </Button>
           )}
-          <a
+          <Button
             role="button"
             className="ui compact mini button"
             href={downloadUrl}
+            download={file.key}
+            compact
           >
             <i className="download icon"></i>
             <span className="tablet computer only">
               {!!fullWordButtons && i18next.t("Download")}
             </span>
-          </a>
+          </Button>
         </span>
       </td>
     </tr>

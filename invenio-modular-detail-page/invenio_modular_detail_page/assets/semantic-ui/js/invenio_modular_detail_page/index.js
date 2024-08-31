@@ -10,6 +10,8 @@ if ( Object.keys(community).length === 0 ) {
   community = undefined;
 }
 
+
+
 ReactDOM.render(
   <DetailContent
     backPage={detailMainDiv.dataset.backPage}
@@ -42,6 +44,7 @@ ReactDOM.render(
     mainSections={JSON.parse(detailMainDiv.dataset.mainSections)}
     permissions={JSON.parse(detailMainDiv.dataset.permissions)}
     defaultPreviewFile={JSON.parse(detailMainDiv.dataset.defaultPreviewFile) === 'undefined' ? undefined : JSON.parse(detailMainDiv.dataset.defaultPreviewFile)}
+    previewableExtensions={JSON.parse(detailMainDiv.dataset.previewableExtensions)}
     previewFileUrl={detailMainDiv.dataset.previewFileUrl === 'undefined' ? undefined : detailMainDiv.dataset.previewFileUrl}
     record={JSON.parse(detailMainDiv.dataset.record)}
     recordExporters={JSON.parse(detailMainDiv.dataset.recordExporters)}

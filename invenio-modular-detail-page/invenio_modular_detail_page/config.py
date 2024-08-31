@@ -13,7 +13,7 @@ from invenio_i18n import lazy_gettext as _
 # top-level objects are sections in sidebar
 # available sections defined in DetailRightSidebar.jsx:
 # "details", "manage_menu", "downloads", "sidebar_details", "versions", "citation", "communities", "keywords_subjects", "export", "social_share"
-INVENIO_MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT = [
+MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT = [
     {"section": _("Manage")},
     {
         "section": _("Download"),
@@ -102,12 +102,12 @@ INVENIO_MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT = [
         "show": "computer large monitor widescreen only",
     },
 ]
-INVENIO_MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_LEFT = []
+MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_LEFT = []
 
 # top-level objects are tabs in main detail page column
 # available subsections defined in DetailMainTab.jsx:
 # "descriptions", "preview"
-INVENIO_MODULAR_DETAIL_PAGE_MAIN_SECTIONS = [
+MODULAR_DETAIL_PAGE_MAIN_SECTIONS = [
     {
         "section": _("Title"),
         "component_name": "RecordTitle",

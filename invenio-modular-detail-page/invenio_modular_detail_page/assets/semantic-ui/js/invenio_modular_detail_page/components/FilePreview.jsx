@@ -11,6 +11,7 @@ const FilePreview = ({
   hasPreviewableFiles,
   isPreview,
   permissions,
+  previewableExtensions,
   previewFileUrl,
   record,
   setActivePreviewFile,
@@ -19,11 +20,17 @@ const FilePreview = ({
 }) => {
   const [loading, setLoading] = useState(true);
   const previewUrlFlag = isPreview ? "&preview=1" : "";
-  const fileToShow = useDynamicPreview ? activePreviewFile : defaultPreviewFile;
-  const fileExtension = fileToShow?.key?.split(".").pop();
+  const fileToShow = (useDynamicPreview && !!activePreviewFile) ? activePreviewFile : (!!defaultPreviewFile ? defaultPreviewFile : files[0]);
+  const fileExtension = !!hasPreviewableFiles ? fileToShow?.key?.split(".").pop() : "no-preview";
+  const currentIsPreviewable = previewableExtensions?.includes(fileExtension);
+  console.log("FilePreview currentIsPreviewable", currentIsPreviewable);
+  console.log("FilePreview fileExtension", fileExtension);
+  console.log("FilePreview !currentIsPreviewable", !currentIsPreviewable);
+  console.log("FilePreview previewableExtensions", previewableExtensions);
+
+
 
   const iFrameRef = useRef(null);
-  const iframeCurrent = iFrameRef.current;
   useEffect(() => {
     iFrameRef.current?.addEventListener("load", () => setLoading(false));
     return () => {
@@ -41,7 +48,7 @@ const FilePreview = ({
           id="record-file-preview"
           aria-label={i18next.t("File preview")}
         >
-          {!!hasPreviewableFiles && (
+          {/* {!!hasPreviewableFiles && ( */}
             <>
               {!!loading && (
                 <>
@@ -60,9 +67,9 @@ const FilePreview = ({
               )}
               <iframe
                 title={i18next.t("Preview")}
-                className={`preview-iframe ${
+                className={`preview-iframe ${fileExtension} ${!currentIsPreviewable ? "no-preview" : ""} ${
                   loading ? "hidden" : ""
-                } ${fileExtension}`}
+                }`}
                 id={"preview-iframe"}
                 ref={iFrameRef}
                 name={record.id}
@@ -71,7 +78,7 @@ const FilePreview = ({
                 // height="800"
               ></iframe>
             </>
-          )}
+          {/* )} */}
         </section>
       )}
     </>
