@@ -5,22 +5,26 @@ import { formatBytes, getFileTypeIconName } from "../util";
 import { EmbargoMessage } from "./EmbargoMessage";
 
 const FileListTableRow = ({
+  activePreviewFile,
   file,
-  fileTabIndex,
+  // fileTabIndex,
   fullWordButtons,
   isPreview,
-  previewFileUrl,
-  previewTabIndex,
+  // previewTabIndex,
   setActivePreviewFile,
-  setActiveTab,
+  // setActiveTab,
   showChecksum,
   stackedRows,
   withPreview,
 }) => {
-  // FIXME: restrict to previewable file types
   const file_type = file.key.split(".").pop().toLowerCase();
   const previewUrlFlag = isPreview ? "&preview=1" : "";
   const downloadUrl = `${file.links.content}`;
+  const fileTypeIcon = getFileTypeIconName(file_type);
+  const isCurrentPreview = activePreviewFile?.key === file.key;
+  console.log("isCurrentPreview", isCurrentPreview);
+  console.log("activePreviewFile", activePreviewFile);
+  console.log("file", file);
 
   const handlePreviewChange = (file) => {
     // this was originally used when files list was on a different tab
@@ -30,14 +34,16 @@ const FileListTableRow = ({
   };
 
   return (
-    <tr>
+    <tr className={!!isCurrentPreview ? "active" : ""}>
+      <td>
+        <Icon name={fileTypeIcon} size="large" />
+      </td>
       <td
         className={`${!!stackedRows ? "fourteen" : "nine"} wide ${
           !!showChecksum && "with-checksum"
         }`}
       >
         <span className="mobile only download-button-wrapper">
-          {/* FIXME: restrict to previewable file types */}
           {withPreview && (
             <Button
               role="button"
@@ -159,10 +165,11 @@ const FileListTable = ({
     fileCountToShow > 0 ? files.slice(0, fileCountToShow) : files;
   return (
     <>
-      <table className="ui striped table files fluid unstackable">
+      <table className="ui table files fluid unstackable">
         {!!showTableHeader && (
           <thead>
             <tr>
+              <th></th> {/* filetype icon column */}
               <th>{i18next.t("Name")}</th>
               <th className="computer tablet only">{i18next.t("Size")}</th>
               <th className="computer tablet only"></th>
@@ -175,6 +182,7 @@ const FileListTable = ({
               className={`title ${record.ui.access_status.id} total-files`}
               tabIndex="0"
             >
+              <td></td> {/* filetype icon column */}
               <td>
                 {i18next.t(`All ${files.length} files (as zip archive)`)}
                 <a
@@ -210,13 +218,12 @@ const FileListTable = ({
               activePreviewFile={activePreviewFile}
               key={file.key}
               file={file}
-              fileTabIndex={fileTabIndex}
+              // fileTabIndex={fileTabIndex}
               fullWordButtons={fullWordButtons}
               isPreview={isPreview}
-              previewFileUrl={previewFileUrl}
-              previewTabIndex={previewTabIndex}
+              // previewTabIndex={previewTabIndex}
               setActivePreviewFile={setActivePreviewFile}
-              setActiveTab={setActiveTab}
+              // setActiveTab={setActiveTab}
               showChecksum={showChecksum}
               stackedRows={stackedRows}
               withPreview={withPreview}
