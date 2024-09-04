@@ -5,13 +5,14 @@ import Overridable from "react-overridable";
 const FilePreviewWrapper = (props) => {
   const {
     activePreviewFile,
-    previewFileUrl,
+    defaultPreviewFile,
     files,
     hasFiles,
     hasPreviewableFiles,
     isPreview,
     permissions,
-    defaultPreviewFile,
+    previewableExtensions,
+    previewFileUrl,
     record,
     setActivePreviewFile,
     totalFileSize,
@@ -23,13 +24,14 @@ const FilePreviewWrapper = (props) => {
     >
       <FilePreview
         activePreviewFile={activePreviewFile}
-        previewFileUrl={previewFileUrl}
+        defaultPreviewFile={defaultPreviewFile}
         files={files}
         hasFiles={hasFiles}
         hasPreviewableFiles={hasPreviewableFiles}
         isPreview={isPreview}
         permissions={permissions}
-        defaultPreviewFile={defaultPreviewFile}
+        previewableExtensions={previewableExtensions}
+        previewFileUrl={previewFileUrl}
         record={record}
         setActivePreviewFile={setActivePreviewFile}
         totalFileSize={totalFileSize}

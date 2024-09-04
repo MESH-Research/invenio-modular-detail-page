@@ -10,8 +10,6 @@ if ( Object.keys(community).length === 0 ) {
   community = undefined;
 }
 
-
-
 ReactDOM.render(
   <DetailContent
     backPage={detailMainDiv.dataset.backPage}
