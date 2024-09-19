@@ -65,7 +65,7 @@ const FileListTableRow = ({
             role="button"
             className="ui compact mini button"
             href={downloadUrl}
-            download={file.key}
+            // download={file.key}  This seems to prevent s3 downloads
           >
             <i className="download icon"></i>
             <span className="tablet computer only">
@@ -128,7 +128,7 @@ const FileListTableRow = ({
             role="button"
             className="ui compact mini button"
             href={downloadUrl}
-            download={file.key}
+            // download={file.key}  This seems to prevent s3 downloads
             compact
           >
             <i className="download icon"></i>
@@ -291,7 +291,7 @@ const FileListDropdownMenu = ({
             as="a"
             tabIndex={idx + sectionIndex + 1}
             key={idx}
-            download={key}
+            // download={key}  This seems to prevent s3 downloads
           >
             <span className="text">{key}</span>
             <small className="description filesize">
