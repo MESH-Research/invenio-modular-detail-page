@@ -81,10 +81,7 @@ const FileListTableRow = ({
           </Button>
         </span>
         <div>
-          <a
-            href={downloadUrl.replace("xxxx", file.key)}
-            className="filename"
-          >
+          <a href={downloadUrl.replace("xxxx", file.key)} className="filename">
             {file.key}
           </a>
         </div>
@@ -162,12 +159,10 @@ const FileListTableRow = ({
  * @param {string} props.downloadFileUrl - The URL for downloading files.
  * @param {number} props.fileCountToShow - The number of files to show.
  * @param {Object} props.files - The list of files.
- * @param {number} props.fileTabIndex - The index of the file tab.
  * @param {boolean} props.fullWordButtons - Whether to display the full word buttons.
  * @param {boolean} props.isPreview - Whether the file is a preview.
  * @param {Object} props.permissions - The permissions for the files.
  * @param {string} props.previewFileUrl - The URL for previewing files.
- * @param {number} props.previewTabIndex - The index of the preview tab.
  * @param {Object} props.record - The record.
  * @param {function} props.setActivePreviewFile - The function to set the active preview file.
  * @param {function} props.setActiveTab - The function to set the active tab.
@@ -183,11 +178,11 @@ const FileListTable = ({
   downloadFileUrl,
   fileCountToShow,
   files,
-  fileTabIndex,
+  // fileTabIndex,
   fullWordButtons,
   isPreview,
   previewFileUrl,
-  previewTabIndex,
+  // previewTabIndex,
   record,
   setActivePreviewFile,
   setActiveTab,
@@ -320,6 +315,7 @@ const FileListDropdownMenu = ({
   classNames = "icon primary right labeled",
   downloadFileUrl,
   files,
+  fileCountToShow,
   fileTabIndex,
   icon = "download",
   id,
@@ -348,14 +344,13 @@ const FileListDropdownMenu = ({
     >
       <Dropdown.Menu>
         {/* <Dropdown.Header>Choose a file</Dropdown.Header> */}
-        {files.map(({ key, size, links }, idx) => {
+        {files.slice(0, fileCountToShow).map(({ key, size, links }, idx) => {
           return (
             <Dropdown.Item
               href={downloadUrl.replace("xxxx", key)}
               as="a"
               tabIndex={idx + sectionIndex + 1}
               key={idx}
-              // download={key}  This seems to prevent s3 downloads
             >
               <span className="text">{key}</span>
               <small className="description filesize">
@@ -365,6 +360,11 @@ const FileListDropdownMenu = ({
             </Dropdown.Item>
           );
         })}
+        {files.length > fileCountToShow && (
+          <Dropdown.Item as="a" onClick={() => setActiveTab(fileTabIndex)}>
+            and {files.length - fileCountToShow} more files
+          </Dropdown.Item>
+        )}
         <Dropdown.Divider />
         <Dropdown.Item
           href={record.links.archive}
@@ -542,6 +542,7 @@ const FileListDropdown = ({
             {...{
               downloadFileUrl,
               files,
+              fileCountToShow,
               fileTabIndex,
               hasFiles,
               previewFileUrl,

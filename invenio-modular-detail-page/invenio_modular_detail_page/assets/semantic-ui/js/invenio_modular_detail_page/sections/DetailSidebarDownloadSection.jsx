@@ -22,7 +22,6 @@ const SidebarDownloadSection = (props) => {
     show_heading,
     totalFileSize,
   } = props;
-  const previewUrlFlag = isPreview ? "&preview=1" : "";
   return hasFiles ? (
     <Overridable
       id="InvenioModularDetailPage.SidebarDownloadSection.layout"
@@ -43,7 +42,7 @@ const SidebarDownloadSection = (props) => {
           defaultPreviewFile={defaultPreviewFile}
           downloadFileUrl={downloadFileUrl}
           files={files}
-          fileCountToShow={3}
+          fileCountToShow={5}
           fileTabIndex={fileTabIndex}
           fullWordButtons={false}
           hasFiles={hasFiles}
