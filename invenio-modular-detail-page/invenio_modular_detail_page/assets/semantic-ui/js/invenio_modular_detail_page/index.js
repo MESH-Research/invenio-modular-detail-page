@@ -19,6 +19,7 @@ ReactDOM.render(
     currentUserId={detailMainDiv.dataset.currentUserId}
     customFieldsUi={JSON.parse(detailMainDiv.dataset.customFieldsUi)}
     doiBadgeUrl={detailMainDiv.dataset.doiBadgeUrl}
+    downloadFileUrl={detailMainDiv.dataset.downloadFileUrl}
     externalResources={JSON.parse(detailMainDiv.dataset.externalResources)}
     files={JSON.parse(detailMainDiv.dataset.files)}
     isDraft={JSON.parse(detailMainDiv.dataset.isDraft)}

@@ -4,27 +4,35 @@ import { Button, Dropdown, Icon, Menu } from "semantic-ui-react";
 import { formatBytes, getFileTypeIconName } from "../util";
 import { EmbargoMessage } from "./EmbargoMessage";
 
+/**
+ * The file list table row.
+ *
+ * @param {Object} props
+ * @param {Object} props.activePreviewFile - The active preview file.
+ * @param {Object} props.file - The file.
+ * @param {boolean} props.fullWordButtons - Whether to display the full word buttons.
+ * @param {boolean} props.isPreview - Whether the file is a preview.
+ * @param {function} props.setActivePreviewFile - The function to set the active preview file.
+ * @param {boolean} props.showChecksum - Whether to show the checksum.
+ * @param {boolean} props.stackedRows - Whether to stack the rows.
+ * @param {boolean} props.withPreview - Whether to display the preview.
+ */
 const FileListTableRow = ({
   activePreviewFile,
+  downloadFileUrl,
   file,
-  // fileTabIndex,
   fullWordButtons,
   isPreview,
-  // previewTabIndex,
   setActivePreviewFile,
-  // setActiveTab,
   showChecksum,
   stackedRows,
   withPreview,
 }) => {
   const file_type = file.key.split(".").pop().toLowerCase();
   const previewUrlFlag = isPreview ? "&preview=1" : "";
-  const downloadUrl = `${file.links.content}`;
+  const downloadUrl = `${downloadFileUrl}${previewUrlFlag}`;
   const fileTypeIcon = getFileTypeIconName(file_type);
   const isCurrentPreview = activePreviewFile?.key === file.key;
-  console.log("isCurrentPreview", isCurrentPreview);
-  console.log("activePreviewFile", activePreviewFile);
-  console.log("file", file);
 
   const handlePreviewChange = (file) => {
     // this was originally used when files list was on a different tab
@@ -64,8 +72,7 @@ const FileListTableRow = ({
           <Button
             role="button"
             className="ui compact mini button"
-            href={downloadUrl}
-            // download={file.key}  This seems to prevent s3 downloads
+            href={downloadUrl.replace("xxxx", file.key)}
           >
             <i className="download icon"></i>
             <span className="tablet computer only">
@@ -74,7 +81,10 @@ const FileListTableRow = ({
           </Button>
         </span>
         <div>
-          <a href={downloadUrl} className="filename">
+          <a
+            href={downloadUrl.replace("xxxx", file.key)}
+            className="filename"
+          >
             {file.key}
           </a>
         </div>
@@ -127,8 +137,7 @@ const FileListTableRow = ({
           <Button
             role="button"
             className="ui compact mini button"
-            href={downloadUrl}
-            // download={file.key}  This seems to prevent s3 downloads
+            href={downloadUrl.replace("xxxx", file.key)}
             compact
           >
             <i className="download icon"></i>
@@ -142,8 +151,36 @@ const FileListTableRow = ({
   );
 };
 
+/**
+ * The file list table.
+ *
+ * Intended to be the main child component of FileListBox if the files
+ * are accessible.
+ *
+ * @param {Object} props
+ * @param {Object} props.activePreviewFile - The active preview file.
+ * @param {string} props.downloadFileUrl - The URL for downloading files.
+ * @param {number} props.fileCountToShow - The number of files to show.
+ * @param {Object} props.files - The list of files.
+ * @param {number} props.fileTabIndex - The index of the file tab.
+ * @param {boolean} props.fullWordButtons - Whether to display the full word buttons.
+ * @param {boolean} props.isPreview - Whether the file is a preview.
+ * @param {Object} props.permissions - The permissions for the files.
+ * @param {string} props.previewFileUrl - The URL for previewing files.
+ * @param {number} props.previewTabIndex - The index of the preview tab.
+ * @param {Object} props.record - The record.
+ * @param {function} props.setActivePreviewFile - The function to set the active preview file.
+ * @param {function} props.setActiveTab - The function to set the active tab.
+ * @param {boolean} props.showChecksum - Whether to show the checksum.
+ * @param {boolean} props.showTableHeader - Whether to show the table header.
+ * @param {boolean} props.showTotalSize - Whether to show the total size.
+ * @param {boolean} props.stackedRows - Whether to stack the rows.
+ * @param {string} props.totalFileSize - The total file size.
+ * @param {boolean} props.withPreview - Whether to display the preview.
+ */
 const FileListTable = ({
   activePreviewFile,
+  downloadFileUrl,
   fileCountToShow,
   files,
   fileTabIndex,
@@ -216,12 +253,14 @@ const FileListTable = ({
           {displayFiles.map((file) => (
             <FileListTableRow
               activePreviewFile={activePreviewFile}
+              downloadFileUrl={downloadFileUrl}
               key={file.key}
               file={file}
               // fileTabIndex={fileTabIndex}
               fullWordButtons={fullWordButtons}
               isPreview={isPreview}
               // previewTabIndex={previewTabIndex}
+              previewFileUrl={previewFileUrl}
               setActivePreviewFile={setActivePreviewFile}
               // setActiveTab={setActiveTab}
               showChecksum={showChecksum}
@@ -249,17 +288,41 @@ const FileListTable = ({
   );
 };
 
+/**
+ * The dropdown menu for the sidebar file list.
+ *
+ * Intended to appear in the sidebar when the record includes multiple
+ * files. A child of FileListDropdown, which decides whether to
+ * display this based on the number of files in the record.
+ *
+ * @param {Object} props
+ * @param {boolean} props.asButton - Whether to display the button.
+ * @param {boolean} props.asLabeled - Whether to display the labeled.
+ * @param {boolean} props.asFluid - Whether to display the fluid.
+ * @param {boolean} props.asItem - Whether to display the item.
+ * @param {string} props.classNames - The class names.
+ * @param {string} props.downloadFileUrl - The URL for downloading files.
+ * @param {Object} props.files - The list of files.
+ * @param {number} props.fileTabIndex - The index of the file tab.
+ * @param {string} props.id - The ID.
+ * @param {Object} props.record - The record.
+ * @param {string} props.previewFileUrl - The URL for previewing files.
+ * @param {string} props.previewUrlFlag - The preview URL flag.
+ * @param {function} props.setActiveTab - The function to set the active tab.
+ * @param {string} props.text - The text.
+ * @param {string} props.totalFileSize - The total file size.
+ */
 const FileListDropdownMenu = ({
   asButton = true,
   asLabeled = true,
   asFluid = true,
   asItem = false,
   classNames = "icon primary right labeled",
+  downloadFileUrl,
   files,
   fileTabIndex,
   icon = "download",
   id,
-  previewFileUrl,
   previewUrlFlag,
   record,
   sectionIndex,
@@ -267,6 +330,7 @@ const FileListDropdownMenu = ({
   text = i18next.t("Download"),
   totalFileSize,
 }) => {
+  const downloadUrl = `${downloadFileUrl}${previewUrlFlag}`;
 
   return (
     <Dropdown
@@ -285,21 +349,22 @@ const FileListDropdownMenu = ({
       <Dropdown.Menu>
         {/* <Dropdown.Header>Choose a file</Dropdown.Header> */}
         {files.map(({ key, size, links }, idx) => {
-          return(
-          <Dropdown.Item
-            href={links.content}
-            as="a"
-            tabIndex={idx + sectionIndex + 1}
-            key={idx}
-            // download={key}  This seems to prevent s3 downloads
-          >
-            <span className="text">{key}</span>
-            <small className="description filesize">
-              <Icon name={getFileTypeIconName(key)} />
-              {formatBytes(size)}
-            </small>
-          </Dropdown.Item>
-        )})}
+          return (
+            <Dropdown.Item
+              href={downloadUrl.replace("xxxx", key)}
+              as="a"
+              tabIndex={idx + sectionIndex + 1}
+              key={idx}
+              // download={key}  This seems to prevent s3 downloads
+            >
+              <span className="text">{key}</span>
+              <small className="description filesize">
+                <Icon name={getFileTypeIconName(key)} />
+                {formatBytes(size)}
+              </small>
+            </Dropdown.Item>
+          );
+        })}
         <Dropdown.Divider />
         <Dropdown.Item
           href={record.links.archive}
@@ -322,6 +387,30 @@ const FileListDropdownMenu = ({
   );
 };
 
+/**
+ * DEPRECATED: The dropdown menu for the sidebar file list.
+ *
+ * Intended to appear in the sidebar when the record includes multiple
+ * files. A child of FileListDropdown, which decides whether to
+ * display this based on the number of files in the record.
+ *
+ * @param {Object} props
+ * @param {Object} props.defaultPreviewFile - The default preview file.
+ * @param {string} props.downloadFileUrl - The URL for downloading files.
+ * @param {number} props.fileCountToShow - The number of files to show.
+ * @param {Object} props.files - The list of files.
+ * @param {number} props.fileTabIndex - The index of the file tab.
+ * @param {function} props.handleMobileMenuClick - The function to handle the mobile menu click.
+ * @param {boolean} props.hasFiles - Whether there are files.
+ * @param {string} props.id - The ID.
+ * @param {boolean} props.isPreview - Whether the file is a preview.
+ * @param {Object} props.permissions - The permissions for the files.
+ * @param {string} props.previewFileUrl - The URL for previewing files.
+ * @param {Object} props.record - The record.
+ * @param {function} props.setActiveTab - The function to set the active tab.
+ * @param {boolean} props.showEmbargoMessage - Whether to show the embargo message.
+ * @param {string} props.totalFileSize - The total file size.
+ */
 const FileListItemDropdown = ({
   defaultPreviewFile,
   fileCountToShow,
@@ -339,13 +428,17 @@ const FileListItemDropdown = ({
   totalFileSize,
 }) => {
   const previewUrlFlag = isPreview ? "&preview=1" : "";
-  const downloadUrl = defaultPreviewFile !== undefined ? defaultPreviewFile?.links?.content : files[0]?.links.content;
+  const downloadUrl =
+    defaultPreviewFile !== undefined
+      ? defaultPreviewFile?.links?.content
+      : files[0]?.links.content;
 
   return (
     <>
       {/* access is "restricted" also if record is metadata-only */}
       {!!permissions.can_read_files &&
-        hasFiles !== false && files?.length !== undefined &&
+        hasFiles !== false &&
+        files?.length !== undefined &&
         (files?.length < 2 ? (
           <Menu.Item
             id={id}
@@ -388,8 +481,27 @@ const FileListItemDropdown = ({
   );
 };
 
+/**
+ * The top-level dropdown menu for the sidebar file list.
+ *
+ * @param {Object} props
+ * @param {Object} props.defaultPreviewFile - The default preview file.
+ * @param {string} props.downloadFileUrl - The URL for downloading files.
+ * @param {number} props.fileCountToShow - The number of files to show.
+ * @param {Object} props.files - The list of files.
+ * @param {number} props.fileTabIndex - The index of the file tab.
+ * @param {boolean} props.hasFiles - Whether there are files.
+ * @param {boolean} props.isPreview - Whether the file is a preview.
+ * @param {Object} props.permissions - The permissions for the files.
+ * @param {string} props.previewFileUrl - The URL for previewing files.
+ * @param {number} props.sectionIndex - The index of the section.
+ * @param {function} props.setActiveTab - The function to set the active tab.
+ * @param {boolean} props.showEmbargoMessage - Whether to show the embargo message.
+ * @param {string} props.totalFileSize - The total file size.
+ */
 const FileListDropdown = ({
   defaultPreviewFile,
+  downloadFileUrl,
   fileCountToShow,
   files,
   fileTabIndex,
@@ -404,7 +516,7 @@ const FileListDropdown = ({
   totalFileSize,
 }) => {
   const previewUrlFlag = isPreview ? "&preview=1" : "";
-  const downloadUrl = defaultPreviewFile !== undefined ? defaultPreviewFile?.links?.content : files[0]?.links.content;
+  const downloadUrl = downloadFileUrl + "&preview=1";
 
   return (
     <>
@@ -412,14 +524,14 @@ const FileListDropdown = ({
       {(record.access.files === "restricted" || files.enabled === false) &&
         showEmbargoMessage && <EmbargoMessage record={record} />}
       {!!permissions.can_read_files &&
-       !!hasFiles &&
+        !!hasFiles &&
         (files?.length < 2 ? (
           <Button
             id="record-details-download"
             primary
             fluid
             as="button"
-            href={downloadUrl}
+            href={downloadUrl.replace("xxxx", files?.[0]?.key)}
             content={i18next.t("Download")}
             icon="download"
             labelPosition="right"
@@ -428,6 +540,7 @@ const FileListDropdown = ({
         ) : (
           <FileListDropdownMenu
             {...{
+              downloadFileUrl,
               files,
               fileTabIndex,
               hasFiles,
@@ -444,8 +557,36 @@ const FileListDropdown = ({
   );
 };
 
+/**
+ * The file list box.
+ *
+ * Intended to be the top-level component displaying the file list.
+ *
+ * @param {Object} props
+ * @param {string} props.downloadFileUrl - The URL for downloading files.
+ * @param {Object} props.activePreviewFile - The active preview file.
+ * @param {number} props.fileCountToShow - The number of files to show.
+ * @param {Object} props.files - The list of files.
+ * @param {number} props.fileTabIndex - The index of the file tab.
+ * @param {boolean} props.fullWordButtons - Whether to display the full word buttons.
+ * @param {boolean} props.isPreview - Whether the file is a preview.
+ * @param {Object} props.permissions - The permissions for the files.
+ * @param {string} props.previewFileUrl - The URL for previewing files.
+ * @param {number} props.previewTabIndex - The index of the preview tab.
+ * @param {Object} props.record - The record.
+ * @param {function} props.setActiveTab - The function to set the active tab.
+ * @param {function} props.setActivePreviewFile - The function to set the active preview file.
+ * @param {boolean} props.showChecksum - Whether to show the checksum.
+ * @param {boolean} props.showEmbargoMessage - Whether to show the embargo message.
+ * @param {boolean} props.showTableHeader - Whether to show the table header.
+ * @param {boolean} props.showTotalSize - Whether to show the total size.
+ * @param {boolean} props.stackedRows - Whether to stack the rows.
+ * @param {string} props.totalFileSize - The total file size.
+ * @param {boolean} props.withPreview - Whether to display the preview.
+ */
 const FileListBox = ({
   activePreviewFile,
+  downloadFileUrl,
   fileCountToShow = 0,
   files,
   fileTabIndex,
@@ -474,14 +615,15 @@ const FileListBox = ({
         {!!permissions.can_read_files && files.enabled !== false && (
           <FileListTable
             activePreviewFile={activePreviewFile}
-            previewFileUrl={previewFileUrl}
-            files={files}
+            downloadFileUrl={downloadFileUrl}
             fileCountToShow={fileCountToShow}
+            files={files}
             fileTabIndex={fileTabIndex}
             fullWordButtons={fullWordButtons}
-            pid={record.id}
             isPreview={isPreview}
             permissions={permissions}
+            pid={record.id}
+            previewFileUrl={previewFileUrl}
             previewTabIndex={previewTabIndex}
             record={record}
             setActivePreviewFile={setActivePreviewFile}

@@ -7,6 +7,7 @@ import Overridable from "react-overridable";
 const SidebarDownloadSection = (props) => {
   const {
     defaultPreviewFile,
+    downloadFileUrl,
     files,
     fileTabIndex,
     hasFiles,
@@ -40,6 +41,7 @@ const SidebarDownloadSection = (props) => {
         <FileListDropdown
           id="record-details-download"
           defaultPreviewFile={defaultPreviewFile}
+          downloadFileUrl={downloadFileUrl}
           files={files}
           fileCountToShow={3}
           fileTabIndex={fileTabIndex}

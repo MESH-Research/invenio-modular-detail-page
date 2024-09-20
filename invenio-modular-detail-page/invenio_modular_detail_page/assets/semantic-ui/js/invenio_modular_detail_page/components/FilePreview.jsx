@@ -21,13 +21,9 @@ const FilePreview = ({
   const [loading, setLoading] = useState(true);
   const previewUrlFlag = isPreview ? "&preview=1" : "";
   const fileToShow = (useDynamicPreview && !!activePreviewFile) ? activePreviewFile : (!!defaultPreviewFile ? defaultPreviewFile : files[0]);
+  const previewUrl = `${previewFileUrl.replace("xxxx", fileToShow.key)}?${previewUrlFlag}`;
   const fileExtension = !!hasPreviewableFiles ? fileToShow?.key?.split(".").pop() : "no-preview";
   const currentIsPreviewable = previewableExtensions?.includes(fileExtension);
-  console.log("FilePreview currentIsPreviewable", currentIsPreviewable);
-  console.log("FilePreview fileExtension", fileExtension);
-  console.log("FilePreview !currentIsPreviewable", !currentIsPreviewable);
-  console.log("FilePreview previewableExtensions", previewableExtensions);
-
 
 
   const iFrameRef = useRef(null);
@@ -73,7 +69,7 @@ const FilePreview = ({
                 id={"preview-iframe"}
                 ref={iFrameRef}
                 name={record.id}
-                src={`${previewFileUrl}${fileToShow.key}?${previewUrlFlag}`}
+                src={previewUrl}
                 width="100%"
                 // height="800"
               ></iframe>
