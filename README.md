@@ -1,4 +1,7 @@
-# invenio-modular-detail-page
+# Invenio Modular Detail Page
+
+Version 0.1.0-dev1
+
 An InvenioRDM extension supplying a modular, React-based record detail page
 
 This extension provides a jinja2 template which furnishes a single html entity with all of the necessary record data embedded as data-attributes. This entity is then used (in `index.js`) to render a top-level React.js component `DetailContent`. This parent component provides three configurable page regions: a central content column and two sidebars (left and right). These regions can then be filled with any React components, in any order, as declared in a set of Invenio config variables. Some of the components allow nesting of other components inside them, and

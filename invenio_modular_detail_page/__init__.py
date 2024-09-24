@@ -8,6 +8,8 @@
 
 """Invenio extension that adds a modular record detail page."""
 
-from setuptools import setup
+from .ext import InvenioModularDetailPage
 
-setup()
+__version__ = "0.1.0-dev1"
+
+__all__ = ("__version__", "InvenioModularDetailPage")

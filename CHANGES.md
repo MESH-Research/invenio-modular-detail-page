@@ -5,8 +5,9 @@
     and/or modify it under the terms of the MIT License; see LICENSE file for
     more details.
 
+Changes
+=======
 
-Usage
-=====
+Version 0.1.0
 
-.. automodule:: invenio_modular_detail_page
+- Initial public release.
