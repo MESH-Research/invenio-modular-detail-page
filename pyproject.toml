@@ -1,0 +1,134 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "invenio-modular-detail-page"
+version = "0.1.0-dev1"
+description = "InvenioRDM extension that adds a modular record detail page"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "MESH Research", email = "scottia4@msu.edu"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha"
+]
+keywords = ["invenio", "ui", "modular"]
+requires-python = ">=3.9"
+dependencies = [
+    "invenio-app-rdm>=12.0.0,<13.0.0",
+    "invenio-i18n>=1.3.1"
+]
+
+[project.optional-dependencies]
+test = [
+    "coverage",
+    "docker-services-cli",
+    "pytest-invenio",
+    "pytest-black",
+  "pytest-invenio",
+    "sphinx>=4.5.0",
+  "selenium",
+]
+dev = [
+  "bumpver",
+  "check-manifest",
+  "ipykernel",
+  "pip-tools",
+]
+
+[project.urls]
+Homepage = "https://github.com/MESH-Research/invenio-modular-detail-page"
+
+[project.entry-points."invenio_base.apps"]
+invenio_modular_detail_page = "invenio_modular_detail_page:InvenioModularDetailPage"
+
+[project.entry-points."invenio_base.blueprints"]
+invenio_modular_detail_page = "invenio_modular_detail_page.ext:create_blueprint"
+
+[project.entry-points."invenio_i18n.translations"]
+messages = "invenio_modular_detail_page"
+
+[project.entry-points."invenio_assets.webpack"]
+invenio_modular_detail_page_theme = "invenio_modular_detail_page.webpack:theme"
+
+[tool.pytest.ini_options]
+addopts = "--black --isort --pydocstyle --doctest-glob=\"*.rst\" --doctest-modules --cov=invenio_modular_detail_page --cov-report=term-missing"
+testpaths = ["docs", "tests", "invenio_modular_detail_page"]
+
+[tool.pydocstyle]
+add-ignore = ["D401"]
+
+[tool.sphinx]
+source-dir = "docs/"
+build-dir = "docs/_build"
+all_files = true
+
+[tool.babel.compile_catalog]
+directory = "invenio_modular_detail_page/translations/"
+use-fuzzy = true
+
+[tool.babel.extract_messages]
+copyright_holder = "MESH Research"
+msgid_bugs_address = "scottia4@msu.edu"
+mapping-file = "babel.ini"
+output-file = "invenio_modular_detail_page/translations/messages.pot"
+add-comments = "NOTE"
+
+[tool.babel.init_catalog]
+input-file = "invenio_modular_detail_page/translations/messages.pot"
+output-dir = "invenio_modular_detail_page/translations/"
+
+[tool.babel.update_catalog]
+input-file = "invenio_modular_detail_page/translations/messages.pot"
+output-dir = "invenio_modular_detail_page/translations/"
+
+[tool.check-manifest]
+ignore = [
+  "PKG-INFO",
+  ".egg-info",
+  ".egg-info/*",
+  "setup.cfg",
+  ".DS_Store",
+  ".hgtags",
+  ".hgsigs",
+  ".hgignore",
+  ".gitignore",
+  ".bzrignore",
+  ".gitattributes",
+  ".github/*",
+  ".travis.yml",
+  "Jenkinsfile",
+  "* .mo",
+  "dist/*",
+  "build/*",
+  "invenio_modular_detail_page/dependencies/*",
+]
+
+[tool.bumpver]
+current_version = "0.1.0-dev1"
+version_pattern = "MAJOR.MINOR.PATCH[-TAGNUM]"
+commit_message = "bump version {old_version} -> {new_version}"
+tag_message = "{new_version}"
+tag_scope = "default"
+pre_commit_hook = ""
+post_commit_hook = ""
+commit = true
+tag = true
+push = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    'version = "{version}"',
+    'current_version = "{version}"',
+]
+"README.md" = [
+    "Version {version}",
+]
+"VERSION" = [
+    '^"{version}"',
+]
+"invenio_modular_detail_page/__init__.py" = [
+    '^__version__ = "{version}"',
+]
