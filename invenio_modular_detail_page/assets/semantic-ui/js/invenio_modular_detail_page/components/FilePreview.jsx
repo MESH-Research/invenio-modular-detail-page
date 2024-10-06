@@ -21,7 +21,7 @@ const FilePreview = ({
   const [loading, setLoading] = useState(true);
   const previewUrlFlag = isPreview ? "&preview=1" : "";
   const fileToShow = (useDynamicPreview && !!activePreviewFile) ? activePreviewFile : (!!defaultPreviewFile ? defaultPreviewFile : files[0]);
-  const previewUrl = `${previewFileUrl.replace("xxxx", fileToShow.key)}?${previewUrlFlag}`;
+  const previewUrl = !!previewFileUrl ? `${previewFileUrl.replace("xxxx", fileToShow.key)}?${previewUrlFlag}` : "";
   const fileExtension = !!hasPreviewableFiles ? fileToShow?.key?.split(".").pop() : "no-preview";
   const currentIsPreviewable = previewableExtensions?.includes(fileExtension);
 
