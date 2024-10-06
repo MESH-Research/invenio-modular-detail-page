@@ -613,7 +613,7 @@ const FileListBox = ({
         {/* Note: "restricted" is the value also for metadata-only records */}
         {(record.access.files === "restricted" || files?.enabled === false || !files) &&
           showEmbargoMessage && <EmbargoMessage record={record} />}
-        {!!permissions.can_read_files && files.enabled !== false && !!files && (
+        {!!permissions.can_read_files && files?.enabled !== false && !!files && (
           <FileListTable
             activePreviewFile={activePreviewFile}
             downloadFileUrl={downloadFileUrl}
