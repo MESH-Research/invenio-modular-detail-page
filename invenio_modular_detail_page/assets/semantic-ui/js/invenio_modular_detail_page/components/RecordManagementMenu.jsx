@@ -130,7 +130,7 @@ const RecordManagementMenu = ({
   currentUserId,
   handleShareModalOpen,
   handleParentPopupClose,
-  tabIndex,
+  sectionIndex,
 }) => {
   const [error, setError] = useState(null);
   const recid = record.id;
@@ -144,7 +144,7 @@ const RecordManagementMenu = ({
     <section
       id="record-manage-menu"
       aria-label={i18next.t("Record management")}
-      class="ui"
+      className="ui"
     >
       <Grid columns={1} className="record-management" id="recordManagement">
         {permissions.can_edit && !isDraft && (
@@ -152,7 +152,7 @@ const RecordManagementMenu = ({
             <EditButton
               recid={recid}
               onError={handleError}
-              tabIndex={tabIndex + 2}
+              tabIndex={sectionIndex + 2}
             />
           </Grid.Column>
         )}
@@ -165,7 +165,7 @@ const RecordManagementMenu = ({
               onClick={() => (window.location = `/uploads/${recid}`)}
               icon
               labelPosition="left"
-              tabIndex={tabIndex + 4}
+              tabIndex={sectionIndex + 4}
             >
               <Icon name="edit" />
               {i18next.t("Edit")}
@@ -181,7 +181,7 @@ const RecordManagementMenu = ({
                 record={record}
                 onError={handleError}
                 disabled={!permissions.can_new_version}
-                tabIndex={tabIndex + 6}
+                tabIndex={sectionIndex + 6}
               />
             </Grid.Column>
 
@@ -192,7 +192,7 @@ const RecordManagementMenu = ({
                   recid={recid}
                   handleShareModalOpen={handleShareModalOpen}
                   handleParentPopupClose={handleParentPopupClose}
-                  tabIndex={tabIndex + 8}
+                  tabIndex={sectionIndex + 8}
                 />
               )}
             </Grid.Column>
@@ -255,7 +255,7 @@ const RecordManagementPopup = ({
           currentUserId={currentUserId}
           handleShareModalOpen={handleShareModalOpen}
           handleParentPopupClose={handleClose}
-          tabIndex={40}
+          sectionIndex={40}
         />
       }
     />

@@ -32,7 +32,9 @@ const MobileActionMenu = (props) => {
   const [manageOpen, setManageOpen] = useState(false);
   const [shareModalOpen, setShareModalOpen] = React.useState(false);
   const handleManageOpen = () => setManageOpen(true);
-  const handleManageClose = () => setManageOpen(false);
+  const handleManageClose = () => {
+    setManageOpen(false);
+  };
   const handleShareModalOpen = () => setShareModalOpen(true);
   const handleShareModalClose = () => setShareModalOpen(false);
   const handleMobileMenuClick = (e, { name }) => {
@@ -82,9 +84,10 @@ const MobileActionMenu = (props) => {
                   Manage
                 </Menu.Item>
               }
-              onClose={() => setActiveItem(null) && handleManageClose()}
+              onClose={() => { setActiveItem(null) && handleManageClose() }}
               on="click"
-              open={manageOpen}
+              // open={manageOpen} TODO: find another way to programmatically
+              // close the popup when the share modal opens
               onOpen={handleManageOpen}
             />
           </>
