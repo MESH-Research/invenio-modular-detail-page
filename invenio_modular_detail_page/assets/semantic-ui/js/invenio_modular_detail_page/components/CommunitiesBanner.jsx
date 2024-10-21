@@ -44,7 +44,7 @@ const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissi
         >
           <Grid verticalAlign="middle">
             <Grid.Row className={`default-community collection-row ${community.slug} ${!additionalCommunities && "sole-community" }`}>
-              <Grid.Column width={10}>
+              <Grid.Column width={9} widescreen={10}>
                 <p className="mb-0"><small>part of the</small></p>
                 <h3 className="ui header small mb-0">
                   <a href={`/collections/${community.slug}`}>
