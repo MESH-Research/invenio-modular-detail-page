@@ -611,8 +611,9 @@ const FileListBox = ({
     <div className={`ui mb-10 ${record.ui.access_status.id}`}>
       <div className="content pt-0">
         {/* Note: "restricted" is the value also for metadata-only records */}
-        {(record.access.files === "restricted" || files?.enabled === false || !files) &&
-          showEmbargoMessage && <EmbargoMessage record={record} />}
+        {/* NOTE: Message being shown in file preview pane */}
+        {/* {(record.access.files === "restricted" || files?.enabled === false || !files) &&
+          showEmbargoMessage && <EmbargoMessage record={record} />} */}
         {!!permissions.can_read_files && files?.enabled !== false && !!files && (
           <FileListTable
             activePreviewFile={activePreviewFile}
