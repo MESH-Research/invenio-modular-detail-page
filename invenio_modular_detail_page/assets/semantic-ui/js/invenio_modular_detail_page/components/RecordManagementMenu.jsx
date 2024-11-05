@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
-import { Button, Icon, Grid, Popup } from "semantic-ui-react";
+import { Button, Icon, Grid, Message, Popup } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import Overridable from "react-overridable";
 import { NewVersionButton } from "@js/invenio_rdm_records/";

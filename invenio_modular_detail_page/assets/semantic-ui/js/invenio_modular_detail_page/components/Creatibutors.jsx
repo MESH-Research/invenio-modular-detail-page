@@ -120,7 +120,7 @@ const Creatibutor = ({
       <List.Content as={"span"} className="creatibutor-name">
         <a
           className="ui creatibutor-link"
-          href={`../search?q='metadata.creators.person_or_org.name:${creatibutor.person_or_org.name}'`}
+          href={`../search?q=metadata.creators.person_or_org.name:"${creatibutor.person_or_org.name}"`}
           {...extra_props}
         >
           <span>
