@@ -1,29 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
-import { Button, Icon, Image, Grid } from "semantic-ui-react";
+import { Button, Image, Grid } from "semantic-ui-react";
 import Geopattern from "geopattern";
-import { set } from "lodash";
+import { CommunitiesManagement } from "./community_management/CommunitiesManagement";
 
-const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissionRequest, show }) => {
-
-  const isCommunityRestricted = community
-    ? community.access.visibility == "restricted"
+const CommunitiesBanner = ({
+  additionalCommunities,
+  canManageRecord,
+  community,
+  isPreviewSubmissionRequest,
+  permissions,
+  record,
+  recordCommunityEndpoint,
+  recordCommunitySearchConfig,
+  recordUserCommunitySearchConfig,
+  searchConfig,
+  userCommunitiesMemberships,
+  show,
+  sectionIndex,
+}) => {
+  const [communities, setCommunities] = useState(community ? (additionalCommunities ? [community, ...additionalCommunities] : [community]) : []);
+  const [defaultCommunity, setDefaultCommunity] = useState(
+    record.parent.communities.default ? communities.find(community => community.id === record.parent.communities.default) : community
+  );
+  const [otherCommunities, setOtherCommunities] = useState(
+    ( communities.length > 0 && !!defaultCommunity ) ? communities.filter(community => community.id !== defaultCommunity.id) : []
+  );
+  const isCommunityRestricted = defaultCommunity
+    ? defaultCommunity.access.visibility == "restricted"
     : false;
+  console.log("community", community);
+  console.log("record", record);
+  console.log("defaultCommunity", defaultCommunity);
+  console.log("otherCommunities", otherCommunities);
+  console.log("communities", communities);
 
-  const communityLogoUrl = community?.links ? community?.links?.logo : `/api/communities/${community?.id}/logo`;
-  const communityTitle = community?.metadata.title;
+  useEffect(() => {
+    console.log("first render");
+  }, []);
+
+  const communityLogoUrl = defaultCommunity?.links
+    ? defaultCommunity?.links?.logo
+    : `/api/communities/${defaultCommunity?.id}/logo`;
+  const communityTitle = defaultCommunity?.metadata.title;
   const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    setOtherCommunities(communities.filter(community => community.id !== defaultCommunity.id));
+  }, [defaultCommunity]);
+
+  // Remove community branding if the user removes from the last community
+  useEffect(() => {
+    if (!communities || communities.length === 0) {
+      setDefaultCommunity(null);
+      setOtherCommunities([]);
+    }
+  }, [communities]);
 
   const makePattern = (el, slug) => {
     const pattern = Geopattern.generate(encodeURI(slug));
 
     // use rgba version of svg pattern color for header background
     const values = pattern.color.match(/\w\w/g);
+    const darkenFactor = 0.35;  // to get enough contrast for a11y
     const [r, g, b] = values.map((k) => parseInt(k, 16));
+    const [rDark, gDark, bDark] = [r, g, b].map((k) => k * (1 - darkenFactor));
     const wrapper = el.closest(`.row.collection-row.${slug}`);
     if (wrapper) {
-      wrapper.querySelector("a").style = `color: ${pattern.color};`;
-      if (slug === community.slug) {
+      wrapper.querySelector("a").style = `color: rgba( ${rDark}, ${gDark}, ${bDark}, 1);`;
+      if (slug === defaultCommunity.slug) {
         wrapper.style = `background: rgba( ${r}, ${g}, ${b}, 0.1); border-color: rgba( ${r}, ${g}, ${b}, 0.3); color: ${pattern.color};`;
       }
     }
@@ -31,66 +76,38 @@ const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissi
     return pattern.toDataUri();
   };
 
-  return (
-    (!isPreviewSubmissionRequest &&
-    community) ? (
+  return !isPreviewSubmissionRequest ? (
+    <div
+      id="communities"
+      className={`sidebar-container ${show}`}
+      aria-label={i18next.t("Record communities")}
+    >
       <div
-        id="communities"
-        className={`sidebar-container ${show}`}
-        aria-label={i18next.t("Record communities")}
+        className={`ui container segment rdm-sidebar pr-0 mt-0 ${
+          defaultCommunity?.slug || "no-community"
+        }`}
       >
-        <div
-          className={`ui container segment rdm-sidebar pr-0 mt-0 ${community.slug}`}
-        >
-          <Grid verticalAlign="middle">
-            <Grid.Row className={`default-community collection-row ${community.slug} ${!additionalCommunities && "sole-community" }`}>
-              <Grid.Column width={9} className="pr-0">
-                <p className="mb-0"><small>part of the</small></p>
-                <h3 className="ui header small mb-0">
-                  <a href={`/collections/${community.slug}`}>
-                    {community.metadata.title}
-                  </a>
-                </h3>
-                <p className="mt-0"><small>collection</small></p>
-                {isCommunityRestricted && (
-                  <div
-                    className="ui label horizontal small access-status restricted rel-ml-1"
-                    title={i18next.t("Collection visibility")}
-                    data-tooltip={i18next.t(
-                      "The collection is restricted to users with access."
-                    )}
-                    data-inverted=""
-                  >
-                    <i className="icon ban" aria-hidden="true"></i>{" "}
-                    {i18next.t("Restricted")}
-                  </div>
-                )}
-              </Grid.Column>
-              <Grid.Column width={6}>
-                <div className="ui rounded image community-image">
-                  <Image
-                    src={communityLogoUrl}
-                    alt={`logo for ${communityTitle} collection`}
-                    // fallbackSrc={pattern !== "" ? pattern.toDataUri() : ""}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = makePattern(e.target, community.slug);
-                    }}
-                  />
-                </div>
-              </Grid.Column>
-            </Grid.Row>
-            {additionalCommunities && (
-              <>
-              {showAll && additionalCommunities?.map((com) => (
-              <Grid.Row key={com.id} className={`collection-row ${com.slug}`}>
-                <Grid.Column width={12}>
-                  <h3 className="ui header small">
-                    <a href={`/collections/${com.slug}`}>
-                      {com.metadata.title}
+        <Grid verticalAlign="middle">
+          {!!defaultCommunity ? (
+            <>
+              <Grid.Row
+                className={`default-community collection-row ${
+                  defaultCommunity.slug
+                } ${!otherCommunities && "sole-community"}`}
+              >
+                <Grid.Column width={9} className="pr-0">
+                  <p className="mb-0">
+                    <small>part of the</small>
+                  </p>
+                  <h3 className="ui header small mb-0">
+                    <a href={`/collections/${defaultCommunity.slug}`}>
+                      {defaultCommunity.metadata.title}
                     </a>
                   </h3>
-                  {com.access.visibility==="restricted" && (
+                  <p className="mt-0">
+                    <small>collection</small>
+                  </p>
+                  {isCommunityRestricted && (
                     <div
                       className="ui label horizontal small access-status restricted rel-ml-1"
                       title={i18next.t("Collection visibility")}
@@ -104,35 +121,105 @@ const CommunitiesBanner = ({ additionalCommunities, community, isPreviewSubmissi
                     </div>
                   )}
                 </Grid.Column>
-                <Grid.Column width={4} className="pr-0 pl-0">
+                <Grid.Column width={6}>
                   <div className="ui rounded image community-image">
                     <Image
-                      src={`/api/communities/${com.id}/logo`}
-                      alt={`logo for ${com.metadata.title} collection`}
+                      src={communityLogoUrl}
+                      alt={`logo for ${communityTitle} collection`}
+                      // fallbackSrc={pattern !== "" ? pattern.toDataUri() : ""}
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = makePattern(e.target, com.slug);
+                        e.target.src = makePattern(
+                          e.target,
+                          defaultCommunity.slug
+                        );
                       }}
                     />
                   </div>
-                  </Grid.Column>
-                </Grid.Row>
-              )
-            )}
-              <Grid.Row className={`additional-communities ${showAll && "open"}`}>
-                {!showAll && (
-                  `and ${additionalCommunities.length} more collections...`
-                ) }
-                <Button size="small" basic onClick={() => setShowAll(!showAll)}>{showAll ? "Hide" : "Show"}</Button>
+                </Grid.Column>
               </Grid.Row>
+              {otherCommunities.length > 0 && (
+                <>
+                  {showAll &&
+                    otherCommunities?.map((com) => (
+                      <Grid.Row
+                        key={com.id}
+                        className={`collection-row ${com.slug}`}
+                      >
+                        <Grid.Column width={12}>
+                          <h3 className="ui header small">
+                            <a href={`/collections/${com.slug}`}>
+                              {com.metadata.title}
+                            </a>
+                          </h3>
+                          {com.access.visibility === "restricted" && (
+                            <div
+                              className="ui label horizontal small access-status restricted rel-ml-1"
+                              title={i18next.t("Collection visibility")}
+                              data-tooltip={i18next.t(
+                                "The collection is restricted to users with access."
+                              )}
+                              data-inverted=""
+                            >
+                              <i className="icon ban" aria-hidden="true"></i>{" "}
+                              {i18next.t("Restricted")}
+                            </div>
+                          )}
+                        </Grid.Column>
+                        <Grid.Column width={4} className="pr-0 pl-0">
+                          <div className="ui rounded image community-image">
+                            <Image
+                              src={`/api/communities/${com.id}/logo`}
+                              alt={`logo for ${com.metadata.title} collection`}
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = makePattern(e.target, com.slug);
+                              }}
+                            />
+                          </div>
+                        </Grid.Column>
+                      </Grid.Row>
+                    ))}
+                  <Grid.Row
+                    className={`additional-communities ${showAll && "open"}`}
+                  >
+                    {!showAll &&
+                      `and ${otherCommunities.length} more collections...`}
+                    <Button
+                      size="small"
+                      basic
+                      onClick={() => setShowAll(!showAll)}
+                      tabIndex={sectionIndex + 1}
+                    >
+                      {showAll ? "Hide" : "Show"}
+                    </Button>
+                  </Grid.Row>
+                </>
+              )}
             </>
-            )}
-          </Grid>
-        </div>
+          ) : null}
+          {canManageRecord && (
+            <CommunitiesManagement
+              userCommunitiesMemberships={userCommunitiesMemberships}
+              recordCommunityEndpoint={recordCommunityEndpoint}
+              recordUserCommunitySearchConfig={recordUserCommunitySearchConfig}
+              canManageRecord={canManageRecord}
+              recordCommunitySearchConfig={recordCommunitySearchConfig}
+              permissions={permissions}
+              searchConfig={searchConfig}
+              record={record}
+              showAll={showAll}
+              defaultCommunity={defaultCommunity}
+              setDefaultCommunity={setDefaultCommunity}
+              communities={communities}
+              setCommunities={setCommunities}
+              sectionIndex={sectionIndex + 2}
+            />
+          )}
+        </Grid>
       </div>
-    )
-    : null
-  );
+    </div>
+  ) : null;
 };
 
 export { CommunitiesBanner };

@@ -144,12 +144,26 @@ const DetailContent = (rawProps) => {
             show={"mobile tablet only"}
           />
           <CommunitiesBanner
-            community={topLevelProps.community}
             additionalCommunities={topLevelProps.additionalCommunities}
+            canManageRecord={topLevelProps.canManage}
+            community={topLevelProps.community}
             isPreviewSubmissionRequest={
               topLevelProps.isPreviewSubmissionRequest
             }
+            permissions={topLevelProps.permissions}
+            record={topLevelProps.record}
+            recordCommunityEndpoint={topLevelProps.recordCommunityEndpoint}
+            recordCommunitySearchConfig={
+              topLevelProps.recordCommunitySearchConfig
+            }
+            recordUserCommunitySearchConfig={
+              topLevelProps.recordUserCommunitySearchConfig
+            }
+            searchConfig={topLevelProps.searchConfig}
             show={"mobile tablet only"}
+            userCommunitiesMemberships={
+              topLevelProps.userCommunitiesMemberships
+            }
           />
           {rawProps.mainSections.map(
             ({ section, component_name, subsections, props, show }) => {

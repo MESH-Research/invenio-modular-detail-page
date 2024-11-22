@@ -240,8 +240,8 @@ const RecordManagementPopup = ({
           labelPosition="right"
           icon="cog"
           content="Manage this work"
-          basic
-          tabIndex={40}
+          className="secondary basic"
+          tabIndex={50}
         />
       }
       on="click"
@@ -255,7 +255,7 @@ const RecordManagementPopup = ({
           currentUserId={currentUserId}
           handleShareModalOpen={handleShareModalOpen}
           handleParentPopupClose={handleClose}
-          sectionIndex={40}
+          sectionIndex={50}
         />
       }
     />

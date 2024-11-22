@@ -115,7 +115,7 @@ const DetailRightSidebar = (topLevelProps) => {
                 show_heading={show_heading}
                 show={show}
                 sectionIndex={
-                  40 + idx + idx + idx + idx + idx + idx + idx + idx + idx + idx
+                  60 + idx + idx + idx + idx + idx + idx + idx + idx + idx + idx
                 }
               />
             );

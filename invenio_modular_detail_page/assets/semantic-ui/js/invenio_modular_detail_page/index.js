@@ -9,10 +9,17 @@ let community = JSON.parse(detailMainDiv.dataset.community);
 if ( Object.keys(community).length === 0 ) {
   community = undefined;
 }
+const recordCommunitySearchConfig = JSON.parse(
+  detailMainDiv.dataset.recordCommunitySearchConfig
+);
+const pendingCommunitiesSearchConfig = JSON.parse(
+  detailMainDiv.dataset.pendingCommunitiesSearchConfig
+);
 
 ReactDOM.render(
   <DetailContent
     backPage={detailMainDiv.dataset.backPage}
+    canManageRecord={JSON.parse(detailMainDiv.dataset.canManageRecord)}
     community={community}
     citationStyles={JSON.parse(detailMainDiv.dataset.citationStyles)}
     citationStyleDefault={detailMainDiv.dataset.citationStyleDefault}
@@ -46,7 +53,15 @@ ReactDOM.render(
     previewableExtensions={JSON.parse(detailMainDiv.dataset.previewableExtensions)}
     previewFileUrl={detailMainDiv.dataset.previewFileUrl === 'undefined' ? undefined : detailMainDiv.dataset.previewFileUrl}
     record={JSON.parse(detailMainDiv.dataset.record)}
+    recordCommunityEndpoint={
+      detailMainDiv.dataset.recordCommunityEndpoint
+    }
+    recordCommunitySearchConfig={recordCommunitySearchConfig}
     recordExporters={JSON.parse(detailMainDiv.dataset.recordExporters)}
+    recordUserCommunitySearchConfig={JSON.parse(
+      detailMainDiv.dataset.recordUserCommunitySearchConfig
+    )}
+    searchConfig={pendingCommunitiesSearchConfig}
     showDecimalSizes={JSON.parse(detailMainDiv.dataset.showDecimalSizes)}
     showRecordManagementMenu={JSON.parse(
       detailMainDiv.dataset.showRecordManagementMenu
@@ -56,6 +71,10 @@ ReactDOM.render(
       detailMainDiv.dataset.sidebarSectionsRight
     )}
     totalFileSize={detailMainDiv.dataset.totalFileSize}
+    userCommunitiesMemberships={JSON.parse(
+      detailMainDiv.dataset.userCommunitiesMemberships
+    )}
+
     // badge_png
     // badge_svg
     // breadcrumbs

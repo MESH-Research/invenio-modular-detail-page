@@ -97,6 +97,7 @@
       <div id="detail-main-content"
         class="ui relaxed grid mt-5"
         data-back-page='{{ url_for("invenio_app_rdm_records.deposit_edit", pid_value=record.id) }}'
+        data-can-manage-record='{{ can_manage_record |tojson }}'
         data-citation-styles='{{ config["RDM_CITATION_STYLES"] | tojson }}'
         data-citation-style-default='{{ config["RDM_CITATION_STYLES_DEFAULT"] }}'
         data-community='{{ community_dict | tojson }}'
@@ -120,16 +121,23 @@
         data-landing-urls='{{ config["LANDING_URLS"] | tojson }}'
         data-localized-stats='{{ localized_stats | tojson }}'
         data-main-sections='{{config["MODULAR_DETAIL_PAGE_MAIN_SECTIONS"] | tojson }}'
+        data-pending-communities-search-config='{{ search_app_rdm_record_requests_config(app_id="InvenioAppRdm.RecordRequests", endpoint=record.links.requests) | tojson }}'
         data-permissions='{{ permissions | tojson }}'
         data-preview-file-url='{{ preview_file_url }}'
         data-previewable-extensions='{{ "" | previewable_extensions | tojson }}'
         data-record='{{ record | tojson }}'
+        data-record-community-endpoint="{{ record.links.communities }}"
+        data-record-community-search-config='{{ search_app_rdm_record_communities_config(app_id="InvenioAppRdm.RecordCommunitiesSuggestions", endpoint=record.links["communities-suggestions"]) | tojson }}'
+        data-record-community-search-endpoint="{{ record.links['communities-suggestions'] }}"
+        data-record-user-community-search-config='{{ search_app_rdm_record_user_communities_config(app_id="InvenioAppRdm.RecordUserCommunitiesSuggestions", endpoint=record.links["communities-suggestions"]) | tojson }}'
+        data-record-user-community-search-endpoint="{{ record.links['user-communities-suggestions'] }}"
         data-record-exporters='{{ config.get("APP_RDM_RECORD_EXPORTERS", {}) | tojson }}'
         data-show-decimal-sizes='{{ config["APP_RDM_DISPLAY_DECIMAL_FILE_SIZES"] | tojson }}'
         data-show-record-management-menu='{{ show_record_management_menu | tojson }}'
         data-sidebar-sections-left='{{config.get("MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_LEFT", []) | tojson }}'
         data-sidebar-sections-right='{{config.get("MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT", []) | tojson }}'
         data-total-file-size='{{ ( files|sum(attribute="size")|filesizeformat(binary=config["APP_RDM_DISPLAY_DECIMAL_FILE_SIZES"]) ) if (files and record.files.enabled) else 0 }}'
+        data-user-communities-memberships='{{ user_communities_memberships | tojson }}'
       >
       </div>
   </div>

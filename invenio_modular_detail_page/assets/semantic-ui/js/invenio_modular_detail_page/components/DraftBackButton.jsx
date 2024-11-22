@@ -1,5 +1,6 @@
 import React from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { Button } from "semantic-ui-react";
 
 const DraftBackButton = ({
   backPage,
@@ -14,9 +15,17 @@ const DraftBackButton = ({
       className={`back-navigation rel-pb-2 pl-0 ${show}`}
       aria-label={i18next.t("Back-navigation")}
     >
-      <a className="ui button labeled icon basic orange" href={backPage} >
-        <i className="ui icon angle left"></i> {i18next.t("Back to edit")}
-      </a>
+        <Button
+          fluid
+          labelPosition="right"
+          icon="angle left"
+          content={i18next.t("Back to edit")}
+          className="secondary basic orange"
+          onClick={() => {
+            window.location.href = backPage;
+          }}
+          tabIndex={40}
+        />
     </nav>
   ) : (
     null
