@@ -119,11 +119,11 @@ push = true
 
 [tool.bumpver.file_patterns]
 "pyproject.toml" = [
-    'version = "{version}"',
-    'current_version = "{version}"',
+    '^version = "{version}"',
+    '^current_version = "{version}"',
 ]
 "README.md" = [
-    "Version {version}",
+    '^Version {version}',
 ]
 "VERSION" = [
     '^"{version}"',
