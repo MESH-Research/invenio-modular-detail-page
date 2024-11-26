@@ -171,7 +171,10 @@ const RecordManagementMenu = ({
   const handleDropdownChange = (e, { value }) => {
     console.log("value", value);
     switch (value) {
-      case "edit":
+      case "edit-published":
+        handleEditClick();
+        break;
+      case "edit-draft":
         handleEditClick();
         break;
       case "new-version":
