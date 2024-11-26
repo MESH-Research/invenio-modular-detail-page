@@ -170,9 +170,12 @@ const RecordManagementMenu = ({
 
   const options = [];
 
+  console.log("permissions", permissions);
+
+
   if (permissions.can_edit && !isDraft) {
     options.push({ key: "edit", text: i18next.t("Edit"), icon: "edit", value: `/uploads/${recid}`, onClick: handleEditClick });
-  } elif (isPreviewSubmissionRequest && isDraft) {
+  } else if (isPreviewSubmissionRequest && isDraft) {
     options.push({ key: "edit", text: i18next.t("Edit"), icon: "edit", value: `/uploads/${recid}`, onClick: handleEditClick });
   }
 
