@@ -12,7 +12,6 @@ const ShareButton = ({
   recid,
   handleShareModalOpen,
   handleParentPopupClose,
-  tabIndex,
 }) => {
   const handleClick = () => {
     handleShareModalOpen();
@@ -32,7 +31,6 @@ const ShareButton = ({
           aria-haspopup="dialog"
           icon
           labelPosition="left"
-          tabIndex={tabIndex}
         >
           <Icon name="share square" />
           {i18next.t("Share")}
@@ -51,7 +49,7 @@ ShareButton.defaultProps = {
   disabled: false,
 };
 
-export const EditButton = ({ recid, onError, tabIndex }) => {
+export const EditButton = ({ recid, onError }) => {
   const [loading, setLoading] = useState(false);
 
   const handleClick = async () => {
@@ -74,7 +72,6 @@ export const EditButton = ({ recid, onError, tabIndex }) => {
       loading={loading}
       icon
       labelPosition="left"
-      tabIndex={tabIndex}
     >
       <Icon name="edit" />
       {i18next.t("Edit")}
@@ -152,7 +149,6 @@ const RecordManagementMenu = ({
             <EditButton
               recid={recid}
               onError={handleError}
-              tabIndex={sectionIndex + 2}
             />
           </Grid.Column>
         )}
@@ -165,7 +161,6 @@ const RecordManagementMenu = ({
               onClick={() => (window.location = `/uploads/${recid}`)}
               icon
               labelPosition="left"
-              tabIndex={sectionIndex + 4}
             >
               <Icon name="edit" />
               {i18next.t("Edit")}
@@ -181,7 +176,6 @@ const RecordManagementMenu = ({
                 record={record}
                 onError={handleError}
                 disabled={!permissions.can_new_version}
-                tabIndex={sectionIndex + 6}
               />
             </Grid.Column>
 
@@ -192,7 +186,6 @@ const RecordManagementMenu = ({
                   recid={recid}
                   handleShareModalOpen={handleShareModalOpen}
                   handleParentPopupClose={handleParentPopupClose}
-                  tabIndex={sectionIndex + 8}
                 />
               )}
             </Grid.Column>
@@ -241,7 +234,6 @@ const RecordManagementPopup = ({
           icon="cog"
           content="Manage this work"
           className="secondary basic"
-          tabIndex={50}
         />
       }
       on="click"

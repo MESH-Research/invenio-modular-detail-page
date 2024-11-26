@@ -32,13 +32,13 @@ MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT = [
             "tabbedSections",
             "totalFileSize",
         ],
-        "show": "computer large monitor widescreen only",
+        "show": "computer large-monitor widescreen only",
     },
     {
         "section": _("Communities"),
         "component_name": "CommunitiesBanner",
         "props": ["community", "isPreviewSubmissionRequest"],
-        "show": "computer large monitor widescreen only",
+        "show": "computer large-monitor widescreen only",
     },
     {
         "section": _("Versions"),
@@ -55,13 +55,13 @@ MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT = [
         "section": _("Keywords & Subjects"),
         "component_name": "DetailSidebarSubjectsSection",
         "props": ["record"],
-        "show": "computer large monitor widescreen only",
+        "show": "computer large-monitor widescreen only",
     },
     {
         "section": _("Cite this"),
         "component_name": "CitationSection",
         "props": ["record", "citationStyles", "citationStyleDefault"],
-        "show": "computer large monitor widescreen only",
+        "show": "computer large-monitor widescreen only",
     },
     {
         "section": _("Details"),
@@ -87,19 +87,19 @@ MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT = [
             {"section": "DOI badge"},
         ],
         "show_heading": False,
-        "show": "computer large monitor widescreen only",
+        "show": "computer large-monitor widescreen only",
     },
     {
         "section": _("Export"),
         "component_name": "SidebarExportSection",
         "props": ["isPreview", "recordExporters", "record"],
-        "show": "computer large monitor widescreen only",
+        "show": "computer large-monitor widescreen only",
     },
     {
         "section": _("Share"),
         "component_name": "SidebarSharingSection",
         "props": ["record"],
-        "show": "computer large monitor widescreen only",
+        "show": "computer large-monitor widescreen only",
     },
 ]
 MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_LEFT = []

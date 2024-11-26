@@ -76,6 +76,7 @@ const MobileActionMenu = (props) => {
               }
               trigger={
                 <Menu.Item
+                  as="button"
                   name="manage"
                   active={activeItem === "manage"}
                   onClick={handleMobileMenuClick}
@@ -98,6 +99,7 @@ const MobileActionMenu = (props) => {
             asItem: true,
             asButton: false,
             asFluid: false,
+            pointing: "bottom",
             icon: null,
             record,
             text: (
@@ -117,6 +119,7 @@ const MobileActionMenu = (props) => {
           record={record}
           trigger={
             <Menu.Item
+              as="button"
               name="cite"
               active={activeItem === "cite"}
               onClick={handleMobileMenuClick}
@@ -135,6 +138,7 @@ const MobileActionMenu = (props) => {
           content={<SidebarSharingSection record={record} />}
           trigger={
             <Menu.Item
+              as="button"
               name="share"
               active={activeItem === "share"}
               onClick={handleMobileMenuClick}
@@ -150,6 +154,7 @@ const MobileActionMenu = (props) => {
 
         <FileListItemDropdown
           asItem={true}
+          asButton={false}
           id="record-details-download"
           defaultPreviewFile={defaultPreviewFile}
           files={files}
@@ -162,6 +167,7 @@ const MobileActionMenu = (props) => {
           setActiveTab={setActiveTab}
           totalFileSize={totalFileSize}
           sectionIndex={100}
+          pointing="bottom"
         />
       </Menu>
     </Overridable>

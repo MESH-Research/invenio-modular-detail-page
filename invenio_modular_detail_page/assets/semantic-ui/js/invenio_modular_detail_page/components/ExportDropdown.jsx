@@ -1,6 +1,8 @@
 import React from "react";
 import { Dropdown } from "semantic-ui-react";
 import Overridable from "react-overridable";
+import { i18next } from "@translations/invenio_app_rdm/i18next";
+import PropTypes from "prop-types";
 
 const ExportDropdown = (props) => {
   const {
@@ -15,6 +17,8 @@ const ExportDropdown = (props) => {
     recordExporters,
     sectionIndex,
     isPreview,
+    floating = true,
+    pointing = "bottom",
   } = props;
   const formats = [];
   for (const [fmt, val] of Object.entries(recordExporters)) {
@@ -22,40 +26,48 @@ const ExportDropdown = (props) => {
     const exportUrl = isPreview
       ? `/records/${record.id}/export/${fmt}?preview=1`
       : `/records/${record.id}/export/${fmt}`;
-    formats.push({ name, exportUrl });
+    formats.push({ id: name, value: exportUrl, text: name });
   }
 
   return (
     <Overridable id="InvenioModularDetailPage.ExportDropdown.layout" {...props}>
       <Dropdown
+        as="button"
+        id={id}
+        className={`${classNames} export-dropdown primary-sidebar`}
+        aria-label={i18next.t("Export metadata as...")}
+        aria-haspopup="menu"
         basic
+        floating={floating}
+        pointing={pointing}
         button={asButton}
         fluid={asFluid}
-        id={id}
         item={asItem}
         text={text}
         icon={icon}
-        className={classNames}
-        tabIndex={sectionIndex}
-        as="button"
+        options={formats}
         openOnFocus={false}
-        closeOnBlur={false}
+        closeOnBlur={true}
+        selectOnBlur={false}
+        selectOnNavigation={false}
         scrolling
-      >
-        <Dropdown.Menu>
-          {formats.map((format, index) => (
-            <Dropdown.Item
-              as="a"
-              key={index}
-              text={format.name}
-              href={format.exportUrl}
-              tabIndex={sectionIndex + index + 1}
-            />
-          ))}
-        </Dropdown.Menu>
-      </Dropdown>
+      />
     </Overridable>
   );
+};
+
+
+ExportDropdown.propTypes = {
+  record: PropTypes.object.isRequired,
+  recordExporters: PropTypes.object.isRequired,
+  asButton: PropTypes.bool,
+  asFluid: PropTypes.bool,
+  asItem: PropTypes.bool,
+  icon: PropTypes.string,
+  id: PropTypes.string,
+  text: PropTypes.string,
+  classNames: PropTypes.string,
+  isPreview: PropTypes.bool,
 };
 
 export { ExportDropdown };

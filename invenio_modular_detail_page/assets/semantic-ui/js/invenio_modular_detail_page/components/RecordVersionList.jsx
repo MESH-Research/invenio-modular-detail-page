@@ -110,14 +110,14 @@ const VersionsContentDropdown = ({
 
   let versionOptions = recordVersions?.hits?.map((item) => {
     let opt = {
-      key: item.id,
+      id: item.id,
+      value: item.id,
       text: i18next.t(`Version ${item.version}`),
-      href: `/records/${item.id}`,
       pubdate: item.publication_date,
     };
     const doi = _get(item.pids, "doi.identifier", "");
     if (doi) {
-      opt.description = `https://doi.org/${doi}`;
+      opt.description = doi;
     }
     return opt;
   });
@@ -126,12 +126,19 @@ const VersionsContentDropdown = ({
   }
   if (isPreview && !currentRecordInResults) {
     versionOptions.push({
-      key: recid,
+      id: recid,
+      value: recid,
       text: i18next.t(`Preview version`),
-      href: `/records/${recid}`,
       pubdate: recordPublicationDate,
     });
   }
+
+  const handleVersionChange = (event, data) => {
+    setActiveVersion(data.value);
+    window.location.href = data.value;
+  };
+
+  const allVersionsLink = `/search?q=parent.id:${recordDeserialized.parent_id}&sort=version&f=allversions:true`;
 
   return (
     <div
@@ -164,22 +171,33 @@ const VersionsContentDropdown = ({
         {recordVersions.total > 1 && (
           <Dropdown
             as="button"
-            button
+            id="versions-dropdown"
+            className="button versions-dropdown primary-sidebar right floated stacked-items"
+            aria-label={i18next.t("Other versions")}
+            aria-haspopup="menu"
             basic
-            text="other versions"
+            pointing="top right"
             direction="left"
-            className="right floated"
-            tabIndex={sectionIndex}
-            closeOnBlur={false}
+            closeOnChange
+            floating
+            options={versionOptions}
+            closeOnBlur={true}
             openOnFocus={false}
+            selectOnBlur={false}
+            selectOnNavigation={false}
+            onChange={handleVersionChange}
+            value={activeVersion} // A11y: needed to trigger the onChange (-triggers both mouse & keyboard) event on every select
+            text="other versions"
           >
-            <Dropdown.Menu>
+            {/* <Dropdown.Menu>
               {versionOptions.map((opt, idx) => (
                 <Dropdown.Item
-                  as="a"
-                  key={opt.key}
-                  href={opt.href}
-                  tabIndex={sectionIndex + idx + 1}
+                  id={`/records/${opt.id}`}
+                  key={opt.id}
+                  value={`/records/${opt.id}`}
+                  aria-label={opt.text}
+                  aria-selected={opt.id === activeVersion}
+                  className={opt.id === activeVersion ? "selected" : ""}
                 >
                   <span className="text">{opt.text}</span>
                   <small className="pubdate description">{opt.pubdate}</small>
@@ -188,12 +206,16 @@ const VersionsContentDropdown = ({
               ))}
               <Dropdown.Divider />
               <Dropdown.Item
-                as="a"
-                href={`/search?q=parent.id:${recordDeserialized.parent_id}&sort=version&f=allversions:true`}
+                id="view-all-versions"
+                value={allVersionsLink}
                 text={i18next.t(`View all ${recordVersions.total} versions`)}
-                tabIndex={sectionIndex + versionOptions.length + 2}
+                aria-label={i18next.t(`View all {{count}} versions`, {
+                  count: recordVersions.total,
+                })}
+                aria-selected={allVersionsLink === activeVersion}
+                className={allVersionsLink === activeVersion ? "selected" : ""}
               />
-            </Dropdown.Menu>
+            </Dropdown.Menu> */}
           </Dropdown>
         )}
       </>

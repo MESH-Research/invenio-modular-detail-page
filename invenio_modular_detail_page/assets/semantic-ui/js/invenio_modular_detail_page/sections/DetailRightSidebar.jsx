@@ -68,17 +68,17 @@ const DetailRightSidebar = (topLevelProps) => {
           isDraft={topLevelProps.isDraft}
           canManage={topLevelProps.canManage}
           isPreviewSubmissionRequest={topLevelProps.isPreviewSubmissionRequest}
-          show={"computer large monitor widescreen only"}
+          show={"computer large-monitor widescreen only"}
         />
         <FlagNewerVersion
           isLatest={topLevelProps.record.versions.is_latest}
           isPublished={topLevelProps.record.is_published}
           latestHtml={topLevelProps.record.links.latest_html}
-          show={"computer large monitor widescreen only"}
+          show={"computer large-monitor widescreen only"}
         />
         {topLevelProps.showRecordManagementMenu ? (
           <div
-            className={`sidebar-container computer large monitor widescreen only`}
+            className={`sidebar-container computer large-monitor widescreen only`}
             id="record-management"
           >
             <RecordManagementPopup

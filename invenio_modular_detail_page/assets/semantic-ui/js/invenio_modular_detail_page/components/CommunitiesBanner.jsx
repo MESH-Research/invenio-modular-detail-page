@@ -50,9 +50,20 @@ const CommunitiesBanner = ({
   }, [defaultCommunity]);
 
   // Remove community branding if the user removes from the last community
+  // Update other communities if the list of communities has changed
+  // If the default community is not in the list, set it to the first community
+  // Reset default community if there is only one community
   useEffect(() => {
     if (!communities || communities.length === 0) {
       setDefaultCommunity(null);
+      setOtherCommunities([]);
+    } else if (communities.length > 1) {
+      if (!communities.find(community => community.id === defaultCommunity.id)) {
+        setDefaultCommunity(communities[0]);
+      }
+      setOtherCommunities(communities.filter(community => community.id !== defaultCommunity.id));
+    } else if (communities.length === 1) {
+      setDefaultCommunity(communities[0]);
       setOtherCommunities([]);
     }
   }, [communities]);
@@ -95,7 +106,7 @@ const CommunitiesBanner = ({
                   defaultCommunity.slug
                 } ${!otherCommunities && "sole-community"}`}
               >
-                <Grid.Column width={9} className="pr-0">
+                <Grid.Column width={10} className="pr-0">
                   <p className="mb-0">
                     <small>part of the</small>
                   </p>
@@ -126,7 +137,6 @@ const CommunitiesBanner = ({
                     <Image
                       src={communityLogoUrl}
                       alt={`logo for ${communityTitle} collection`}
-                      // fallbackSrc={pattern !== "" ? pattern.toDataUri() : ""}
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = makePattern(
@@ -183,15 +193,12 @@ const CommunitiesBanner = ({
                   <Grid.Row
                     className={`additional-communities ${showAll && "open"}`}
                   >
-                    {!showAll &&
-                      `and ${otherCommunities.length} more collections...`}
                     <Button
                       size="small"
                       basic
                       onClick={() => setShowAll(!showAll)}
-                      tabIndex={sectionIndex + 1}
                     >
-                      {showAll ? "Hide" : "Show"}
+                      {showAll ? i18next.t(`Hide other collections`) : i18next.t(`Show ${otherCommunities.length} more collections...`)}
                     </Button>
                   </Grid.Row>
                 </>

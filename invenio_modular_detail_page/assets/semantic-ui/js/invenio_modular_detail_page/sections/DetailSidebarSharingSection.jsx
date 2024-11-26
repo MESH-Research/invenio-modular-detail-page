@@ -113,7 +113,7 @@ function PopupButton({ trigger, message, innerRef }) {
   );
 }
 
-function SharingIconLink({ name, tabIndex, url, iconName }) {
+function SharingIconLink({ name, url, iconName }) {
   const [mastodonHover, setMastodonHover] = useState(false);
   const mastodonRef = useRef();
 
@@ -135,7 +135,6 @@ function SharingIconLink({ name, tabIndex, url, iconName }) {
             icon
             compact
             size="big"
-            tabIndex={tabIndex}
             onMouseEnter={() => setMastodonHover(true)}
             onMouseLeave={() => setMastodonHover(false)}
           >
@@ -160,7 +159,6 @@ function SharingIconLink({ name, tabIndex, url, iconName }) {
         icon
         compact
         size="big"
-        tabIndex={tabIndex}
       >
         <Icon name={iconName} />
       </Button>
@@ -230,7 +228,6 @@ function SidebarSharingSection(props) {
               name={name}
               url={url}
               iconName={name === "Email" ? "mail" : name.toLowerCase()}
-              tabIndex={sectionIndex + idx + 1}
             />
           ))}
         </div>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "semantic-ui-react";
 import { CommunitiesManagementDropdown } from "./CommunitiesManagementDropdown";
-import { RecordCommunitiesListModal } from "./RecordCommunitiesListModal";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
 import { http, withCancel } from "react-invenio-forms";
 
@@ -19,21 +18,10 @@ const CommunitiesManagement = ({
   setDefaultCommunity,
   communities,
   setCommunities,
-  sectionIndex,
 }) => {
-  const [manageCommunitiesModalOpen, setManageCommunitiesModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   console.log("defaultCommunity", defaultCommunity);
-
-
-  const toggleManageCommunitiesModal = (value) => {
-    if (!value) {
-      const modalDropdown = document.getElementById("modal-dropdown"); // A11y: Focus community management dropdown when modal closes
-      modalDropdown && modalDropdown.focus();
-    }
-    setManageCommunitiesModalOpen(value);
-  };
 
   const fetchRecordCommunities = async () => {
     return await http.get(recordCommunityEndpoint, {
@@ -71,17 +59,11 @@ const CommunitiesManagement = ({
 
   const handleDefaultCommunityChange = (communityId) => {
     setDefaultCommunity(communities.find((c) => c.id === communityId));
-    console.log("defaultCommunity in handler", defaultCommunity);
   };
 
   const handleCommunityRemoval = (community) => {
     setCommunities(communities.filter((c) => c.id !== community.id));
     console.log("communities", communities);
-  };
-
-  const handleRefresh = () => {
-    getCommunities();
-    toggleManageCommunitiesModal(false);
   };
 
   useEffect(() => {
@@ -92,52 +74,38 @@ const CommunitiesManagement = ({
 
   return (
     !!canManageRecord ? (
-      <Grid.Row className={`manage-communities ${showAll ? "open" : ""}`}>
-        <RecordCommunitiesListModal
-          id="record-communities-list-modal"
-          modalOpen={manageCommunitiesModalOpen}
-          handleOnOpen={() => toggleManageCommunitiesModal(true)}
-          handleOnClose={() => toggleManageCommunitiesModal(false)}
-          successActionCallback={handleRefresh}
-          recordCommunityEndpoint={recordCommunityEndpoint}
+      <Grid.Row className={`manage-communities ${showAll ? "open" : ""} ml-0 mr-0 pt-0 pb-0`}>
+
+        <CommunitiesManagementDropdown
+          classNames="mobile tablet only"
+          communities={communities}
+          direction="bottom"
+          getCommunities={getCommunities}
+          handleCommunityRemoval={handleCommunityRemoval}
+          handleDefaultCommunityChange={handleDefaultCommunityChange}
           permissions={permissions}
           record={record}
-          handleDefaultCommunityChange={handleDefaultCommunityChange}
-          handleCommunityRemoval={handleCommunityRemoval}
+          recordCommunityEndpoint={recordCommunityEndpoint}
+          recordCommunitySearchConfig={recordCommunitySearchConfig}
+          recordUserCommunitySearchConfig={recordUserCommunitySearchConfig}
+          searchConfig={searchConfig}
+          userCommunitiesMemberships={userCommunitiesMemberships}
         />
 
         <CommunitiesManagementDropdown
-          actionSucceed={handleRefresh}
-          userCommunitiesMemberships={userCommunitiesMemberships}
-          recordCommunityEndpoint={recordCommunityEndpoint}
-          searchConfig={searchConfig}
-          recordCommunitySearchConfig={recordCommunitySearchConfig}
-          recordUserCommunitySearchConfig={recordUserCommunitySearchConfig}
-          toggleManageCommunitiesModal={toggleManageCommunitiesModal}
-          record={record}
+          classNames="computer large-monitor widescreen only"
           communities={communities}
-          handleDefaultCommunityChange={handleDefaultCommunityChange}
-          handleCommunityRemoval={handleCommunityRemoval}
-          direction="bottom"
-          classNames="mobile tablet only"
-          sectionIndex={sectionIndex + 1}
-        />
-
-        <CommunitiesManagementDropdown
-          actionSucceed={handleRefresh}
-          userCommunitiesMemberships={userCommunitiesMemberships}
-          recordCommunityEndpoint={recordCommunityEndpoint}
-          searchConfig={searchConfig}
-          recordCommunitySearchConfig={recordCommunitySearchConfig}
-          recordUserCommunitySearchConfig={recordUserCommunitySearchConfig}
-          toggleManageCommunitiesModal={toggleManageCommunitiesModal}
-          record={record}
-          communities={communities}
-          handleDefaultCommunityChange={handleDefaultCommunityChange}
-          handleCommunityRemoval={handleCommunityRemoval}
           direction="left"
-          classNames="computer widescreen large monitor only"
-          sectionIndex={sectionIndex + 2}
+          getCommunities={getCommunities}
+          handleCommunityRemoval={handleCommunityRemoval}
+          handleDefaultCommunityChange={handleDefaultCommunityChange}
+          permissions={permissions}
+          record={record}
+          recordCommunityEndpoint={recordCommunityEndpoint}
+          recordCommunitySearchConfig={recordCommunitySearchConfig}
+          recordUserCommunitySearchConfig={recordUserCommunitySearchConfig}
+          searchConfig={searchConfig}
+          userCommunitiesMemberships={userCommunitiesMemberships}
         />
       </Grid.Row>
     ) : (

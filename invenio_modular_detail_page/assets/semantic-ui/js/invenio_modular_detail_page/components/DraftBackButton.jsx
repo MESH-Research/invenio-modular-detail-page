@@ -24,7 +24,6 @@ const DraftBackButton = ({
           onClick={() => {
             window.location.href = backPage;
           }}
-          tabIndex={40}
         />
     </nav>
   ) : (

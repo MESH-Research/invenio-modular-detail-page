@@ -773,7 +773,6 @@ const PublishingDetails = ({
                 index={idx}
                 onClick={() => handleHeaderClick(idx)}
                 className={`${title.content} ${show}`}
-                tabindex={20 + idx}
               >
                 <Icon
                   name={

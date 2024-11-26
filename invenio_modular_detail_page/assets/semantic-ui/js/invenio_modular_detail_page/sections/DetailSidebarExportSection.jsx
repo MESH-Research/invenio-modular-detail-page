@@ -16,7 +16,13 @@ const SidebarExportSection = (props) => {
         className="ui segment bottom attached exports rdm-sidebar"
       > */}
         <ExportDropdown
-          {...{ record, isPreview, recordExporters, sectionIndex }}
+          {...{
+            record,
+            isPreview,
+            recordExporters,
+            sectionIndex,
+            pointing: "right",
+          }}
         />
         {/* </div> */}
       </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
-import { Button, Dropdown, Icon, Menu } from "semantic-ui-react";
+import { Button, Dropdown, Icon, Item, Menu } from "semantic-ui-react";
 import { formatBytes, getFileTypeIconName } from "../util";
 import { EmbargoMessage } from "./EmbargoMessage";
 
@@ -309,90 +309,109 @@ const FileListTable = ({
  */
 const FileListDropdownMenu = ({
   asButton = true,
-  asLabeled = true,
+  asLabeled = false,
   asFluid = true,
   asItem = false,
-  classNames = "icon primary right labeled",
+  classNames = "icon primary primary-sidebar stacked-content",
   downloadFileUrl,
   files,
   fileCountToShow,
   fileTabIndex,
   icon = "download",
   id,
+  pointing = "right",
   previewUrlFlag,
   record,
-  sectionIndex,
   setActiveTab,
   text = i18next.t("Download"),
   totalFileSize,
 }) => {
   const downloadUrl = `${downloadFileUrl}${previewUrlFlag}`;
 
+  let options = files
+    .slice(0, fileCountToShow)
+    .map(({ key, size, links }, idx) => {
+      return {
+        key,
+        text: key,
+        value: downloadUrl.replace("xxxx", key),
+        content: (
+          <>
+            <Icon name={getFileTypeIconName(key)} />
+            <Item.Content>
+              <Item.Header>{key}</Item.Header>
+              <Item.Description>{formatBytes(size)}</Item.Description>
+            </Item.Content>
+          </>
+        ),
+      };
+    });
+  options.push(
+    {
+      key: "archive",
+      text: i18next.t(`Download all`),
+      value: record.links.archive,
+      content: (
+        <>
+          <Icon name="archive" />
+          <Item.Content>
+            <Item.Header>{i18next.t(`Download all`)}</Item.Header>
+            <Item.Description>{totalFileSize}</Item.Description>
+          </Item.Content>
+        </>
+      ),
+    }
+  );
+  options.push({
+    key: "details",
+    text: i18next.t("File details and previews"),
+    content: (
+      <>
+        <Icon name="eye" />
+        <Item.Content>
+          <Item.Header>{i18next.t("File details and previews")}</Item.Header>
+        </Item.Content>
+      </>
+    ),
+    value: "previews",
+  });
+
+  const handleItemClick = (e, { value }) => {
+    if (value === "previews") {
+      e.preventDefault();
+      setActiveTab(fileTabIndex);
+    } else {
+      window.location.href = value;
+    }
+  };
+
   return (
     <Dropdown
       id={id}
       text={text}
+      as="button"
       button={asButton}
+      className={classNames}
+      aria-label={i18next.t("File list dropdown")}
+      aria-haspopup="menu"
       icon={icon}
       labeled={asLabeled}
+      pointing={pointing}
+      floating
       fluid={asFluid}
-      className={classNames}
       item={asItem}
-      tabIndex={sectionIndex}
       openOnFocus={false}
-      closeOnBlur={false}
-    >
-      <Dropdown.Menu>
-        {/* <Dropdown.Header>Choose a file</Dropdown.Header> */}
-        {files.slice(0, fileCountToShow).map(({ key, size, links }, idx) => {
-          return (
-            <Dropdown.Item
-              href={downloadUrl.replace("xxxx", key)}
-              as="a"
-              tabIndex={idx + sectionIndex + 1}
-              key={idx}
-            >
-              <span className="text">{key}</span>
-              <small className="description filesize">
-                <Icon name={getFileTypeIconName(key)} />
-                {formatBytes(size)}
-              </small>
-            </Dropdown.Item>
-          );
-        })}
-        {files.length > fileCountToShow && (
-          <Dropdown.Item as="a" onClick={() => setActiveTab(fileTabIndex)}>
-            and {files.length - fileCountToShow} more files
-          </Dropdown.Item>
-        )}
-        <Dropdown.Divider />
-        <Dropdown.Item
-          href={record.links.archive}
-          icon={"archive"}
-          text={i18next.t(`Download all`)}
-          description={totalFileSize}
-          as="a"
-          tabIndex={files.length + sectionIndex + 1}
-        ></Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item
-          text={i18next.t("File details and previews")}
-          icon={"eye"}
-          onClick={() => setActiveTab(fileTabIndex)}
-          as="a"
-          tabIndex={files.length + 1 + sectionIndex + 1}
-        ></Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
+      closeOnBlur={true}
+      selectOnBlur={false}
+      selectOnNavigation={false}
+      options={options}
+      onChange={handleItemClick}
+    />
   );
 };
 
 /**
- * DEPRECATED: The dropdown menu for the sidebar file list.
- *
- * Intended to appear in the sidebar when the record includes multiple
- * files. A child of FileListDropdown, which decides whether to
- * display this based on the number of files in the record.
+ * The dropdown menu for the mobile file list menu item.
  *
  * @param {Object} props
  * @param {Object} props.defaultPreviewFile - The default preview file.
@@ -410,6 +429,10 @@ const FileListDropdownMenu = ({
  * @param {function} props.setActiveTab - The function to set the active tab.
  * @param {boolean} props.showEmbargoMessage - Whether to show the embargo message.
  * @param {string} props.totalFileSize - The total file size.
+ * @param {string} props.pointing - The pointing direction, indicating the
+ *        side of the menu on which the pointer triangle is displayed. If
+ *        the menu should appear above the button, use "bottom" (default:
+ *        "bottom").
  */
 const FileListItemDropdown = ({
   defaultPreviewFile,
@@ -426,6 +449,7 @@ const FileListItemDropdown = ({
   setActiveTab,
   showEmbargoMessage,
   totalFileSize,
+  pointing = "bottom",
 }) => {
   const previewUrlFlag = isPreview ? "&preview=1" : "";
   const downloadUrl =
@@ -455,25 +479,25 @@ const FileListItemDropdown = ({
           <FileListDropdownMenu
             {...{
               icon: false,
-              files,
-              fileTabIndex,
-              id,
-              record,
-              previewFileUrl,
-              previewUrlFlag,
-              setActiveTab,
+              files: files,
+              fileTabIndex: fileTabIndex,
+              id: id,
+              record: record,
+              previewFileUrl: previewFileUrl,
+              previewUrlFlag: previewUrlFlag,
+              setActiveTab: setActiveTab,
               text: (
                 <>
                   <Icon name="download" />
                   Download
                 </>
               ),
-              totalFileSize,
+              totalFileSize: totalFileSize,
               asButton: false,
               asLabeled: false,
               asFluid: false,
               asItem: true,
-              classNames: "pointing",
+              pointing: pointing,
             }}
           />
         ))}

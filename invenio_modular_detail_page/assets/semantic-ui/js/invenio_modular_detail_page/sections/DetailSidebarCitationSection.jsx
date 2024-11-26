@@ -89,7 +89,6 @@ const CitationSection = (props) => {
               content={i18next.t("Cite this")}
               icon="quote right"
               labelPosition="right"
-              tabIndex={sectionIndex}
             ></Button>
           }
         />

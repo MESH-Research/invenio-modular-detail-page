@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Tab, Menu } from "semantic-ui-react";
 import { DetailMainTab } from "./DetailMainTab";
 import { addPropsFromChildren, filterPropsToPass } from "../util";
 import Overridable from "react-overridable";
 
 const DetailMainTabs = (topLevelProps) => {
+
   const panes = topLevelProps.tabbedSections.map(
     ({ section, component_name, subsections, props, show }, idx) => {
       // Because can't import DetailMainTab in componentsMap (circular)
@@ -22,9 +23,7 @@ const DetailMainTabs = (topLevelProps) => {
       };
       return {
         menuItem: (
-          <Menu.Item key={section} className={show} as="button" tabIndex={idx + 1}>
-            {section}
-          </Menu.Item>
+          <Menu.Item key={section} className={show} as="button" content={section} />
         ),
         render: () => (
           <Tab.Pane
@@ -37,6 +36,14 @@ const DetailMainTabs = (topLevelProps) => {
       };
     }
   );
+
+  useEffect(() => {
+    const firstTab = document.querySelector("#detail-main-tabs > .menu > .item.active");
+    console.log("firstTab", firstTab);
+    if (firstTab) {
+      firstTab.focus();
+    }
+  }, []);
 
   return (
     <Overridable

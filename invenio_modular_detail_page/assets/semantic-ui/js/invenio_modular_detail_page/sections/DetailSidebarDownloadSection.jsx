@@ -49,6 +49,7 @@ const SidebarDownloadSection = (props) => {
           withPreview={false}
           isPreview={isPreview}
           permissions={permissions}
+          pointing="right"
           previewFileUrl={previewFileUrl}
           previewTabIndex={previewTabIndex}
           record={record}

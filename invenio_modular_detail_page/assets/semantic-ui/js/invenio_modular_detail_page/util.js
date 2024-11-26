@@ -85,7 +85,7 @@ function getFileTypeIconName(filename) {
     case "jpeg":
     case "png":
     case "gif":
-      return "file image outline";
+      return "picture outline";
     case "mp3":
     case "wav":
       return "file audio outline";

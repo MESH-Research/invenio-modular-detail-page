@@ -74,7 +74,7 @@ Each component dictionary in these lists looks like this:
             "tabbedSections",
             "totalFileSize",
         ],
-        "show": "computer large monitor widescreen only",
+        "show": "computer large-monitor widescreen only",
         "show_heading": False,
     }
 ```
