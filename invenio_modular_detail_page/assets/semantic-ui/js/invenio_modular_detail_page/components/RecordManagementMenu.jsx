@@ -120,8 +120,11 @@ function RecordManagementMenuMobile({
 }
 
 const RecordManagementMenu = ({
+  classNames,
   record,
   permissions,
+  pointingDirection="right",
+  icon="cog",
   isDraft,
   isPreviewSubmissionRequest,
   currentUserId,
@@ -131,10 +134,63 @@ const RecordManagementMenu = ({
 }) => {
   const [error, setError] = useState(null);
   const recid = record.id;
+  const [editLoading, setEditLoading] = useState(false);
+  const [newVersionLoading, setNewVersionLoading] = useState(false);
+  const [shareLoading, setShareLoading] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleError = (errorMessage) => {
     console.error(errorMessage);
     setError(errorMessage);
+  };
+
+  const handleEditClick = async () => {
+    setEditLoading(true);
+    if (isDraft) {
+      try {
+        await http.post(`/api/records/${recid}/draft`);
+        window.location = `/uploads/${recid}`;
+      } catch (error) {
+        setEditLoading(false);
+        handleError(error.response.data.message);
+      }
+    } else {
+      window.location = `/uploads/${recid}`;
+    }
+  };
+
+  const handleNewVersionClick = async () => {
+    setNewVersionLoading(true);
+  };
+
+  const handleShareClick = async () => {
+    setShareLoading(true);
+    handleShareModalOpen();
+  };
+
+  const options = [];
+
+  if (permissions.can_edit && !isDraft) {
+    options.push({ key: "edit", text: i18next.t("Edit"), icon: "edit", value: `/uploads/${recid}`, onClick: handleEditClick });
+  } elif (isPreviewSubmissionRequest && isDraft) {
+    options.push({ key: "edit", text: i18next.t("Edit"), icon: "edit", value: `/uploads/${recid}`, onClick: handleEditClick });
+  }
+
+  if (!isPreviewSubmissionRequest && !isDraft && permissions.can_new_version) {
+    options.push({ key: "new-version", text: i18next.t("New version"), icon: "plus", value: `/uploads/${recid}`, onClick: handleNewVersionClick });
+  }
+
+  if (!isPreviewSubmissionRequest && permissions.can_manage && permissions.can_update_draft) {
+    options.push({ key: "share", text: i18next.t("Share"), icon: "share", value: `/uploads/${recid}`, onClick: handleShareClick });
+  }
+
+  const focusDropdownRef = () => {
+    const {
+      current: {
+        ref: { current: dropdownToggle },
+      },
+    } = dropdownRef;
+    dropdownToggle.focus();
   };
 
   return (
@@ -143,16 +199,36 @@ const RecordManagementMenu = ({
       aria-label={i18next.t("Record management")}
       className="ui"
     >
-      <Grid columns={1} className="record-management" id="recordManagement">
-        {permissions.can_edit && !isDraft && (
+      <Dropdown
+        ref={dropdownRef}
+        id="record-management-dropdown"
+        className={`button record-management-dropdown fluid secondary sidebar-secondary icon ${classNames}`}
+        options={options}
+        aria-label={i18next.t("Record management menu dropdown")}
+        aria-haspopup="menu"
+        basic
+        pointing={pointingDirection}
+        closeOnChange
+        floating
+        closeOnBlur={true}
+        openOnFocus={false}
+        selectOnBlur={false}
+        selectOnNavigation={false}
+        onChange={handleDropdownChange}
+        icon={icon}
+        value={null} // A11y: needed to trigger the onChange (-triggers both mouse & keyboard) event on every select
+        text={i18next.t("Manage this work")}
+      />
+      {/* <Grid columns={1} className="record-management" id="recordManagement"> */}
+        {/* {permissions.can_edit && !isDraft && (
           <Grid.Column className="pb-5">
             <EditButton
               recid={recid}
               onError={handleError}
             />
           </Grid.Column>
-        )}
-        {isPreviewSubmissionRequest && isDraft && (
+        )} */}
+        {/* {isPreviewSubmissionRequest && isDraft && (
           <Grid.Column className="pb-20">
             <Button
               fluid
@@ -166,8 +242,8 @@ const RecordManagementMenu = ({
               {i18next.t("Edit")}
             </Button>
           </Grid.Column>
-        )}
-        {!isPreviewSubmissionRequest && (
+        )} */}
+        {/* {!isPreviewSubmissionRequest && (
           <>
             <Grid.Column className="pt-5 pb-5">
               <NewVersionButton
@@ -190,13 +266,13 @@ const RecordManagementMenu = ({
               )}
             </Grid.Column>
           </>
-        )}
-        <Overridable
+        )} */}
+        {/* <Overridable
           id="InvenioAppRdm.RecordLandingPage.RecordManagement.container"
           isPreviewSubmissionRequest={isPreviewSubmissionRequest}
           record={record}
           currentUserId={currentUserId}
-        />
+        /> */}
         {error && (
           <Grid.Row className="record-management">
             <Grid.Column>
@@ -204,7 +280,7 @@ const RecordManagementMenu = ({
             </Grid.Column>
           </Grid.Row>
         )}
-      </Grid>
+      {/* </Grid> */}
     </section>
   );
 };
