@@ -17,8 +17,7 @@ import Overridable from "react-overridable";
 import { componentsMap } from "../componentsMap";
 import { filterPropsToPass } from "../util";
 import {
-  RecordManagementMenuPopup,
-  RecordManagementPopup,
+  RecordManagementMenu,
 } from "../components/RecordManagementMenu";
 import { ShareModal } from "../components/ShareModal";
 import { DraftBackButton } from "../components/DraftBackButton";
@@ -81,7 +80,7 @@ const DetailRightSidebar = (topLevelProps) => {
             className={`sidebar-container computer large-monitor widescreen only`}
             id="record-management"
           >
-            <RecordManagementPopup
+            <RecordManagementMenu
               record={topLevelProps.record}
               permissions={topLevelProps.permissions}
               isDraft={topLevelProps.isDraft}

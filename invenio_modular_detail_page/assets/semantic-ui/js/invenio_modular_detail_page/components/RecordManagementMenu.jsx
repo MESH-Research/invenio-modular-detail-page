@@ -129,8 +129,6 @@ const RecordManagementMenu = ({
   isPreviewSubmissionRequest,
   currentUserId,
   handleShareModalOpen,
-  handleParentPopupClose,
-  sectionIndex,
 }) => {
   const [error, setError] = useState(null);
   const recid = record.id;
