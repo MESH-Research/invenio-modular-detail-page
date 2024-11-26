@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
-import { Button, Icon, Grid, Message, Popup } from "semantic-ui-react";
+import { Button, Icon, Grid, Message, Popup, Dropdown } from "semantic-ui-react";
 import PropTypes from "prop-types";
-import Overridable from "react-overridable";
-import { NewVersionButton } from "@js/invenio_rdm_records/";
+// import Overridable from "react-overridable";
+// import { NewVersionButton } from "@js/invenio_rdm_records/";
 import { http } from "react-invenio-forms";
 import { ShareModal } from "./ShareModal";
 
@@ -168,23 +168,37 @@ const RecordManagementMenu = ({
     handleShareModalOpen();
   };
 
-  const options = [];
-
   console.log("permissions", permissions);
 
+  const handleDropdownChange = (e, { value }) => {
+    console.log("value", value);
+    switch (value) {
+      case "edit":
+        handleEditClick();
+        break;
+      case "new-version":
+        handleNewVersionClick();
+        break;
+      case "share":
+        handleShareClick();
+        break;
+    }
+  };
+
+  const options = [];
 
   if (permissions.can_edit && !isDraft) {
-    options.push({ key: "edit", text: i18next.t("Edit"), icon: "edit", value: `/uploads/${recid}`, onClick: handleEditClick });
+    options.push({ key: "edit", text: i18next.t("Edit"), icon: "edit", value: "edit-published" });
   } else if (isPreviewSubmissionRequest && isDraft) {
-    options.push({ key: "edit", text: i18next.t("Edit"), icon: "edit", value: `/uploads/${recid}`, onClick: handleEditClick });
+    options.push({ key: "edit", text: i18next.t("Edit"), icon: "edit", value: "edit-draft" });
   }
 
   if (!isPreviewSubmissionRequest && !isDraft && permissions.can_new_version) {
-    options.push({ key: "new-version", text: i18next.t("New version"), icon: "plus", value: `/uploads/${recid}`, onClick: handleNewVersionClick });
+    options.push({ key: "new-version", text: i18next.t("New version"), icon: "plus", value: "new-version" });
   }
 
   if (!isPreviewSubmissionRequest && permissions.can_manage && permissions.can_update_draft) {
-    options.push({ key: "share", text: i18next.t("Share"), icon: "share", value: `/uploads/${recid}`, onClick: handleShareClick });
+    options.push({ key: "share", text: i18next.t("Share"), icon: "share", value: "share" });
   }
 
   const focusDropdownRef = () => {
