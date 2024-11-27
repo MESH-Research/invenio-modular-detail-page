@@ -6,6 +6,11 @@ import { Doi } from "../components/Doi";
 import { groupObjectsBy, toPidUrl } from "../util";
 import { Analytics } from "./Analytics";
 
+function isDuration(size) {
+  const durationUnits = ["minutes", "hours", "days", "weeks", "months", "years", "milliseconds", "seconds", "minutes", "hours", "days", "weeks", "months", "years"];
+  return durationUnits.some(unit => size.includes(unit));
+}
+
 function getCustomFieldComponents({
   sectionFields,
   customFields,
@@ -573,12 +578,12 @@ const getDetailsComponents = ({
         : null,
     },
     {
-      title: i18next.t("Sizes"),
-      value: record.metadata.sizes && !record.metadata.sizes.find(size => size.includes("minutes") || size.includes("hours") || size.includes("days") || size.includes("weeks") || size.includes("months") || size.includes("years") || size.includes("milliseconds") || size.includes("seconds") || size.includes("minutes") || size.includes("hours") || size.includes("days") || size.includes("weeks") || size.includes("months") || size.includes("years")) ? record.metadata.sizes.join(", ") : null,
+      title: i18next.t("Sizes"),  // FIXME: Hack because the size field is used for both sizes and duration
+      value: record.metadata.sizes && !record.metadata.sizes.find(size => isDuration(size)) ? record.metadata.sizes.join(", ") : null,
     },
     {
-      title: i18next.t("Duration"),
-      value: record.metadata.sizes && record.metadata.sizes.find(size => size.includes("minutes") || size.includes("hours") || size.includes("days") || size.includes("weeks") || size.includes("months") || size.includes("years") || size.includes("milliseconds") || size.includes("seconds") || size.includes("minutes") || size.includes("hours") || size.includes("days") || size.includes("weeks") || size.includes("months") || size.includes("years")) ? record.metadata.sizes.join(", ") : null,
+      title: i18next.t("Duration"),  // FIXME: Hack because the size field is used for both sizes and duration
+      value: record.metadata.sizes && record.metadata.sizes.find(size => isDuration(size)) ? record.metadata.sizes.join(", ") : null,
     },
     {
       title: i18next.t("Sponsoring institution"),
