@@ -7,6 +7,9 @@ import PropTypes from "prop-types";
 import { http } from "react-invenio-forms";
 import { ShareModal } from "./ShareModal";
 
+/**
+ * Deprecated share button
+ */
 const ShareButton = ({
   disabled,
   recid,
@@ -49,6 +52,9 @@ ShareButton.defaultProps = {
   disabled: false,
 };
 
+/**
+ * Deprecated edit button
+ */
 export const EditButton = ({ recid, onError }) => {
   const [loading, setLoading] = useState(false);
 
@@ -119,6 +125,28 @@ function RecordManagementMenuMobile({
   );
 }
 
+/**
+ * Record management menu
+ *
+ * @param {boolean} asButton - Whether to render the dropdown as a button or not.
+ * @param {string} classNames - Additional class names for the
+ *    dropdown component.
+ * @param {object} record - The record object.
+ * @param {object} permissions - The permissions object.
+ * @param {string} pointingDirection - The direction of the dropdown. The
+ *    direction indicates the side of the dropdown menu on which the
+ *    pointer triangle will be displayed. If the direction is "right",
+ *    the pointer triangle will be displayed on the right side of the
+ *    dropdown menu, but the menu will open on the *left* side of the
+ *    trigger button.
+ * @param {string} icon - The icon for the dropdown trigger button.
+ * @param {boolean} isDraft - Whether the record is a draft or not.
+ * @param {boolean} isPreviewSubmissionRequest - Whether the record is
+ *    a preview submission request or not.
+ * @param {string} currentUserId - The current user ID.
+ * @param {function} handleShareModalOpen - The function to open the
+ *    share modal.
+ */
 const RecordManagementMenu = ({
   asButton=true,
   classNames,
@@ -135,7 +163,6 @@ const RecordManagementMenu = ({
   const recid = record.id;
   const [editLoading, setEditLoading] = useState(false);
   const [newVersionLoading, setNewVersionLoading] = useState(false);
-  const [shareLoading, setShareLoading] = useState(false);
   const dropdownRef = useRef(null);
 
   const handleError = (errorMessage) => {
@@ -160,16 +187,24 @@ const RecordManagementMenu = ({
 
   const handleNewVersionClick = async () => {
     setNewVersionLoading(true);
+    try {
+      const response = await http.post(record.links.versions);
+      window.location = response.data.links.self_html;
+    } catch (error) {
+      console.error(error);
+      setNewVersionLoading(false);
+      handleError(error.response.data.message);
+    }
   };
 
   const handleShareClick = async () => {
-    setShareLoading(true);
     handleShareModalOpen();
   };
 
   console.log("permissions", permissions);
 
   const handleDropdownChange = (e, { value }) => {
+    e.preventDefault();
     console.log("value", value);
     switch (value) {
       case "edit-published":
