@@ -210,18 +210,25 @@ function RelatedIdentifiers({
 const DOITextLink = ({ doi, doiLink, workDoi }) => {
   return (
     <>
-      <dt className="ui tiny header">DOI</dt>
+      <dt className="ui tiny header">DOI (this version)</dt>
       <dd key={doi}>
-        this version: {doi}
+        {doi} &nbsp;
+        <Popup
+          content={i18next.t("Always resolves to this version of the work")}
+          trigger={<Icon name="info circle" />}
+        />
       </dd>
       {workDoi && (
-        <dd>
-          work: {workDoi}
-          <Popup
-            content={i18next.t("Always resolves to the latest version")}
-            trigger={<Icon name="info circle" />}
-          />
-        </dd>
+        <>
+          <dt className="ui tiny header">DOI (newest version)</dt>
+          <dd>
+            {workDoi} &nbsp;
+            <Popup
+              content={i18next.t("Always resolves to the latest version of the work")}
+              trigger={<Icon name="info circle" />}
+            />
+          </dd>
+        </>
       )}
     </>
   );
