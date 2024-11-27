@@ -12,7 +12,7 @@ const DraftBackButton = ({
 }) => {
   return isPreview && !isPreviewSubmissionRequest && canManage && isDraft ? (
     <nav
-      className={`back-navigation rel-pb-2 pl-0 ${show}`}
+      className={`back-navigation rel-pb-2 pl-0 ${show} sidebar-container`}
       aria-label={i18next.t("Back-navigation")}
     >
         <Button
@@ -20,7 +20,7 @@ const DraftBackButton = ({
           labelPosition="right"
           icon="angle left"
           content={i18next.t("Back to edit")}
-          className="secondary basic orange"
+          className="secondary basic"
           onClick={() => {
             window.location.href = backPage;
           }}
