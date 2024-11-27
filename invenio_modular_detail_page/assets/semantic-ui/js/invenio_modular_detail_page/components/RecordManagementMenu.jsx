@@ -120,6 +120,7 @@ function RecordManagementMenuMobile({
 }
 
 const RecordManagementMenu = ({
+  asButton=true,
   classNames,
   record,
   permissions,
@@ -219,6 +220,7 @@ const RecordManagementMenu = ({
     >
       <Dropdown
         ref={dropdownRef}
+        as={asButton ? "button" : undefined}
         id="record-management-dropdown"
         className={`button record-management-dropdown fluid secondary sidebar-secondary icon ${classNames}`}
         options={options}
