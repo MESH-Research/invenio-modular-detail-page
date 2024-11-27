@@ -1,6 +1,6 @@
 import React from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
-import { Accordion, Icon } from "semantic-ui-react";
+import { Accordion, Icon, Popup } from "semantic-ui-react";
 import { Creatibutors } from "./Creatibutors";
 import { Doi } from "../components/Doi";
 import { groupObjectsBy, toPidUrl } from "../util";
@@ -219,7 +219,7 @@ const DOITextLink = ({ doi, doiLink, workDoi }) => {
           work: {workDoi}
           <Popup
             content={i18next.t("Always resolves to the latest version")}
-            trigger={<i className="info circle icon"></i>}
+            trigger={<Icon name="info circle" />}
           />
         </dd>
       )}
