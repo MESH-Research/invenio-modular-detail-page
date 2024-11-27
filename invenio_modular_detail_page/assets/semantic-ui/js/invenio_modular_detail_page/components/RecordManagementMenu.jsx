@@ -172,8 +172,9 @@ const RecordManagementMenu = ({
 
   const handleEditClick = async () => {
     setEditLoading(true);
-    if (isDraft) {
+    if (!isDraft) {
       try {
+        // Create a draft from the published record
         await http.post(`/api/records/${recid}/draft`);
         window.location = `/uploads/${recid}`;
       } catch (error) {
