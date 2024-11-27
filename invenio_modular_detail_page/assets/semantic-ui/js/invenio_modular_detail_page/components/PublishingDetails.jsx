@@ -207,15 +207,22 @@ function RelatedIdentifiers({
   );
 }
 
-const DOITextLink = ({ doi, doiLink }) => {
+const DOITextLink = ({ doi, doiLink, workDoi }) => {
   return (
     <>
       <dt className="ui tiny header">DOI</dt>
       <dd key={doi}>
-        <a href={doiLink} target="_blank" title={_("Opens in new tab")}>
-          {doi}
-        </a>
+        this version: {doi}
       </dd>
+      {workDoi && (
+        <dd>
+          work: {workDoi}
+          <Popup
+            content={i18next.t("Always resolves to the latest version")}
+            trigger={<i className="info circle icon"></i>}
+          />
+        </dd>
+      )}
     </>
   );
 };
@@ -344,6 +351,7 @@ const getDetailsComponents = ({
   showDecimalSizes,
 }) => {
   const idDoi = record.pids.doi ? record.pids.doi.identifier : null;
+  const workDoi = record.parent.pids.doi ? record.parent.pids.doi.identifier : null;
   const detailsInfo = [
     {
       title: i18next.t("Additional dates"),
@@ -460,7 +468,7 @@ const getDetailsComponents = ({
       title: i18next.t("DOI"),
       value:
         idDoi !== null ? (
-          <DOITextLink key={"doi"} doiLink={record.links.doi} doi={idDoi} />
+          <DOITextLink key={"doi"} doiLink={record.links.doi} doi={idDoi} workDoi={workDoi} />
         ) : null,
     },
     {
