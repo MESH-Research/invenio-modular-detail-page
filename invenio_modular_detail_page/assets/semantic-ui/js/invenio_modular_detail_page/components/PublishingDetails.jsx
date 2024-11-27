@@ -574,7 +574,11 @@ const getDetailsComponents = ({
     },
     {
       title: i18next.t("Sizes"),
-      value: record.metadata.sizes ? record.metadata.sizes.join(", ") : null,
+      value: record.metadata.sizes && !record.metadata.sizes.find(size => size.includes("minutes") || size.includes("hours") || size.includes("days") || size.includes("weeks") || size.includes("months") || size.includes("years") || size.includes("milliseconds") || size.includes("seconds") || size.includes("minutes") || size.includes("hours") || size.includes("days") || size.includes("weeks") || size.includes("months") || size.includes("years")) ? record.metadata.sizes.join(", ") : null,
+    },
+    {
+      title: i18next.t("Duration"),
+      value: record.metadata.sizes && record.metadata.sizes.find(size => size.includes("minutes") || size.includes("hours") || size.includes("days") || size.includes("weeks") || size.includes("months") || size.includes("years") || size.includes("milliseconds") || size.includes("seconds") || size.includes("minutes") || size.includes("hours") || size.includes("days") || size.includes("weeks") || size.includes("months") || size.includes("years")) ? record.metadata.sizes.join(", ") : null,
     },
     {
       title: i18next.t("Sponsoring institution"),
