@@ -12,7 +12,7 @@ const DraftBackButton = ({
 }) => {
   return isPreview && !isPreviewSubmissionRequest && canManage && isDraft ? (
     <nav
-      className={`back-navigation rel-pb-2 pl-0 ${show} sidebar-container`}
+      className={`back-navigation rel-pb-2 pl-0 pr-0 ${show} sidebar-container`}
       aria-label={i18next.t("Back-navigation")}
     >
         <Button
