@@ -214,7 +214,7 @@ const DOITextLink = ({ doi, doiLink, workDoi }) => {
       <dd key={doi}>
         {doi} &nbsp;
         <Popup
-          content={i18next.t("Always resolves to this version of the work")}
+          content={i18next.t("Always points to this version of the work")}
           trigger={<Icon name="info circle" />}
         />
       </dd>
@@ -224,7 +224,7 @@ const DOITextLink = ({ doi, doiLink, workDoi }) => {
           <dd>
             {workDoi} &nbsp;
             <Popup
-              content={i18next.t("Always resolves to the latest version of the work")}
+              content={i18next.t("Always points to the latest version of the work")}
               trigger={<Icon name="info circle" />}
             />
           </dd>
