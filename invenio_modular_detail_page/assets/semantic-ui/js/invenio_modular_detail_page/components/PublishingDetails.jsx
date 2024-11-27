@@ -657,7 +657,6 @@ const ConferenceDetailSection = ({ conference }) => {
     `${conference.title}`
   );
   let conferencePieces = [
-    titlePiece,
     conference.place,
     conference.dates,
     conference.session,
@@ -668,7 +667,7 @@ const ConferenceDetailSection = ({ conference }) => {
   return (
     <>
       <dt className="ui tiny header">Event</dt>
-      <dd>{conferencePieces.join(", ")}</dd>
+      <dd>{titlePiece}, {conferencePieces.join(", ")}</dd>
       {conference.url && !conference.title && (
         <>
           <dt className="ui tiny header">Event</dt>
