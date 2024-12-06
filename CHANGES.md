@@ -8,6 +8,14 @@
 Changes
 =======
 
-Version 0.1.0
+## Version 0.1.0
 
 - Initial public release.
+
+## Version 0.3.0-dev0
+
+- Added ui for collection management
+- Refactored record management menu
+- Refactored all sidebar menus to allow accessible keyboard navigation
+- Fixed display of event metadata
+- Added display for work doi as well as version doi
