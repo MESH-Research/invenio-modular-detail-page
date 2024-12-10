@@ -38,8 +38,6 @@ const CommunitiesManagementDropdown = ({
 
   const focusDropdownRef = () => {
     // A11y: Bring focus to the dropdown menu (e.g. when the modal closes)
-    console.log("focusDropdownRef");
-    console.log(dropdownRef);
     const {
       current: {
         ref: { current: dropdownToggle },
@@ -64,7 +62,6 @@ const CommunitiesManagementDropdown = ({
   };
 
   const handleActionSucceed = (data, text) => {
-    console.log("handleActionSucceed", data, text);
     setActionFeedback(text);
     getCommunities();
     toggleSubmissionModal(false);
@@ -73,7 +70,6 @@ const CommunitiesManagementDropdown = ({
   };
 
   const handleManageActionSucceed = (data, text) => {
-    console.log("handleManageActionSucceed", data, text);
     getCommunities();
     toggleManageCommunitiesModal(false);
   };
