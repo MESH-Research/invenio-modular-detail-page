@@ -1,6 +1,6 @@
 # Invenio Modular Detail Page
 
-Version 0.3.0-dev0
+Version 0.3.1-dev1
 
 An InvenioRDM extension supplying a modular, React-based record detail page
 

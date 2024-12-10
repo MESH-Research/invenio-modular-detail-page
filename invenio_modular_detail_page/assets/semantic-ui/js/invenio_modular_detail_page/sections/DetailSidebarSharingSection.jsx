@@ -1,5 +1,5 @@
 // This file is part of Knowledge Commons Repository
-// Copyright (C) 2023 MESH Research
+// Copyright (C) 2023-2024 MESH Research
 //
 // It is modified from files provided in InvenioRDM
 // Copyright (C) 2021 CERN.
@@ -117,59 +117,97 @@ function SharingIconLink({ name, url, iconName }) {
   const [mastodonHover, setMastodonHover] = useState(false);
   const mastodonRef = useRef();
 
-  return name === "Mastodon" ? (
-    <>
-      <Popup
-        content={name}
-        position="top center"
-        on={['hover', 'focus']}
-        open={mastodonHover}
-        trigger={<span className="mastodon-popup" />}
-      />
-      <PopupButton
-        innerRef={mastodonRef}
-        trigger={
-          <Button
-            target="_blank"
-            rel="noopener noreferrer"
-            icon
-            compact
-            size="big"
-            onMouseEnter={() => setMastodonHover(true)}
-            onMouseLeave={() => setMastodonHover(false)}
-          >
-            <i className="icon mastodon">
-              <svg alt="Mastodon" viewBox="0 0 24 24">
-                <use xlinkHref="/static/images/mastodon.svg#mastodon" />
-              </svg>
-            </i>
-          </Button>
-        }
-        message={url}
-      />
-    </>
-  ) : (
-    <Popup content={name} position="top center"
-     trigger={
-      <Button
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        on={['hover', 'click', 'focus']}
-        icon
-        compact
-        size="big"
-      >
-        <Icon name={iconName} />
-      </Button>
-     }
-    />
-  );
+  let component;
+
+  switch (name) {
+    case "Mastodon":
+      component = (
+        <>
+          <Popup
+            content={name}
+            position="top center"
+            on={['hover', 'focus']}
+            open={mastodonHover}
+            trigger={<span className="mastodon-popup" />}
+          />
+          <PopupButton
+            innerRef={mastodonRef}
+            trigger={
+              <Button
+                target="_blank"
+                rel="noopener noreferrer"
+                icon
+                compact
+                size="big"
+                onMouseEnter={() => setMastodonHover(true)}
+                onMouseLeave={() => setMastodonHover(false)}
+              >
+                <i className="icon mastodon">
+                  <svg alt="Mastodon" viewBox="0 0 24 24">
+                    <use xlinkHref="/static/images/mastodon.svg#mastodon" />
+                  </svg>
+                </i>
+              </Button>
+            }
+            message={url}
+          />
+        </>
+      );
+      break;
+    case "Bluesky":
+      component = (
+        <Popup
+          content={name}
+          position="top center"
+          trigger={
+            <Button
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              on={['hover', 'click', 'focus']}
+              icon
+              compact
+              size="big"
+            >
+              <i className="icon bluesky">
+                <svg alt="Bluesky" viewBox="0 0 600 600">
+                  <use xlinkHref={`/static/images/bluesky.svg#bluesky`} />
+                </svg>
+              </i>
+            </Button>
+          }
+        />
+      );
+      break;
+    default:
+      component = (
+        <Popup
+          content={name}
+          position="top center"
+          trigger={
+            <Button
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              on={['hover', 'click', 'focus']}
+              icon
+              compact
+              size="big"
+            >
+              <Icon name={iconName} />
+            </Button>
+          }
+        />
+      );
+      break;
+  }
+
+  return component;
 }
 
 function SidebarSharingSection(props) {
   const { record, sectionIndex, show, isPreview, isPreviewSubmissionRequest, showHeading = true } = props;
-  const pageLink = encodeURIComponent(record.links.self_html);
+  const pageLink = encodeURI(record.links.self_html);
 
   const socialMediaLinks = [
     {
@@ -177,9 +215,17 @@ function SidebarSharingSection(props) {
       url: `${record.metadata.title}%0A${pageLink}`,
     },
     {
-      name: "Facebook",
-      url: `https://www.facebook.com/sharer/sharer.php?u=${pageLink}`,
+      name: "Bluesky",
+      url: `https://bsky.app/intent/compose?text=${record.metadata.title}%0A${pageLink}`,
     },
+    {
+      name: "Facebook",
+      url: `https://www.facebook.com/sharer/sharer.php?u=#${encodeURIComponent(pageLink)}`,
+    },
+    // {
+    //   name: "Facebook",
+    //   url: `https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href=${pageLink}&redirect_uri=https%3A%2F%2Fdevelopers.facebook.com%2Ftools%2Fexplorer`,
+    // },
     {
       name: "LinkedIn",
       url: `https://www.linkedin.com/sharing/share-offsite/?url=${pageLink}`,

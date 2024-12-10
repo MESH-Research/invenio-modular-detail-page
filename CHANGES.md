@@ -8,9 +8,9 @@
 Changes
 =======
 
-## Version 0.1.0
+## Version 0.3.1
 
-- Initial public release.
+- Added Bluesky sharing option
 
 ## Version 0.3.0-dev0
 
@@ -19,3 +19,7 @@ Changes
 - Refactored all sidebar menus to allow accessible keyboard navigation
 - Fixed display of event metadata
 - Added display for work doi as well as version doi
+
+## Version 0.1.0
+
+- Initial public release.
