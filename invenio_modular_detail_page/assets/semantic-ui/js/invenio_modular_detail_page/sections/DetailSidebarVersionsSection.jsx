@@ -10,7 +10,7 @@ const VersionsListSection = (props) => {
       id="InvenioModularDetailPage.VersionsListSection.layout"
       {...props}
     >
-      <div id="record-versions" className="sidebar-container">
+      <div id="record-versions" className="sidebar-container" aria-label="Record versions">
         <h2 className="ui medium top attached header mt-0">
           {i18next.t("Versions")}
         </h2>
@@ -37,7 +37,7 @@ const VersionsDropdownSection = (props) => {
       id="InvenioModularDetailPage.VersionsDropdownSection.layout"
       {...props}
     >
-      <div className="sidebar-container" id="record-versions">
+      <div id="record-versions" className="sidebar-container" aria-label="Record versions">
         <RecordVersionsList
           record={record}
           isPreview={isPreview}

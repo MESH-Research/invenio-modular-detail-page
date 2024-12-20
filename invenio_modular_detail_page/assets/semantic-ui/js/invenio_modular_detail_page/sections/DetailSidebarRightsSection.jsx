@@ -38,7 +38,7 @@ const SidebarRightsSection = (props) => {
       id="InvenioModularDetailPage.SidebarRightsSection.layout"
       {...props}
     >
-      <div className="sidebar-container">
+      <div id="record-licenses" className="sidebar-container" aria-label="Record licenses">
         <h2 id="licenses-header" className="ui medium top attached header mt-0">
           {section}
         </h2>
