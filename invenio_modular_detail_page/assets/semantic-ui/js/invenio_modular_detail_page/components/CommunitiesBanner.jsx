@@ -58,7 +58,7 @@ const CommunitiesBanner = ({
       setDefaultCommunity(null);
       setOtherCommunities([]);
     } else if (communities.length > 1) {
-      if (!communities.find(community => community.id === defaultCommunity.id)) {
+      if (!communities.find(community => community.id === defaultCommunity?.id)) {
         setDefaultCommunity(communities[0]);
       }
       setOtherCommunities(communities.filter(community => community.id !== defaultCommunity.id));
