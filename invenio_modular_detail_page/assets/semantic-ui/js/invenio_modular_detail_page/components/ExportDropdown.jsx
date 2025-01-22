@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Dropdown } from "semantic-ui-react";
 import Overridable from "react-overridable";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
@@ -29,6 +29,13 @@ const ExportDropdown = (props) => {
     formats.push({ id: name, value: exportUrl, text: name });
   }
 
+  const [activeFormat, setActiveFormat] = useState(formats[0].value);
+
+  const handleFormatChange = (e, { value }) => {
+    setActiveFormat(value);
+    window.location.href = value;
+  };
+
   return (
     <Overridable id="InvenioModularDetailPage.ExportDropdown.layout" {...props}>
       <Dropdown
@@ -51,6 +58,8 @@ const ExportDropdown = (props) => {
         selectOnBlur={false}
         selectOnNavigation={false}
         scrolling
+        value={activeFormat}
+        onChange={handleFormatChange}
       />
     </Overridable>
   );
