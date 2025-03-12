@@ -81,7 +81,7 @@ const FileListTableRow = ({
           </Button>
         </span>
         <div>
-          <a href={downloadUrl.replace("xxxx", file.key)} className="filename">
+          <a href={downloadUrl.replace("xxxx", file.key)} className="filename breakable-text">
             {file.key}
           </a>
         </div>
@@ -337,9 +337,9 @@ const FileListDropdownMenu = ({
         value: downloadUrl.replace("xxxx", key),
         content: (
           <>
-            <Icon name={getFileTypeIconName(key)} />
+            <Icon name={getFileTypeIconName(key)} className="computer only" />
             <Item.Content>
-              <Item.Header>{key}</Item.Header>
+              <Item.Header className="breakable-text">{key}</Item.Header>
               <Item.Description>{formatBytes(size)}</Item.Description>
             </Item.Content>
           </>
@@ -353,7 +353,7 @@ const FileListDropdownMenu = ({
       value: record.links.archive,
       content: (
         <>
-          <Icon name="archive" />
+          <Icon name="archive" className="computer only" />
           <Item.Content>
             <Item.Header>{i18next.t(`Download all`)}</Item.Header>
             <Item.Description>{totalFileSize}</Item.Description>
@@ -367,7 +367,7 @@ const FileListDropdownMenu = ({
     text: i18next.t("File details and previews"),
     content: (
       <>
-        <Icon name="eye" />
+        <Icon name="eye" className="computer only" />
         <Item.Content>
           <Item.Header>{i18next.t("File details and previews")}</Item.Header>
         </Item.Content>
