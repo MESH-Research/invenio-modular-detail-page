@@ -123,6 +123,7 @@
         data-main-sections='{{config["MODULAR_DETAIL_PAGE_MAIN_SECTIONS"] | tojson }}'
         data-pending-communities-search-config='{{ search_app_rdm_record_requests_config(app_id="InvenioAppRdm.RecordRequests", endpoint=record.links.requests) | tojson }}'
         data-permissions='{{ permissions | tojson }}'
+        data-permissions-per-field='{{ config.get("RDM_RECORDS_PERMISSIONS_PER_FIELD", {}) | tojson }}'
         data-preview-file-url='{{ preview_file_url }}'
         data-previewable-extensions='{{ "" | previewable_extensions | tojson }}'
         data-record='{{ record | tojson }}'

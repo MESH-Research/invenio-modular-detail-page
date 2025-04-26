@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { DetailContent } from "./sections/DetailContent";
+import { DetailContextProvider } from "./contexts/DetailContextProvider";
 import { _isEmpty } from "lodash/isEmpty";
 
 const detailMainDiv = document.getElementById("detail-main-content");
@@ -17,7 +18,7 @@ const pendingCommunitiesSearchConfig = JSON.parse(
 );
 
 ReactDOM.render(
-  <DetailContent
+  <DetailContextProvider
     backPage={detailMainDiv.dataset.backPage}
     canManageRecord={JSON.parse(detailMainDiv.dataset.canManageRecord)}
     community={community}
@@ -49,6 +50,7 @@ ReactDOM.render(
     localizedStats={JSON.parse(detailMainDiv.dataset.localizedStats)}
     mainSections={JSON.parse(detailMainDiv.dataset.mainSections)}
     permissions={JSON.parse(detailMainDiv.dataset.permissions)}
+    permissionsPerField={JSON.parse(detailMainDiv.dataset.permissionsPerField)}
     defaultPreviewFile={JSON.parse(detailMainDiv.dataset.defaultPreviewFile) === 'undefined' ? undefined : JSON.parse(detailMainDiv.dataset.defaultPreviewFile)}
     previewableExtensions={JSON.parse(detailMainDiv.dataset.previewableExtensions)}
     previewFileUrl={detailMainDiv.dataset.previewFileUrl === 'undefined' ? undefined : detailMainDiv.dataset.previewFileUrl}
@@ -91,6 +93,8 @@ ReactDOM.render(
     // search_app_communities_members_config
     // search_app_communities_records_config
     // search_app_communities_requests_config
-  />,
+  >
+    <DetailContent />
+  </DetailContextProvider>,
   detailMainDiv
 );

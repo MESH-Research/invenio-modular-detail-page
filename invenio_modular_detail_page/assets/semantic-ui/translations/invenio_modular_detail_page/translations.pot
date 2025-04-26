@@ -1,0 +1,555 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2025-04-25T20:21:25.590Z\n"
+"PO-Revision-Date: 2025-04-25T20:21:25.591Z\n"
+"Language: en\n"
+
+msgid "Show affiliations"
+msgstr "Show affiliations"
+
+msgid "Hide affiliations"
+msgstr "Hide affiliations"
+
+msgid "Affiliations for"
+msgstr "Affiliations for"
+
+msgid "profile"
+msgstr "profile"
+
+msgid "See the full number"
+msgstr "See the full number"
+
+msgid "Views"
+msgstr "Views"
+
+msgid "Downloads"
+msgstr "Downloads"
+
+msgid "Downloaded"
+msgstr "Downloaded"
+
+msgid "All versions"
+msgstr "All versions"
+
+msgid "This version"
+msgstr "This version"
+
+msgid "Total views"
+msgstr "Total views"
+
+msgid ""
+"Times this work's page has been visited. Multiple visits by the same user "
+"within one hour are counted as a single view. Visits by robots (bots) are "
+"excluded."
+msgstr ""
+"Times this work's page has been visited. Multiple visits by the same user "
+"within one hour are counted as a single view. Visits by robots (bots) are "
+"excluded."
+
+msgid "More info"
+msgstr "More info"
+
+msgid "Total downloads"
+msgstr "Total downloads"
+
+msgid ""
+"Times this work's files have been downloaded. For works with multiple "
+"files, this counts each file download separately. Repeated downloads of the "
+"same file by the same user are not counted if they occur within one hour."
+msgstr ""
+"Times this work's files have been downloaded. For works with multiple "
+"files, this counts each file download separately. Repeated downloads of the "
+"same file by the same user are not counted if they occur within one hour."
+
+msgid "Total download volume"
+msgstr "Total download volume"
+
+msgid ""
+"Total volume of all file downloads for this work. This excludes double "
+"clicks and downloads made by robots (bots)."
+msgstr ""
+"Total volume of all file downloads for this work. This excludes double "
+"clicks and downloads made by robots (bots)."
+
+msgid "More info on how stats are collected"
+msgstr "More info on how stats are collected"
+
+msgid "Markdown"
+msgstr "Markdown"
+
+msgid "reStructedText"
+msgstr "reStructedText"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "Image URL"
+msgstr "Image URL"
+
+msgid "Target URL"
+msgstr "Target URL"
+
+msgid "An error occurred while generating the citation."
+msgstr "An error occurred while generating the citation."
+
+msgid "Style"
+msgstr "Style"
+
+msgid "Record communities"
+msgstr "Record communities"
+
+msgid "Collection visibility"
+msgstr "Collection visibility"
+
+msgid "The collection is restricted to users with access."
+msgstr "The collection is restricted to users with access."
+
+msgid "Restricted"
+msgstr "Restricted"
+
+msgid "Hide other collections"
+msgstr "Hide other collections"
+
+msgid "An error occurred while fetching communities."
+msgstr "An error occurred while fetching communities."
+
+msgid "Submit to a collection"
+msgstr "Submit to a collection"
+
+msgid "Pending submissions"
+msgstr "Pending submissions"
+
+msgid "Manage collections"
+msgstr "Manage collections"
+
+msgid "Collection management menu dropdown"
+msgstr "Collection management menu dropdown"
+
+msgid "Manage collections for this work"
+msgstr "Manage collections for this work"
+
+msgid "Submit this work to a collection"
+msgstr "Submit this work to a collection"
+
+msgid "opens in new tab"
+msgstr "opens in new tab"
+
+msgid "Primary"
+msgstr "Primary"
+
+msgid "Submission information"
+msgstr "Submission information"
+
+msgid ""
+"Submission to this collection does not require review, and will be "
+"published immediately."
+msgstr ""
+"Submission to this collection does not require review, and will be "
+"published immediately."
+
+msgid "Remove branding"
+msgstr "Remove branding"
+
+msgid "Set as primary"
+msgstr "Set as primary"
+
+msgid ""
+"Make {{communityTitle}} appear as the primary displayed collection for this "
+"record"
+msgstr ""
+"Make {{communityTitle}} appear as the primary displayed collection for this "
+"record"
+
+msgid "Pending collections"
+msgstr "Pending collections"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "Success"
+msgstr "Success"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Search this work's pending collection submissions..."
+msgstr "Search this work's pending collection submissions..."
+
+msgid "Collections"
+msgstr "Collections"
+
+msgid "Search this work's collections..."
+msgstr "Search this work's collections..."
+
+msgid "Record submitted"
+msgstr "Record submitted"
+
+msgid "Review requested"
+msgstr "Review requested"
+
+msgid "Search in all collections"
+msgstr "Search in all collections"
+
+msgid "Search in my collections"
+msgstr "Search in my collections"
+
+msgid "Select a collection"
+msgstr "Select a collection"
+
+msgid "Remove"
+msgstr "Remove"
+
+msgid "Remove {{communityTitle}} from this record"
+msgstr "Remove {{communityTitle}} from this record"
+
+msgid "Remove collection"
+msgstr "Remove collection"
+
+msgid "Are you sure you want to remove the record from the collection?"
+msgstr "Are you sure you want to remove the record from the collection?"
+
+msgid "I understand the consequences:"
+msgstr "I understand the consequences:"
+
+msgid ""
+"The record can only be re-included in the collection by going through a new "
+"review by the collection curators."
+msgstr ""
+"The record can only be re-included in the collection by going through a new "
+"review by the collection curators."
+
+msgid "Something went wrong"
+msgstr "Something went wrong"
+
+msgid "Cancel removal"
+msgstr "Cancel removal"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Confirm removal"
+msgstr "Confirm removal"
+
+msgid ""
+"Members of the collection <1>\"<1>{{communityTitle}}</1>\"</1> will <4>lose "
+"their access</4> to the record if it is not public."
+msgstr ""
+"Members of the collection <1>\"<1>{{communityTitle}}</1>\"</1> will <4>lose "
+"their access</4> to the record if it is not public."
+
+msgid "Creators"
+msgstr "Creators"
+
+msgid "Contributors list"
+msgstr "Contributors list"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Get the DOI badge!"
+msgstr "Get the DOI badge!"
+
+msgid "DOI Badge"
+msgstr "DOI Badge"
+
+msgid "DOI"
+msgstr "DOI"
+
+msgid "Back-navigation"
+msgstr "Back-navigation"
+
+msgid "Back to edit"
+msgstr "Back to edit"
+
+msgid "Why this restriction"
+msgstr "Why this restriction"
+
+msgid "Export metadata as..."
+msgstr "Export metadata as..."
+
+msgid "Preview"
+msgstr "Preview"
+
+msgid "Download"
+msgstr "Download"
+
+msgid ""
+"This is the file fingerprint (checksum), which can be used to verify the "
+"file integrity."
+msgstr ""
+"This is the file fingerprint (checksum), which can be used to verify the "
+"file integrity."
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Size"
+msgstr "Size"
+
+msgid "Download all"
+msgstr "Download all"
+
+msgid "See more files"
+msgstr "See more files"
+
+msgid "File details and previews"
+msgstr "File details and previews"
+
+msgid "File list dropdown"
+msgstr "File list dropdown"
+
+msgid "File preview"
+msgstr "File preview"
+
+msgid "Search results for "
+msgstr "Search results for "
+
+msgid "Open external link"
+msgstr "Open external link"
+
+msgid "Opens in new tab"
+msgstr "Opens in new tab"
+
+msgid "A unique identifier for this version of the work"
+msgstr "A unique identifier for this version of the work"
+
+msgid "A unique identifier that always points to the latest version of the work"
+msgstr "A unique identifier that always points to the latest version of the work"
+
+msgid "Additional dates"
+msgstr "Additional dates"
+
+msgid "Additional titles"
+msgstr "Additional titles"
+
+msgid "Alternate identifiers"
+msgstr "Alternate identifiers"
+
+msgid "Analytics"
+msgstr "Analytics"
+
+msgid "Awarding university"
+msgstr "Awarding university"
+
+msgid "Chapter label"
+msgstr "Chapter label"
+
+msgid "Conference"
+msgstr "Conference"
+
+msgid "Conference organization"
+msgstr "Conference organization"
+
+msgid "Contributors"
+msgstr "Contributors"
+
+msgid "Course title"
+msgstr "Course title"
+
+msgid "Degree"
+msgstr "Degree"
+
+msgid "Department"
+msgstr "Department"
+
+msgid "Development status"
+msgstr "Development status"
+
+msgid "DOI badge"
+msgstr "DOI badge"
+
+msgid "Edition"
+msgstr "Edition"
+
+msgid "Frameworks or runtimes"
+msgstr "Frameworks or runtimes"
+
+msgid "Funding"
+msgstr "Funding"
+
+msgid "Imprint"
+msgstr "Imprint"
+
+msgid "Formats"
+msgstr "Formats"
+
+msgid "Languages"
+msgstr "Languages"
+
+msgid "Media and materials"
+msgstr "Media and materials"
+
+msgid "Operating systems supported"
+msgstr "Operating systems supported"
+
+msgid "Programming languages"
+msgstr "Programming languages"
+
+msgid "Project title"
+msgstr "Project title"
+
+msgid "Publication date"
+msgstr "Publication date"
+
+msgid "Project or publication website"
+msgstr "Project or publication website"
+
+msgid "Publisher"
+msgstr "Publisher"
+
+msgid "Published in"
+msgstr "Published in"
+
+msgid "References"
+msgstr "References"
+
+msgid "Related identifiers"
+msgstr "Related identifiers"
+
+msgid "Source code repository"
+msgstr "Source code repository"
+
+msgid "Resource type"
+msgstr "Resource type"
+
+msgid "Series"
+msgstr "Series"
+
+msgid "Sizes"
+msgstr "Sizes"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Sponsoring institution"
+msgstr "Sponsoring institution"
+
+msgid "URLs"
+msgstr "URLs"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Volumes"
+msgstr "Volumes"
+
+msgid "Conference website"
+msgstr "Conference website"
+
+msgid "You don't have permissions to share this record."
+msgstr "You don't have permissions to share this record."
+
+msgid "Share"
+msgstr "Share"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "New version"
+msgstr "New version"
+
+msgid "Record management"
+msgstr "Record management"
+
+msgid "Record management menu dropdown"
+msgstr "Record management menu dropdown"
+
+msgid "Manage this work"
+msgstr "Manage this work"
+
+msgid "Record title"
+msgstr "Record title"
+
+msgid "Version {{version}}"
+msgstr "Version {{version}}"
+
+msgid "Only published versions are displayed."
+msgstr "Only published versions are displayed."
+
+msgid "Preview version"
+msgstr "Preview version"
+
+msgid "Version "
+msgstr "Version "
+
+msgid "Other versions"
+msgstr "Other versions"
+
+msgid "Can view"
+msgstr "Can view"
+
+msgid "Can preview"
+msgstr "Can preview"
+
+msgid "Can edit"
+msgstr "Can edit"
+
+msgid "Get a link"
+msgstr "Get a link"
+
+msgid "Copied!"
+msgstr "Copied!"
+
+msgid "Copy link"
+msgstr "Copy link"
+
+msgid "Copied"
+msgstr "Copied"
+
+msgid "No link has been created. Click on 'Get a Link' to make a new link."
+msgstr "No link has been created. Click on 'Get a Link' to make a new link."
+
+msgid "Delete link"
+msgstr "Delete link"
+
+msgid "Done"
+msgstr "Done"
+
+msgid "Anyone with this link <1>can view all versions</1> of this record & files."
+msgstr "Anyone with this link <1>can view all versions</1> of this record & files."
+
+msgid ""
+"Anyone with this link <2>can view all published and unpublished "
+"versions</2> of this record & files."
+msgstr ""
+"Anyone with this link <2>can view all published and unpublished "
+"versions</2> of this record & files."
+
+msgid ""
+"Anyone with an account and this link <2>can edit all versions</2> of this "
+"record & files."
+msgstr ""
+"Anyone with an account and this link <2>can edit all versions</2> of this "
+"record & files."
+
+msgid "Record subject headings"
+msgstr "Record subject headings"
+
+msgid "Subjects"
+msgstr "Subjects"
+
+msgid "Cite this"
+msgstr "Cite this"
+
+msgid "Publication details"
+msgstr "Publication details"
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Access status"
+msgstr "Access status"
+
+msgid "File download"
+msgstr "File download"
+
+msgid "Share this work"
+msgstr "Share this work"
+
+msgid "Versions"
+msgstr "Versions"

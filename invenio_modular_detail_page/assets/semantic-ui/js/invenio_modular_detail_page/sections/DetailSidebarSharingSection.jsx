@@ -21,7 +21,7 @@ import {
   Popup,
 } from "semantic-ui-react";
 import Overridable from "react-overridable";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 
 function PopupInput({ message }) {
   const inputRef = useRef(null);

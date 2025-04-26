@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Dropdown } from "semantic-ui-react";
 import Overridable from "react-overridable";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import PropTypes from "prop-types";
 
 const ExportDropdown = (props) => {

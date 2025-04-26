@@ -1,7 +1,7 @@
-import React from "react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import React, { useContext } from "react";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { componentsMap } from "../componentsMap";
-import { filterPropsToPass } from "../util";
+import { DetailContext } from "../contexts/DetailContext";
 
 /**
  * Component for the default content section (tab) of the record detail page.
@@ -10,32 +10,13 @@ import { filterPropsToPass } from "../util";
  * @param {} param0
  * @returns
  */
-// community,
-// customFieldsUi,
-// externalResources,
-// previewFileUrl,
-// files,
-// hasFiles,
-// hasPreviewableFiles,
-// iconsRor,
-// iconsGnd,
-// iconsKcUsername,
-// iconsOrcid,
-// isDraft,
-// isPreview,
-// landingUrls,
-// subSections,
-// record,
-// permissions,
-// previewFile,
-// sidebarSections,
-// totalFileSize
-const DetailMainTab = (topLevelProps) => {
+const DetailMainTab = ({ section, subsections }) => {
+  const contextStore = useContext(DetailContext);
   return (
     <>
-      {!!topLevelProps.subsections.length &&
-        topLevelProps.subsections.map(
-          ({ section, component_name, subsections, props }, idx) => {
+      {!!subsections.length &&
+        subsections.map(
+          ({ section, component_name, subsections }, idx) => {
             const SubSectionComponent = componentsMap[component_name];
             return (
               <section
@@ -45,7 +26,7 @@ const DetailMainTab = (topLevelProps) => {
                 key={idx}
               >
                 <SubSectionComponent
-                  {...filterPropsToPass(topLevelProps, props)}
+                  {...contextStore}
                   section={section}
                   subsections={subsections}
                 />

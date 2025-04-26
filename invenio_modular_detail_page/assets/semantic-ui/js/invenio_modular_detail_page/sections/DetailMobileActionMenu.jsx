@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Icon, Menu, Popup } from "semantic-ui-react";
 import { CitationModal } from "./DetailSidebarCitationSection";
 import { ExportDropdown } from "../components/ExportDropdown";
@@ -7,27 +7,10 @@ import { RecordManagementMenu } from "../components/RecordManagementMenu";
 import { ShareModal } from "../components/ShareModal";
 import { SidebarSharingSection } from "./DetailSidebarSharingSection";
 import Overridable from "react-overridable";
+import { DetailContext } from "../contexts/DetailContext";
 
-const MobileActionMenu = (props) => {
-  const {
-    canManage,
-    citationStyles,
-    citationStyleDefault,
-    currentUserId,
-    defaultPreviewFile,
-    files,
-    fileCountToShow,
-    fileTabIndex,
-    isPreview,
-    isDraft,
-    isPreviewSubmissionRequest,
-    permissions,
-    previewFileUrl,
-    record,
-    recordExporters,
-    setActiveTab,
-    totalFileSize,
-  } = props;
+const MobileActionMenu = () => {
+  const topLevelProps = useContext(DetailContext);
   const [activeItem, setActiveItem] = useState(null);
   const [manageOpen, setManageOpen] = useState(false);
   const [shareModalOpen, setShareModalOpen] = React.useState(false);
@@ -43,7 +26,7 @@ const MobileActionMenu = (props) => {
   return (
     <Overridable
       id="InvenioModularDetailPage.MobileActionMenu.layout"
-      {...props}
+      {...topLevelProps}
     >
       <Menu
         className="mobile tablet only sixteen wide sticky bottom"
@@ -52,11 +35,11 @@ const MobileActionMenu = (props) => {
         size="mini"
         inverted
       >
-        {canManage && (
+        {topLevelProps.canManage && (
           <>
             {/* here to avoid the modal being closed on popup close */}
             <ShareModal
-              recid={record.id}
+              recid={topLevelProps.record.id}
               open={shareModalOpen}
               handleClose={handleShareModalClose}
               sectionIndex={50}
@@ -64,11 +47,11 @@ const MobileActionMenu = (props) => {
             <Popup
               content={
                 <RecordManagementMenu
-                  record={record}
-                  permissions={permissions}
-                  isDraft={isDraft}
-                  isPreviewSubmissionRequest={isPreviewSubmissionRequest}
-                  currentUserId={currentUserId}
+                  record={topLevelProps.record}
+                  permissions={topLevelProps.permissions}
+                  isDraft={topLevelProps.isDraft}
+                  isPreviewSubmissionRequest={topLevelProps.isPreviewSubmissionRequest}
+                  currentUserId={topLevelProps.currentUserId}
                   handleShareModalOpen={handleShareModalOpen}
                   handleParentPopupClose={handleManageClose}
                   sectionIndex={70}
@@ -101,22 +84,22 @@ const MobileActionMenu = (props) => {
             asFluid: false,
             pointing: "bottom",
             icon: null,
-            record,
+            record: topLevelProps.record,
             text: (
               <>
                 <Icon name="share" />
                 Export
               </>
             ),
-            isPreview,
-            recordExporters,
+            isPreview: topLevelProps.isPreview,
+            recordExporters: topLevelProps.recordExporters,
             classNames: "pointing",
             sectionIndex: 70,
           }}
         />
 
         <CitationModal
-          record={record}
+          record={topLevelProps.record}
           trigger={
             <Menu.Item
               as="button"
@@ -128,14 +111,14 @@ const MobileActionMenu = (props) => {
               Cite
             </Menu.Item>
           }
-          citationStyles={citationStyles}
-          citationStyleDefault={citationStyleDefault}
+          citationStyles={topLevelProps.citationStyles}
+          citationStyleDefault={topLevelProps.citationStyleDefault}
           onCloseHandler={() => setActiveItem(null)}
           sectionIndex={80}
         />
 
         <Popup
-          content={<SidebarSharingSection record={record} />}
+          content={<SidebarSharingSection record={topLevelProps.record} />}
           trigger={
             <Menu.Item
               as="button"
@@ -156,16 +139,16 @@ const MobileActionMenu = (props) => {
           asItem={true}
           asButton={false}
           id="record-details-download"
-          defaultPreviewFile={defaultPreviewFile}
-          files={files}
+          defaultPreviewFile={topLevelProps.defaultPreviewFile}
+          files={topLevelProps.files}
           fileCountToShow={3}
-          fileTabIndex={fileTabIndex}
-          isPreview={isPreview}
-          permissions={permissions}
-          previewFileUrl={previewFileUrl}
-          record={record}
-          setActiveTab={setActiveTab}
-          totalFileSize={totalFileSize}
+          fileTabIndex={topLevelProps.fileTabIndex}
+          isPreview={topLevelProps.isPreview}
+          permissions={topLevelProps.permissions}
+          previewFileUrl={topLevelProps.previewFileUrl}
+          record={topLevelProps.record}
+          setActiveTab={topLevelProps.setActiveTab}
+          totalFileSize={topLevelProps.totalFileSize}
           sectionIndex={100}
           pointing="bottom"
         />

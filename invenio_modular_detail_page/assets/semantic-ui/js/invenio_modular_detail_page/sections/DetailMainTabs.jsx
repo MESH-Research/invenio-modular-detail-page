@@ -1,23 +1,20 @@
-import React, { useRef, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Tab, Menu } from "semantic-ui-react";
 import { DetailMainTab } from "./DetailMainTab";
 import { addPropsFromChildren, filterPropsToPass } from "../util";
 import Overridable from "react-overridable";
+import { DetailContext } from "../contexts/DetailContext";
 
-const DetailMainTabs = (topLevelProps) => {
-
-  const panes = topLevelProps.tabbedSections.map(
-    ({ section, component_name, subsections, props, show }, idx) => {
+const DetailMainTabs = () => {
+  const contextStore = useContext(DetailContext);
+  const panes = contextStore.tabbedSections.map(
+    ({ section, component_name, subsections, show }, idx) => {
       // Because can't import DetailMainTab in componentsMap (circular)
       const TabComponent =
         component_name !== "DetailMainTab"
           ? componentsMap[component_name]
           : DetailMainTab;
-      props = addPropsFromChildren(subsections, props);
-      let passedProps =
-        !!props && props.length ? filterPropsToPass(topLevelProps, props) : {};
-      passedProps = {
-        ...passedProps,
+      let passedProps = {
         section: section,
         subsections: subsections,
       };
@@ -39,7 +36,6 @@ const DetailMainTabs = (topLevelProps) => {
 
   useEffect(() => {
     const firstTab = document.querySelector("#detail-main-tabs > .menu > .item.active");
-    console.log("firstTab", firstTab);
     if (firstTab) {
       firstTab.focus();
     }
@@ -48,15 +44,14 @@ const DetailMainTabs = (topLevelProps) => {
   return (
     <Overridable
       id="InvenioModularDetailPage.DetailMainTabs.layout"
-      {...topLevelProps}
     >
       <Tab
         id="detail-main-tabs"
         panes={panes}
         menu={{ secondary: true, pointing: true }}
-        activeIndex={topLevelProps.activeTab}
+        activeIndex={contextStore.activeTab}
         onTabChange={(e, { activeIndex }) =>
-          topLevelProps.setActiveTab(activeIndex)
+          contextStore.setActiveTab(activeIndex)
         }
       />
     </Overridable>

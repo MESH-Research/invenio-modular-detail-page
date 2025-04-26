@@ -1,7 +1,8 @@
-import React from "react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import React, { useContext } from "react";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Card, Icon, Label, List } from "semantic-ui-react";
 import { AffiliationsAccordion } from "./AffiliationsAccordion";
+import { DetailContext } from "../contexts/DetailContext";
 
 const IdentifiersList = (ids) => {
   if (ids !== undefined) {
@@ -153,24 +154,18 @@ const Creatibutor = ({
   );
 };
 
-const CreatibutorsShortList = ({
-  creators,
-  contributors,
-  iconsRor,
-  iconsOrcid,
-  iconsGnd,
-  iconsKcUsername,
-  iconsIsni,
-  landingUrls,
-  isPreviewSubmissionRequest,
-}) => {
+const CreatibutorsShortList = () => {
+  const contextStore = useContext(DetailContext);
+  const creators = contextStore.creators;
+  const contributors = contextStore.contributors;
+
   const show_affiliations = false;
   const show_roles = false;
-  const creatibutors = contributors
+  const creatibutors = contextStore.contributors
     ? creators?.creators?.concat(contributors?.contributors)
     : creators?.creators;
 
-  return isPreviewSubmissionRequest ? null : (
+  return contextStore.isPreviewSubmissionRequest ? null : (
     <section
       id="creatibutors-list-section"
       className="ui mb-10 mt-10 sixteen wide mobile twelve wide tablet thirteen wide computer column"
@@ -184,12 +179,12 @@ const CreatibutorsShortList = ({
                 key={creator.person_or_org.name}
                 show_affiliations={show_affiliations}
                 show_roles={show_roles}
-                iconsRor={iconsRor}
-                iconsOrcid={iconsOrcid}
-                iconsGnd={iconsGnd}
-                iconsKcUsername={iconsKcUsername}
-                iconsIsni={iconsIsni}
-                landingUrls={landingUrls}
+                iconsRor={contextStore.iconsRor}
+                iconsOrcid={contextStore.iconsOrcid}
+                iconsGnd={contextStore.iconsGnd}
+                iconsKcUsername={contextStore.iconsKcUsername}
+                iconsIsni={contextStore.iconsIsni}
+                landingUrls={contextStore.landingUrls}
               />
             ))
           : ""}

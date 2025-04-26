@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Button, Icon, Grid, Message, Popup, Dropdown } from "semantic-ui-react";
 import PropTypes from "prop-types";
 // import Overridable from "react-overridable";

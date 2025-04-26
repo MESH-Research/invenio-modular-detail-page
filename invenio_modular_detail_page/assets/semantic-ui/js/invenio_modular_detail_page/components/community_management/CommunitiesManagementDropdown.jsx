@@ -10,7 +10,7 @@ import { PendingCommunitiesModal } from "./PendingCommunitiesModal";
 import { RecordCommunitySubmissionModal } from "./RecordCommunitySubmissionModal";
 import { RecordCommunitiesListModal } from "./RecordCommunitiesListModal";
 import { Dropdown, Icon } from "semantic-ui-react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 // import { SuccessIcon } from "@js/invenio_communities/members";
 import PropTypes from "prop-types";
 
@@ -22,6 +22,7 @@ const CommunitiesManagementDropdown = ({
   handleCommunityRemoval,
   handleDefaultCommunityChange,
   permissions,
+  permissionsPerField,
   record,
   recordCommunityEndpoint,
   recordCommunitySearchConfig,
@@ -214,6 +215,7 @@ const CommunitiesManagementDropdown = ({
         toggleModal={toggleSubmissionModal}
         handleClose={() => toggleSubmissionModal(false)}
         handleSuccessAction={handleActionSucceed}
+        permissionsPerField={permissionsPerField}
         recordCommunityEndpoint={recordCommunityEndpoint}
         recordCommunitySearchConfig={recordCommunitySearchConfig}
         recordUserCommunitySearchConfig={recordUserCommunitySearchConfig}

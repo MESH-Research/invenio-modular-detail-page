@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Button } from "semantic-ui-react";
 
 const Descriptions = ({

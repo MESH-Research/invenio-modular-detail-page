@@ -24,7 +24,7 @@ import {
 } from "semantic-ui-react";
 import { withCancel } from "react-invenio-forms";
 import { CopyButton } from "@js/invenio_app_rdm/components/CopyButton";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 
 /** Component for the citation section of the right sidebar.
  *

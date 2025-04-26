@@ -1,11 +1,13 @@
-import React from "react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import React, { useContext } from "react";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
+import { DetailContext } from "../contexts/DetailContext";
 
-const RecordTitle = ({ title, isPreviewSubmissionRequest }) => {
-  return isPreviewSubmissionRequest ? null : (
+const RecordTitle = () => {
+  const contextStore = useContext(DetailContext);
+  return contextStore.isPreviewSubmissionRequest ? null : (
     <section id="record-title-section" aria-label={i18next.t("Record title")}>
       <h1 id="record-title" className="ui header wrap-overflowing-text">
-        {title}
+        {contextStore.title}
       </h1>
     </section>
   );

@@ -10,8 +10,8 @@
 // you can redistribute them and/or modify them under the terms of the MIT
 // License; see LICENSE file for more details.
 
-import React from "react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import React, { useContext } from "react";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Icon, Message } from "semantic-ui-react";
 import Overridable from "react-overridable";
 import { componentsMap } from "../componentsMap";
@@ -22,12 +22,13 @@ import {
 import { ShareModal } from "../components/ShareModal";
 import { DraftBackButton } from "../components/DraftBackButton";
 import { FlagNewerVersion } from "../components/FlagNewerVersion";
+import { DetailContext } from "../contexts/DetailContext";
 
 /** Component for the right sidebar of the detail page.
  *
  * @param {object} props
  *
- * Expects the following props:
+ * Expects document context with the following properties:
  * - sidebarSections: list of sidebar sections to display
  * - record: record to display
  * - citationStyles: list of citation styles
@@ -37,7 +38,8 @@ import { FlagNewerVersion } from "../components/FlagNewerVersion";
  * - community: community of the record
  *
  */
-const DetailRightSidebar = (topLevelProps) => {
+const DetailRightSidebar = () => {
+  const topLevelProps = useContext(DetailContext);
   const [shareModalOpen, setShareModalOpen] = React.useState(false);
   const handleShareModalClose = () => setShareModalOpen(false);
   const handleShareModalOpen = () => setShareModalOpen(true);
@@ -104,10 +106,9 @@ const DetailRightSidebar = (topLevelProps) => {
             idx
           ) => {
             const SidebarSectionComponent = componentsMap[component_name];
-            const SidebarSectionProps = filterPropsToPass(topLevelProps, props);
             return (
               <SidebarSectionComponent
-                {...SidebarSectionProps}
+                {...topLevelProps}
                 section={section}
                 subsections={subsections}
                 key={section}

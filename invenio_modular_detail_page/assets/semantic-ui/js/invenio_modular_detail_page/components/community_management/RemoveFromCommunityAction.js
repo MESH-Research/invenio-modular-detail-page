@@ -14,7 +14,7 @@
 
 import React, { Component } from "react";
 import { Button, Modal, Message, Icon, Checkbox } from "semantic-ui-react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Trans } from "react-i18next";
 import { http, ErrorMessage } from "react-invenio-forms";
 import PropTypes from "prop-types";

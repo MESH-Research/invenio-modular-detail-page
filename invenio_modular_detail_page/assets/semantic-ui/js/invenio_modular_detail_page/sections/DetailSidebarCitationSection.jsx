@@ -12,7 +12,7 @@
 
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Button, Icon, Modal } from "semantic-ui-react";
 import { Citation } from "../components/Citation";
 import Overridable from "react-overridable";

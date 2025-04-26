@@ -1,5 +1,5 @@
 import React from "react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Button, Dropdown, Icon, Item, Menu } from "semantic-ui-react";
 import { formatBytes, getFileTypeIconName } from "../util";
 import { EmbargoMessage } from "./EmbargoMessage";
@@ -353,7 +353,7 @@ const FileListDropdownMenu = ({
       value: record.links.archive,
       content: (
         <>
-          <Icon name="archive" className="computer only" />
+          <Icon name="file archive outline" className="computer only" />
           <Item.Content>
             <Item.Header>{i18next.t(`Download all`)}</Item.Header>
             <Item.Description>{totalFileSize}</Item.Description>

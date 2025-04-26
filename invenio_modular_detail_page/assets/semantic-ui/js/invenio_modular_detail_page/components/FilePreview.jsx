@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Placeholder } from "semantic-ui-react";
 import { EmbargoMessage } from "./EmbargoMessage";
 
@@ -23,6 +23,9 @@ const FilePreview = ({
   const fileToShow = (useDynamicPreview && !!activePreviewFile) ? activePreviewFile : (!!defaultPreviewFile ? defaultPreviewFile : files?.[0]);
   const previewUrl = !!previewFileUrl ? `${previewFileUrl.replace("xxxx", fileToShow.key)}?${previewUrlFlag}` : "";
   const fileExtension = !!hasPreviewableFiles ? fileToShow?.key?.split(".").pop() : "no-preview";
+  console.log("fileToShow", fileToShow?.key);
+  console.log("fileExtension", fileExtension);
+  console.log("previewableExtensions", previewableExtensions);
   const currentIsPreviewable = previewableExtensions?.includes(fileExtension);
 
 

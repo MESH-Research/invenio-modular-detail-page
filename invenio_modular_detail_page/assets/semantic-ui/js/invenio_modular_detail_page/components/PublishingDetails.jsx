@@ -1,5 +1,5 @@
 import React from "react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Accordion, Icon, Popup } from "semantic-ui-react";
 import { Creatibutors } from "./Creatibutors";
 import { Doi } from "../components/Doi";

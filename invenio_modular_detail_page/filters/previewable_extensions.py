@@ -1,3 +1,5 @@
+from itertools import chain
+from flask import current_app
 from invenio_previewer.proxies import current_previewer
 
 
@@ -9,4 +11,6 @@ def previewable_extensions(value):
 
     use like `{{ "" | previewable_extensions }}`
     """
-    return list(current_previewer.previewable_extensions)
+    extensions = list(current_previewer.previewable_extensions)
+    current_app.logger.info(f"extensions: {extensions}")
+    return extensions

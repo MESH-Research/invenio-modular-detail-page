@@ -15,7 +15,7 @@
 
 import React, { Component } from "react";
 import { Button, Message, Popup } from "semantic-ui-react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { http, withCancel } from "react-invenio-forms";
 import PropTypes from "prop-types";
 

@@ -16,7 +16,7 @@ import {
 } from "semantic-ui-react";
 import axios from "axios";
 import { Trans } from "react-i18next";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { http } from "react-invenio-forms";
 import PropTypes from "prop-types";
 

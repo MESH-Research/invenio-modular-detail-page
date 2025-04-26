@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import Overridable from "react-overridable";
+import { DetailContext } from "../contexts/DetailContext";
 
-const DetailLeftSidebar = (props) => {
+const DetailLeftSidebar = () => {
+  const topLevelProps = useContext(DetailContext);
   return (
     <Overridable
       id="InvenioModularDetailPage.DetailLeftSidebar.layout"
-      {...props}
+      {...topLevelProps}
     >
       <aside className="sixteen wide tablet five wide computer column left-sidebar"></aside>
     </Overridable>

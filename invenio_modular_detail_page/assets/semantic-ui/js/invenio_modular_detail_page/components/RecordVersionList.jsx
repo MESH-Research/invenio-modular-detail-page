@@ -20,7 +20,7 @@ import {
   List,
   Divider,
 } from "semantic-ui-react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import PropTypes from "prop-types";
 
 const deserializeRecord = (record) => ({
@@ -112,7 +112,7 @@ const VersionsContentDropdown = ({
     let opt = {
       id: item.id,
       value: item.id,
-      text: i18next.t(`Version ${item.version}`),
+      text: i18next.t("Version {{version}}", { version: item.version }),
       pubdate: item.publication_date,
     };
     const doi = _get(item.pids, "doi.identifier", "");

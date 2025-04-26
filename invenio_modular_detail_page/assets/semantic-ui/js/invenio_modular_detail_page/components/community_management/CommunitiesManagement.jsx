@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "semantic-ui-react";
 import { CommunitiesManagementDropdown } from "./CommunitiesManagementDropdown";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { http, withCancel } from "react-invenio-forms";
 
 const CommunitiesManagement = ({
@@ -11,6 +11,7 @@ const CommunitiesManagement = ({
   canManageRecord,
   recordCommunitySearchConfig,
   permissions,
+  permissionsPerField,
   searchConfig,
   record,
   showAll,
@@ -21,8 +22,6 @@ const CommunitiesManagement = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  console.log("defaultCommunity", defaultCommunity);
-
   const fetchRecordCommunities = async () => {
     return await http.get(recordCommunityEndpoint, {
       headers: {
@@ -84,6 +83,7 @@ const CommunitiesManagement = ({
           handleCommunityRemoval={handleCommunityRemoval}
           handleDefaultCommunityChange={handleDefaultCommunityChange}
           permissions={permissions}
+          permissionsPerField={permissionsPerField}
           record={record}
           recordCommunityEndpoint={recordCommunityEndpoint}
           recordCommunitySearchConfig={recordCommunitySearchConfig}
@@ -100,6 +100,7 @@ const CommunitiesManagement = ({
           handleCommunityRemoval={handleCommunityRemoval}
           handleDefaultCommunityChange={handleDefaultCommunityChange}
           permissions={permissions}
+          permissionsPerField={permissionsPerField}
           record={record}
           recordCommunityEndpoint={recordCommunityEndpoint}
           recordCommunitySearchConfig={recordCommunitySearchConfig}

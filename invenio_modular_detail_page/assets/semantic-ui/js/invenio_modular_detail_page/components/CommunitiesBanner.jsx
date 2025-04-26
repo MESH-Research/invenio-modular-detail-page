@@ -1,24 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import React, { useState, useEffect, useContext } from "react";
+import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Button, Image, Grid } from "semantic-ui-react";
 import Geopattern from "geopattern";
 import { CommunitiesManagement } from "./community_management/CommunitiesManagement";
+import { DetailContext } from "../contexts/DetailContext";
 
 const CommunitiesBanner = ({
-  additionalCommunities,
-  canManageRecord,
-  community,
-  isPreviewSubmissionRequest,
-  permissions,
-  record,
-  recordCommunityEndpoint,
-  recordCommunitySearchConfig,
-  recordUserCommunitySearchConfig,
-  searchConfig,
-  userCommunitiesMemberships,
   show,
   sectionIndex,
 }) => {
+  const contextStore = useContext(DetailContext);
+  const additionalCommunities = contextStore.additionalCommunities;
+  const community = contextStore.community;
+  const record = contextStore.record;
   const [communities, setCommunities] = useState(community ? (additionalCommunities ? [community, ...additionalCommunities] : [community]) : []);
   const [defaultCommunity, setDefaultCommunity] = useState(
     record.parent.communities.default ? communities.find(community => community.id === record.parent.communities.default) : community
@@ -29,15 +23,6 @@ const CommunitiesBanner = ({
   const isCommunityRestricted = defaultCommunity
     ? defaultCommunity.access.visibility == "restricted"
     : false;
-  console.log("community", community);
-  console.log("record", record);
-  console.log("defaultCommunity", defaultCommunity);
-  console.log("otherCommunities", otherCommunities);
-  console.log("communities", communities);
-
-  useEffect(() => {
-    console.log("first render");
-  }, []);
 
   const communityLogoUrl = defaultCommunity?.links
     ? defaultCommunity?.links?.logo
@@ -61,7 +46,7 @@ const CommunitiesBanner = ({
       if (!communities.find(community => community.id === defaultCommunity?.id)) {
         setDefaultCommunity(communities[0]);
       }
-      setOtherCommunities(communities.filter(community => community.id !== defaultCommunity.id));
+      setOtherCommunities(communities.filter(community => community.id !== defaultCommunity?.id));
     } else if (communities.length === 1) {
       setDefaultCommunity(communities[0]);
       setOtherCommunities([]);
@@ -87,7 +72,7 @@ const CommunitiesBanner = ({
     return pattern.toDataUri();
   };
 
-  return !isPreviewSubmissionRequest ? (
+  return !contextStore.isPreviewSubmissionRequest ? (
     <div
       id="communities"
       className={`sidebar-container ${show}`}
@@ -205,15 +190,16 @@ const CommunitiesBanner = ({
               )}
             </>
           ) : null}
-          {canManageRecord && (
+          {contextStore.canManage && (
             <CommunitiesManagement
-              userCommunitiesMemberships={userCommunitiesMemberships}
-              recordCommunityEndpoint={recordCommunityEndpoint}
-              recordUserCommunitySearchConfig={recordUserCommunitySearchConfig}
-              canManageRecord={canManageRecord}
-              recordCommunitySearchConfig={recordCommunitySearchConfig}
-              permissions={permissions}
-              searchConfig={searchConfig}
+              userCommunitiesMemberships={contextStore.userCommunitiesMemberships}
+              recordCommunityEndpoint={contextStore.recordCommunityEndpoint}
+              recordUserCommunitySearchConfig={contextStore.recordUserCommunitySearchConfig}
+              canManageRecord={contextStore.canManage}
+              recordCommunitySearchConfig={contextStore.recordCommunitySearchConfig}
+              permissions={contextStore.permissions}
+              permissionsPerField={contextStore.permissionsPerField}
+              searchConfig={contextStore.searchConfig}
               record={record}
               showAll={showAll}
               defaultCommunity={defaultCommunity}

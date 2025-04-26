@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Message, Icon } from "semantic-ui-react";
+import { DetailContext } from "../contexts/DetailContext";
 
-const FlagNewerVersion = ({ isPublished, isLatest, latestHtml, show }) => {
+const FlagNewerVersion = ({ show }) => {
+  const contextStore = useContext(DetailContext);
+  const isPublished = contextStore.isPublished;
+  const isLatest = contextStore.isLatest;
+  const latestHtml = contextStore.latestHtml;
+
   if (isPublished && !isLatest) {
     return (
       <Message warning icon className={show ? show : ""}>
