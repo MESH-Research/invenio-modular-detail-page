@@ -13,80 +13,60 @@
 * MIT License; see LICENSE file for more details.
 */
 
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Message, Popup } from "semantic-ui-react";
-import { i18next } from "@translations/invenio_modular_detail_page/i18next";
+import { i18next } from "@translations/i18next";
+import { Trans } from "react-i18next";
 import { http, withCancel } from "react-invenio-forms";
 import PropTypes from "prop-types";
 
-export class ManageDefaultBrandingAction extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-      error: undefined,
+const ManageDefaultBrandingAction = ({
+  brandingRestricted,
+  currentDefaultCommunity,
+  isCommunityDefault,
+  result,
+  recordCommunityEndpoint,
+  updateRecordCallback,
+}) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(undefined);
+  const [cancellableAction, setCancellableAction] = useState(null);
+
+  useEffect(() => {
+    return () => {
+      if (cancellableAction) {
+        cancellableAction.cancel();
+      }
     };
-  }
+  }, [cancellableAction]);
 
-  componentWillUnmount() {
-    this.cancellableAction && this.cancellableAction.cancel();
-  }
-
-  handleSetBranding = async (value) => {
-    const { recordCommunityEndpoint, updateRecordCallback } = this.props;
-    this.setState({ loading: true });
+  const handleSetBranding = async (value) => {
+    setLoading(true);
 
     const payload = {
       default: value,
     };
 
-    this.cancellableAction = withCancel(http.put(recordCommunityEndpoint, payload));
+    const action = withCancel(http.put(recordCommunityEndpoint, payload));
+    setCancellableAction(action);
 
     try {
-      const response = await this.cancellableAction.promise;
-      this.setState({ loading: false });
+      const response = await action.promise;
+      setLoading(false);
       updateRecordCallback(response.data);
     } catch (error) {
       if (error === "UNMOUNTED") return;
 
       console.error(error);
-      this.setState({
-        error: error?.response?.data?.message || error?.message,
-        loading: false,
-      });
+      setError(error?.response?.data?.message || error?.message);
+      setLoading(false);
     }
   };
 
-  renderCommunity = () => {
-    const { loading } = this.state;
-    const { result, isCommunityDefault } = this.props;
+  const renderCommunity = () => {
     const communityTitle = result.metadata.title;
 
-    return isCommunityDefault ? (null
-      // <Popup
-      //   trigger={
-      //     <Button
-      //       size="tiny"
-      //       labelPosition="left"
-      //       icon="paint brush"
-      //       floated="right"
-      //       onClick={() => this.handleSetBranding("")}
-      //       content={i18next.t("Remove branding")}
-      //       aria-label={i18next.t(
-      //         "{{communityTitle}} appears as the primary collection displayed for this record",
-      //         {
-      //           communityTitle,
-      //         }
-      //       )}
-      //       loading={loading}
-      //     />
-      //   }
-      //   content={i18next.t(
-      //     "Remove this community from appearing on top of the record details page."
-      //   )}
-      //   position="top center"
-      // />
-    ) : (
+    return isCommunityDefault ? null : (
       <Popup
         trigger={
           <Button
@@ -94,7 +74,7 @@ export class ManageDefaultBrandingAction extends Component {
             labelPosition="left"
             icon="star"
             floated="right"
-            onClick={() => this.handleSetBranding(result.id)}
+            onClick={() => handleSetBranding(result.id)}
             content={i18next.t("Set as primary")}
             aria-label={i18next.t(
               "Make {{communityTitle}} appear as the primary displayed collection for this record",
@@ -116,22 +96,27 @@ export class ManageDefaultBrandingAction extends Component {
     );
   };
 
-  render() {
-    const { error } = this.state;
-    return error ? (
-      <Message
-        negative
-        floated="right"
-        className="community-branding-error"
-        size="tiny"
-      >
-        {error}
-      </Message>
-    ) : (
-      this.renderCommunity()
-    );
-  }
-}
+  return error ? (
+    <Message
+      negative
+      floated="right"
+      className="community-branding-error"
+      size="tiny"
+    >
+      {brandingRestricted ?
+        <Trans
+          i18n={i18next}
+          components={{ bold: <b /> }}
+          defaults="The <bold>{{collection}}</bold> community does not allow you to set a different primary display collection. Please contact the collection owner or managers for assistance."
+          values={{ collection: currentDefaultCommunity?.metadata?.title || currentDefaultCommunity?.slug }}
+        />
+        : error
+      }
+    </Message>
+  ) : (
+    renderCommunity()
+  );
+};
 
 ManageDefaultBrandingAction.propTypes = {
   result: PropTypes.object.isRequired,
@@ -139,3 +124,5 @@ ManageDefaultBrandingAction.propTypes = {
   updateRecordCallback: PropTypes.func.isRequired,
   isCommunityDefault: PropTypes.bool.isRequired,
 };
+
+export { ManageDefaultBrandingAction };

@@ -18,6 +18,7 @@ export class PendingCommunitiesModal extends Component {
       successActionCallback,
       handleOnOpen,
       handleOnClose,
+      permissionsPerField,
     } = this.props;
 
     return (
@@ -40,6 +41,7 @@ export class PendingCommunitiesModal extends Component {
         <PendingCommunitiesSearch
           searchConfig={searchConfig}
           successActionCallback={successActionCallback}
+          permissionsPerField={permissionsPerField}
         />
 
         <Modal.Actions>
@@ -56,8 +58,10 @@ PendingCommunitiesModal.propTypes = {
   successActionCallback: PropTypes.func.isRequired,
   handleOnClose: PropTypes.func.isRequired,
   handleOnOpen: PropTypes.func.isRequired,
+  permissionsPerField: PropTypes.object,
 };
 
 PendingCommunitiesModal.defaultProps = {
   modalOpen: false,
+  permissionsPerField: undefined,
 };

@@ -43,6 +43,7 @@ export class RecordCommunitiesListModal extends Component {
       handleOnClose,
       trigger,
       permissions,
+      permissionsPerField,
     } = this.props;
     const { recordParent } = this.state;
 
@@ -68,6 +69,7 @@ export class RecordCommunitiesListModal extends Component {
           recordCommunityEndpoint={recordCommunityEndpoint}
           successActionCallback={successActionCallback}
           permissions={permissions}
+          permissionsPerField={permissionsPerField}
           recordParent={recordParent}
           updateRecordCallback={this.handleRecordUpdate}
         />

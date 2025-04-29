@@ -19,6 +19,7 @@ const RecordCommunitySubmissionModal = ({
   recordCommunitySearchConfig,
   recordUserCommunitySearchConfig,
   handleClose,
+  handleSuccessAction,
   record,
 }) => {
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
@@ -42,8 +43,7 @@ const RecordCommunitySubmissionModal = ({
   };
 
   const handleSuccessSubmit = (data) => {
-    const { handleSuccessAction } = this.props;
-    this.closeConfirmModal();
+    closeConfirmModal();
     if (isIncludedDirectly(data.processed[0].request)) {
       handleSuccessAction(data, i18next.t("Record submitted"));
     } else handleSuccessAction(data, i18next.t("Review requested"));
@@ -108,6 +108,7 @@ const RecordCommunitySubmissionModal = ({
         handleClose={handleClose}
         record={record}
         isInitialSubmission={false}
+        permissionsPerField={permissionsPerField}
       />
       {confirmationModalOpen && (
         <SubmitReviewModal

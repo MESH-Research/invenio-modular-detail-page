@@ -6,7 +6,7 @@
 
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { RecordCommunitiesSearchItem } from "./RecordCommunitiesSearchItem";
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { OverridableContext, parametrize } from "react-overridable";
 import {
@@ -23,70 +23,73 @@ import { Modal } from "semantic-ui-react";
 
 const appName = "InvenioAppRdm.RecordCommunitiesSearch";
 
-export class RecordCommunitiesSearch extends Component {
-  handleSuccessCallback = (data) => {
-    const { successActionCallback } = this.props;
+const RecordCommunitiesSearch = ({
+  recordCommunityEndpoint,
+  permissions,
+  recordParent,
+  updateRecordCallback,
+  successActionCallback,
+  permissionsPerField,
+}) => {
+  const handleSuccessCallback = (data) => {
     successActionCallback(data, i18next.t("Success"));
   };
 
-  render() {
-    const { recordCommunityEndpoint, permissions, recordParent, updateRecordCallback } =
-      this.props;
-    const overriddenComponents = {
-      [`${appName}.ResultsList.item`]: parametrize(RecordCommunitiesSearchItem, {
-        recordCommunityEndpoint: recordCommunityEndpoint,
-        successCallback: this.handleSuccessCallback,
-        updateRecordCallback: updateRecordCallback,
-        permissions: permissions,
-        recordParent: recordParent,
-      }),
-    };
+  const overriddenComponents = {
+    [`${appName}.ResultsList.item`]: parametrize(RecordCommunitiesSearchItem, {
+      recordCommunityEndpoint: recordCommunityEndpoint,
+      successCallback: handleSuccessCallback,
+      updateRecordCallback: updateRecordCallback,
+      permissions: permissions,
+      recordParent: recordParent,
+      permissionsPerField: permissionsPerField,
+    }),
+  };
 
-    const searchApi = new InvenioSearchApi({
-      axios: {
-        url: recordCommunityEndpoint,
-        headers: { Accept: "application/vnd.inveniordm.v1+json" },
-      },
-    });
+  const searchApi = new InvenioSearchApi({
+    axios: {
+      url: recordCommunityEndpoint,
+      headers: { Accept: "application/vnd.inveniordm.v1+json" },
+    },
+  });
 
-    return (
-      <OverridableContext.Provider value={overriddenComponents}>
-        <ReactSearchKit
-          appName={appName}
-          urlHandlerApi={{ enabled: false }}
-          searchApi={searchApi}
-          initialQueryState={{ size: 5, page: 1 }}
-        >
-          <>
-            <Modal.Content>
-              <SearchBar
-                autofocus
-                actionProps={{
-                  "icon": "search",
-                  "content": null,
-                  "className": "search",
-                  "aria-label": i18next.t("Search"),
-                }}
-                placeholder={i18next.t("Search this work's collections...")}
-              />
-            </Modal.Content>
+  return (
+    <OverridableContext.Provider value={overriddenComponents}>
+      <ReactSearchKit
+        appName={appName}
+        urlHandlerApi={{ enabled: false }}
+        searchApi={searchApi}
+        initialQueryState={{ size: 5, page: 1 }}
+      >
+        <>
+          <Modal.Content>
+            <SearchBar
+              autofocus
+              actionProps={{
+                "icon": "search",
+                "content": null,
+                "className": "search",
+                "aria-label": i18next.t("Search"),
+              }}
+              placeholder={i18next.t("Search this work's collections...")}
+            />
+          </Modal.Content>
 
-            <Modal.Content scrolling className="community-list-results">
-              <ResultsLoader>
-                <EmptyResults />
-                <Error />
-                <ResultsList />
-              </ResultsLoader>
-            </Modal.Content>
+          <Modal.Content scrolling className="community-list-results">
+            <ResultsLoader>
+              <EmptyResults />
+              <Error />
+              <ResultsList />
+            </ResultsLoader>
+          </Modal.Content>
 
-            <Modal.Content className="text-align-center">
-              <Pagination />
-            </Modal.Content>
-          </>
-        </ReactSearchKit>
-      </OverridableContext.Provider>
-    );
-  }
+          <Modal.Content className="text-align-center">
+            <Pagination />
+          </Modal.Content>
+        </>
+      </ReactSearchKit>
+    </OverridableContext.Provider>
+  );
 }
 
 RecordCommunitiesSearch.propTypes = {
@@ -96,3 +99,5 @@ RecordCommunitiesSearch.propTypes = {
   permissions: PropTypes.object.isRequired,
   recordParent: PropTypes.object.isRequired,
 };
+
+export { RecordCommunitiesSearch };

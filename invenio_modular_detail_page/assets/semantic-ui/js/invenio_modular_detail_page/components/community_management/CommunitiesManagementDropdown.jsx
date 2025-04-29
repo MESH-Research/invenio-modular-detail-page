@@ -205,6 +205,7 @@ const CommunitiesManagementDropdown = ({
         successActionCallback={handleManageActionSucceed}
         recordCommunityEndpoint={recordCommunityEndpoint}
         permissions={permissions}
+        permissionsPerField={permissionsPerField}
         record={record}
         handleDefaultCommunityChange={handleDefaultCommunityChange}
         handleCommunityRemoval={handleCommunityRemoval}
@@ -227,6 +228,7 @@ const CommunitiesManagementDropdown = ({
         handleOnClose={() => togglePendingRequestsModal(false)}
         successActionCallback={handleActionSucceed}
         searchConfig={searchConfig}
+        permissionsPerField={permissionsPerField}
       />
     </>
   );
