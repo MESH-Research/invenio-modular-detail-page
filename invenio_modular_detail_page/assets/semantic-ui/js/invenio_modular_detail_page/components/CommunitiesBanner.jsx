@@ -105,7 +105,7 @@ const CommunitiesBanner = ({
                   </p>
                   {isCommunityRestricted && (
                     <div
-                      className="ui label horizontal small access-status restricted rel-ml-1"
+                      className="ui label horizontal small access-status restricted rel-ml-0"
                       title={i18next.t("Collection visibility")}
                       data-tooltip={i18next.t(
                         "The collection is restricted to users with access."

@@ -63,7 +63,7 @@ const RecordCommunitiesSearchItem = ({
 
   const actions = canManage && (
     <>
-      {!brandingRestricted && (
+      {/* {!brandingRestricted && ( */}
         <ManageDefaultBrandingAction
           brandingRestricted={brandingRestricted}
           currentDefaultCommunity={currentDefaultCommunity}
@@ -72,14 +72,14 @@ const RecordCommunitiesSearchItem = ({
           recordCommunityEndpoint={recordCommunityEndpoint}
           updateRecordCallback={updateRecordCallback}
         />
-      )}
-      {!(brandingRestricted && isCommunityDefault) && (
+      {/* )} */}
+      {/* {!(brandingRestricted && isCommunityDefault) && ( */}
         <RemoveFromCommunityAction
           result={result}
           recordCommunityEndpoint={recordCommunityEndpoint}
           successCallback={successCallback}
         />
-      )}
+      {/* )} */}
     </>
   );
   return (
