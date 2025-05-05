@@ -161,19 +161,22 @@ const CreatibutorsShortList = () => {
 
   const show_affiliations = false;
   const show_roles = false;
-  const creatibutors = contextStore.contributors
+  const allCreatibutors = contextStore.contributors
     ? creators?.creators?.concat(contributors?.contributors)
     : creators?.creators;
+
+  // Get first three creatibutors and count remaining
+  const firstThreeCreatibutors = allCreatibutors?.slice(0, 3) || [];
+  const remainingCount = allCreatibutors ? Math.max(0, allCreatibutors.length - 3) : 0;
 
   return contextStore.isPreviewSubmissionRequest ? null : (
     <section
       id="creatibutors-list-section"
       className="ui mb-10 mt-10 sixteen wide mobile twelve wide tablet thirteen wide computer column"
     >
-      {/* <dt className="hidden">{i18next.t("Creators")}</dt> */}
       <dl className="creatibutors" aria-label={i18next.t("Contributors list")}>
-        {creatibutors?.length
-          ? creatibutors.map((creator, idx) => (
+        {firstThreeCreatibutors?.length
+          ? firstThreeCreatibutors.map((creator, idx) => (
               <Creatibutor
                 creatibutor={creator}
                 key={creator.person_or_org.name}
@@ -188,6 +191,13 @@ const CreatibutorsShortList = () => {
               />
             ))
           : ""}
+        {remainingCount > 0 && (
+          <dd className="creatibutor-wrap separated">
+            <List.Content as={"span"} className="creatibutor-name">
+              {remainingCount > 1 ? i18next.t("and {{count}} others", { count: remainingCount }) : i18next.t("and {{count}} other", { count: remainingCount })}
+            </List.Content>
+          </dd>
+        )}
       </dl>
     </section>
   );
