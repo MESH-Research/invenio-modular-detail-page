@@ -41,6 +41,7 @@ const makeSchemeStrings = (
       landingUrls.kcommons_username,
     ],
     isni: ["ISNI", iconsIsni, landingUrls.isni],
+    email: ["Email", "mail", "mailto:"],
   };
   return mystrings;
 };
@@ -76,14 +77,18 @@ const CreatibutorIcon = ({
                 schemeStrings[scheme][0]
               } ${i18next.t("profile")}`}
             >
-              <img
-                className={`ml-5 inline-id-icon ${scheme}`}
-                src={schemeStrings[scheme][1]}
-                alt={`${schemeStrings[scheme][0]} icon`}
-                title={`${creatibutor.person_or_org.name}'s ${
-                  schemeStrings[scheme][0]
-                } ${i18next.t("profile")}`}
-              />
+              {scheme === "email" ? (
+                <Icon name="mail outline" aria-label={`${creatibutor.person_or_org.name}'s email`} alt={`${creatibutor.person_or_org.name}'s email`} className="ml-5 inline-id-icon" />
+              ) : (
+                <img
+                  className={`ml-5 inline-id-icon ${scheme}`}
+                  src={schemeStrings[scheme][1]}
+                  alt={`${schemeStrings[scheme][0]} icon`}
+                  title={`${creatibutor.person_or_org.name}'s ${
+                    schemeStrings[scheme][0]
+                  } ${i18next.t("profile")}`}
+                />
+              )}
             </a>
           ))
         : ""}
