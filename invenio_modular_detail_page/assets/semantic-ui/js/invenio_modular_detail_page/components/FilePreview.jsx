@@ -23,9 +23,6 @@ const FilePreview = ({
   const fileToShow = (useDynamicPreview && !!activePreviewFile) ? activePreviewFile : (!!defaultPreviewFile ? defaultPreviewFile : files?.[0]);
   const previewUrl = !!previewFileUrl ? `${previewFileUrl.replace("xxxx", fileToShow.key)}?${previewUrlFlag}` : "";
   const fileExtension = !!hasPreviewableFiles ? fileToShow?.key?.split(".").pop() : "no-preview";
-  console.log("fileToShow", fileToShow?.key);
-  console.log("fileExtension", fileExtension);
-  console.log("previewableExtensions", previewableExtensions);
   const currentIsPreviewable = previewableExtensions?.includes(fileExtension);
 
 

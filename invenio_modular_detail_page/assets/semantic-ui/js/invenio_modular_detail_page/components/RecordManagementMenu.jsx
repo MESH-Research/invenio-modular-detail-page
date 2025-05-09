@@ -202,11 +202,8 @@ const RecordManagementMenu = ({
     handleShareModalOpen();
   };
 
-  console.log("permissions", permissions);
-
   const handleDropdownChange = (e, { value }) => {
     e.preventDefault();
-    console.log("value", value);
     switch (value) {
       case "edit-published":
         handleEditClick();

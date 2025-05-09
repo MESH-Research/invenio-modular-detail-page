@@ -75,7 +75,6 @@ import { DetailContext } from "../contexts/DetailContext";
 //
 const DetailContent = () => {
   const contextStore = useContext(DetailContext);
-  console.log("DetailContent contextStore", contextStore);
 
   return (
     <Overridable

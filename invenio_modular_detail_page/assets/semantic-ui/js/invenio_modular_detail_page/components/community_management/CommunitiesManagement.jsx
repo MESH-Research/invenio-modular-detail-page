@@ -41,7 +41,6 @@ const CommunitiesManagement = ({
           hits: { hits },
         },
       } = response;
-      console.log("hits", hits);
       setCommunities(hits);
       if (hits.length == 1) {
         setDefaultCommunity(hits[0]);
@@ -62,7 +61,6 @@ const CommunitiesManagement = ({
 
   const handleCommunityRemoval = (community) => {
     setCommunities(communities.filter((c) => c.id !== community.id));
-    console.log("communities", communities);
   };
 
   useEffect(() => {
