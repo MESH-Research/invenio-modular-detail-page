@@ -8,11 +8,11 @@
 
 """Invenio extension that adds a modular record detail page."""
 
-from invenio_i18n import gettext as _
 from flask import Blueprint, current_app
-from .filters.previewable_extensions import previewable_extensions
+from invenio_i18n import gettext as _
 
 from . import config
+from .filters.previewable_extensions import previewable_extensions
 
 
 def create_blueprint(app):

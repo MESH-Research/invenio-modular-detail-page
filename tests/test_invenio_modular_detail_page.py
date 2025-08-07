@@ -9,7 +9,6 @@
 """Module tests."""
 
 from flask import Flask
-
 from invenio_modular_detail_page import InvenioModularDetailPage
 
 
