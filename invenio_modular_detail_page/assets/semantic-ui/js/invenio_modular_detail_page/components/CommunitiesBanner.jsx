@@ -31,7 +31,9 @@ const CommunitiesBanner = ({
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
-    setOtherCommunities(communities.filter(community => community.id !== defaultCommunity.id));
+    if ( !!defaultCommunity ) {
+      setOtherCommunities(communities.filter(community => community.id !== defaultCommunity.id));
+    }
   }, [defaultCommunity]);
 
   // Remove community branding if the user removes from the last community
