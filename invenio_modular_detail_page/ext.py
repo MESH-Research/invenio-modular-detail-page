@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2023 MESH Research.
 #
@@ -8,8 +7,7 @@
 
 """Invenio extension that adds a modular record detail page."""
 
-from flask import Blueprint, current_app
-from invenio_i18n import gettext as _
+from flask import Blueprint
 
 from . import config
 from .filters.previewable_extensions import previewable_extensions
@@ -29,7 +27,7 @@ def create_blueprint(app):
     return blueprint
 
 
-class _InvenioModularDetailPageState(object):
+class _InvenioModularDetailPageState:
     """Invenio Modular Detail Page state object."""
 
     def __init__(self, app):
@@ -37,7 +35,7 @@ class _InvenioModularDetailPageState(object):
         self.app = app
 
 
-class InvenioModularDetailPage(object):
+class InvenioModularDetailPage:
     """Invenio Modular Detail Page extension."""
 
     def __init__(self, app=None):
