@@ -120,4 +120,15 @@ export const makeSchemeInfo = (
 	};
 };
 
+export const identifierForUrl = (scheme, identifier) => {
+	if (scheme === "gnd" && typeof identifier === "string") {
+		const trimmed = identifier.trim();
+		if (trimmed.toLowerCase().startsWith("gnd:")) {
+			return trimmed.slice(trimmed.indexOf(":") + 1);
+		}
+		return trimmed;
+	}
+	return identifier;
+};
+
 

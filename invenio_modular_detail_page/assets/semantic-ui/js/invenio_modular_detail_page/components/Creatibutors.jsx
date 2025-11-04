@@ -6,6 +6,7 @@ import {
 	identifiersList,
 	buildMergedCreatibutors,
 	makeSchemeInfo,
+	identifierForUrl,
 } from "./CreatibutorsHelper";
 import { DetailContext } from "../contexts/DetailContext";
 
@@ -17,7 +18,7 @@ const CreatibutorIcon = ({ creatibutor, schemeInfo }) => {
 			{!!ids
 				? ids.map(({ scheme, identifier }) => (
 						<a
-							href={`${schemeInfo[scheme][2]}${identifier}`}
+							href={`${schemeInfo[scheme][2]}${identifierForUrl(scheme, identifier)}`}
 							className={`no-text-decoration ${scheme}-icon-link`}
 							key={`${scheme}-${identifier}`}
 							aria-label={`${creatibutor.person_or_org.name}'s ${
@@ -192,7 +193,7 @@ const CreatibutorCard = ({ creator, show_affiliations, schemeInfo }) => {
 				{identifiersList(creator.person_or_org.identifiers)?.map(
 					({ scheme, identifier }) => (
 						<a
-							href={`${schemeInfo[scheme][2]}${identifier}`}
+					href={`${schemeInfo[scheme][2]}${identifierForUrl(scheme, identifier)}`}
 							className="no-text-decoration"
 							key={`${scheme}-${identifier}`}
 							aria-label={`${creator.person_or_org.name}'s ${
