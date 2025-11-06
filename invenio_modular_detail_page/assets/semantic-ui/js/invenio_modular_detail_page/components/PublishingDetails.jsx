@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
-import { Accordion, Icon, Popup } from "semantic-ui-react";
+import { Accordion, Button, Icon, Popup } from "semantic-ui-react";
 import { Creatibutors } from "./Creatibutors";
 import { Doi } from "../components/Doi";
 import { groupObjectsBy, toPidUrl } from "../util";
 import { Analytics } from "./Analytics";
 
 function isDuration(size) {
-  const durationUnits = ["minutes", "hours", "days", "weeks", "months", "years", "milliseconds", "seconds", "minutes", "hours", "days", "weeks", "months", "years"];
-  return durationUnits.some(unit => size.includes(unit));
+  const durationUnits = [
+    "minutes",
+    "hours",
+    "days",
+    "weeks",
+    "months",
+    "years",
+    "milliseconds",
+    "seconds",
+    "minutes",
+    "hours",
+    "days",
+    "weeks",
+    "months",
+    "years",
+  ];
+  return durationUnits.some((unit) => size.includes(unit));
 }
 
 function getCustomFieldComponents({
@@ -18,7 +33,7 @@ function getCustomFieldComponents({
 }) {
   if (detailOrder) {
     sectionFields = detailOrder.map(({ section, subsections }) =>
-      sectionFields.find((fieldCfg) => fieldCfg.field === section)
+      sectionFields.find((fieldCfg) => fieldCfg.field === section),
     );
   }
 
@@ -28,7 +43,7 @@ function getCustomFieldComponents({
       if (typeof fieldValue === "object") {
         let entries = Object.entries(fieldValue);
         const orderSubsections = detailOrder.find(
-          ({ section }) => section === fieldCfg.field
+          ({ section }) => section === fieldCfg.field,
         )?.subsections;
         if (orderSubsections) {
           entries = orderSubsections.reduce((acc, { section }) => {
@@ -188,7 +203,7 @@ function RelatedIdentifiers({
 }) {
   const groups = groupObjectsBy(
     relatedIdentifiers,
-    ({ relation_type }) => relation_type.title_l10n
+    ({ relation_type }) => relation_type.title_l10n,
   );
 
   return (
@@ -208,13 +223,44 @@ function RelatedIdentifiers({
 }
 
 const DOITextLink = ({ doi, doiLink, workDoi }) => {
+  const defaultCopyMessage = "Copy the DOI to your clipboard for pasting.";
+  const [copyMessage, setCopyMessage] = useState(defaultCopyMessage);
+
+  const handleUrlCopy = (doiURL) => {
+    navigator.clipboard.writeText(doiURL);
+    setCopyMessage("DOI copied!");
+  };
+  const resetCopyMessage = () => {
+    setCopyMessage(defaultCopyMessage);
+  };
   return (
     <>
       <dt className="ui tiny header">DOI (this version)</dt>
       <dd key={doi}>
-        {doi} &nbsp;
         <Popup
-          content={i18next.t("A unique identifier for this version of the work")}
+          content={copyMessage}
+          trigger={
+            <Button
+              icon="copy"
+              onClick={() => handleUrlCopy(doi)}
+              className="right floated doi-copy-button"
+            />
+          }
+          on="hover"
+          onClose={resetCopyMessage}
+        />
+        <a
+          href={`https://doi.org/${doi}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {doi}
+        </a>{" "}
+        &nbsp;
+        <Popup
+          content={i18next.t(
+            "A unique identifier for this version of the work",
+          )}
           trigger={<Icon name="info circle" />}
         />
       </dd>
@@ -222,10 +268,32 @@ const DOITextLink = ({ doi, doiLink, workDoi }) => {
         <>
           <dt className="ui tiny header">DOI (newest version)</dt>
           <dd>
-            {workDoi} &nbsp;
             <Popup
-              content={i18next.t("A unique identifier that always points to the latest version of the work")}
+              content={copyMessage}
+              trigger={
+                <Button
+                  icon="copy"
+                  onClick={() => handleUrlCopy(workDoi)}
+                  className="right floated doi-copy-button"
+                />
+              }
+              on="hover"
+              onClose={resetCopyMessage}
+            />
+            <a
+              href={`https://doi.org/${workDoi}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {workDoi}
+            </a>{" "}
+            &nbsp;
+            <Popup
+              content={i18next.t(
+                "A unique identifier that always points to the latest version of the work",
+              )}
               trigger={<Icon name="info circle" />}
+              on="hover"
             />
           </dd>
         </>
@@ -358,7 +426,9 @@ const getDetailsComponents = ({
   showDecimalSizes,
 }) => {
   const idDoi = record.pids.doi ? record.pids.doi.identifier : null;
-  const workDoi = record.parent.pids.doi ? record.parent.pids.doi.identifier : null;
+  const workDoi = record.parent.pids.doi
+    ? record.parent.pids.doi.identifier
+    : null;
   const detailsInfo = [
     {
       title: i18next.t("Additional dates"),
@@ -375,7 +445,7 @@ const getDetailsComponents = ({
     {
       title: i18next.t("Alternate identifiers"),
       value: record.metadata.identifiers?.filter(
-        (id) => id.scheme !== "url"
+        (id) => id.scheme !== "url",
       ) ? (
         <AlternateIdentifiers
           alternateIdentifiers={record.metadata.identifiers}
@@ -475,7 +545,12 @@ const getDetailsComponents = ({
       title: i18next.t("DOI"),
       value:
         idDoi !== null ? (
-          <DOITextLink key={"doi"} doiLink={record.links.doi} doi={idDoi} workDoi={workDoi} />
+          <DOITextLink
+            key={"doi"}
+            doiLink={record.links.doi}
+            doi={idDoi}
+            workDoi={workDoi}
+          />
         ) : null,
     },
     {
@@ -593,12 +668,20 @@ const getDetailsComponents = ({
         : null,
     },
     {
-      title: i18next.t("Sizes"),  // FIXME: Hack because the size field is used for both sizes and duration
-      value: record.metadata.sizes && !record.metadata.sizes.find(size => isDuration(size)) ? record.metadata.sizes.join(", ") : null,
+      title: i18next.t("Sizes"), // FIXME: Hack because the size field is used for both sizes and duration
+      value:
+        record.metadata.sizes &&
+        !record.metadata.sizes.find((size) => isDuration(size))
+          ? record.metadata.sizes.join(", ")
+          : null,
     },
     {
-      title: i18next.t("Duration"),  // FIXME: Hack because the size field is used for both sizes and duration
-      value: record.metadata.sizes && record.metadata.sizes.find(size => isDuration(size)) ? record.metadata.sizes.join(", ") : null,
+      title: i18next.t("Duration"), // FIXME: Hack because the size field is used for both sizes and duration
+      value:
+        record.metadata.sizes &&
+        record.metadata.sizes.find((size) => isDuration(size))
+          ? record.metadata.sizes.join(", ")
+          : null,
     },
     {
       title: i18next.t("Sponsoring institution"),
@@ -609,7 +692,7 @@ const getDetailsComponents = ({
     {
       title: i18next.t("URLs"),
       value: record.metadata.identifiers?.filter(
-        (id) => id.scheme === "url"
+        (id) => id.scheme === "url",
       ) ? (
         <URLs identifiers={record.metadata.identifiers} />
       ) : null,
@@ -629,10 +712,10 @@ const getDetailsComponents = ({
   const filteredDetailsInfo = detailsInfo.filter(
     ({ title, value }) =>
       (typeof value === "string" || React.isValidElement(value)) &&
-      detailOrder.includes(title)
+      detailOrder.includes(title),
   );
   const sortedDetailsInfo = filteredDetailsInfo.toSorted(
-    (a, b) => detailOrder.indexOf(a.title) - detailOrder.indexOf(b.title)
+    (a, b) => detailOrder.indexOf(a.title) - detailOrder.indexOf(b.title),
   );
 
   const detailsComponentArray = sortedDetailsInfo.map(({ title, value }) =>
@@ -640,7 +723,7 @@ const getDetailsComponents = ({
       <DetailItem title={title} value={value} key={title} />
     ) : (
       value
-    )
+    ),
   );
 
   return detailsComponentArray.length > 0 ? detailsComponentArray : null;
@@ -691,7 +774,9 @@ const ConferenceDetailSection = ({ conference }) => {
   return (
     <>
       <dt className="ui tiny header">Event</dt>
-      <dd>{titlePiece}, {conferencePieces.join(", ")}</dd>
+      <dd>
+        {titlePiece}, {conferencePieces.join(", ")}
+      </dd>
       {conference.url && !conference.title && (
         <>
           <dt className="ui tiny header">Event</dt>
@@ -732,7 +817,7 @@ const PublishingDetails = ({
       if (customFieldSectionNames.includes(sectionTitle)) {
         const detailOrder = subsections;
         const sectionCustomFields = customFieldsUi.find(
-          ({ section }) => section === sectionTitle
+          ({ section }) => section === sectionTitle,
         );
         const fieldContent = getCustomFieldComponents({
           sectionFields: sectionCustomFields.fields,
@@ -774,7 +859,7 @@ const PublishingDetails = ({
       }
       return acc;
     },
-    []
+    [],
   );
 
   const handleHeaderClick = (index) => {
@@ -815,7 +900,7 @@ const PublishingDetails = ({
                 </dl>
               </Accordion.Content>
             </>
-          )
+          ),
       )}
     </Accordion>
   );

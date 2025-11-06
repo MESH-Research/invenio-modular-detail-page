@@ -3,6 +3,8 @@ import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { BadgesFormatsList } from "../components/BadgesFormatsList";
 
 const Doi = ({ idDoi, doiBadgeUrl, doiLink }) => {
+  console.log("doiLink:", doiLink);
+  console.log("idDoi:", idDoi);
   return (
     <>
       <span
