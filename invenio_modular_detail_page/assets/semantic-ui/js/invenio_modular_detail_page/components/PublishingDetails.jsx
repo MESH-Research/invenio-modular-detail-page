@@ -235,7 +235,15 @@ const DOITextLink = ({ doi, doiLink, workDoi }) => {
   };
   return (
     <>
-      <dt className="ui tiny header">DOI (this version)</dt>
+      <dt className="ui tiny header">
+        DOI (this version)
+        <Popup
+          content={i18next.t(
+            "A unique identifier for this version of the work",
+          )}
+          trigger={<Icon size="tiny" name="info circle" className="ml-5" />}
+        />
+      </dt>
       <dd key={doi}>
         <Popup
           content={copyMessage}
@@ -257,16 +265,23 @@ const DOITextLink = ({ doi, doiLink, workDoi }) => {
           {doi}
         </a>{" "}
         &nbsp;
-        <Popup
-          content={i18next.t(
-            "A unique identifier for this version of the work",
-          )}
-          trigger={<Icon name="info circle" />}
-        />
       </dd>
       {workDoi && (
         <>
-          <dt className="ui tiny header">DOI (newest version)</dt>
+          <dt className="ui tiny header">
+            DOI (newest version)
+            <Popup
+              content={
+                <small>
+                  {i18next.t(
+                    "A unique identifier that always points to the latest version of the work",
+                  )}
+                </small>
+              }
+              trigger={<Icon size="tiny" name="info circle" className="ml-5" />}
+              on="hover"
+            />
+          </dt>
           <dd>
             <Popup
               content={copyMessage}
@@ -288,13 +303,6 @@ const DOITextLink = ({ doi, doiLink, workDoi }) => {
               {workDoi}
             </a>{" "}
             &nbsp;
-            <Popup
-              content={i18next.t(
-                "A unique identifier that always points to the latest version of the work",
-              )}
-              trigger={<Icon name="info circle" />}
-              on="hover"
-            />
           </dd>
         </>
       )}
