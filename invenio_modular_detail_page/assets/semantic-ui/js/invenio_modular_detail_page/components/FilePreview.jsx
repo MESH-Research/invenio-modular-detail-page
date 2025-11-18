@@ -19,9 +19,13 @@ const FilePreview = ({
   useDynamicPreview = true,
 }) => {
   const [loading, setLoading] = useState(true);
-  const previewUrlFlag = isPreview ? "&preview=1" : "";
+  const previewUrlFlag = isPreview ? "preview=1" : "";
   const fileToShow = (useDynamicPreview && !!activePreviewFile) ? activePreviewFile : (!!defaultPreviewFile ? defaultPreviewFile : files?.[0]);
-  const previewUrl = !!previewFileUrl ? `${previewFileUrl.replace("xxxx", fileToShow.key)}?${previewUrlFlag}` : "";
+  // URL-encode filename for path segment - Flask's <path:filename> will decode it back
+  const encodedFilename = fileToShow?.key ? encodeURIComponent(fileToShow.key) : "";
+  const baseUrl = previewFileUrl ? previewFileUrl.replace("xxxx", encodedFilename) : "";
+  // Only append preview flag if it exists, using & if URL already has query params
+  const previewUrl = baseUrl ? (previewUrlFlag ? `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}${previewUrlFlag}` : baseUrl) : "";
   const fileExtension = !!hasPreviewableFiles ? fileToShow?.key?.split(".").pop() : "no-preview";
   const currentIsPreviewable = previewableExtensions?.includes(fileExtension);
 
