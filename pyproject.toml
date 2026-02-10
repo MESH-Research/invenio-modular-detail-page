@@ -1,56 +1,67 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61", "wheel"]
 
 [project]
 name = "invenio-modular-detail-page"
 version = "0.3.1-dev1"
 description = "InvenioRDM extension that adds a modular record detail page"
 readme = "README.md"
-license = {file = "LICENSE"}
-authors = [
-    {name = "MESH Research", email = "scottia4@msu.edu"}
-]
+keywords = ["invenio", "modular", "ui"]
+license = { file = "LICENSE" }
+authors = [{ name = "MESH Research", email = "scottia4@msu.edu" }]
+requires-python = ">=3.12"
 classifiers = [
-    "Development Status :: 3 - Alpha"
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
 ]
-keywords = ["invenio", "ui", "modular"]
-requires-python = ">=3.9"
-dependencies = [
-    "invenio-app-rdm>=12.0.0,<13.0.0",
-]
+dependencies = ["invenio-app-rdm<14"]
 
-[project.optional-dependencies]
-test = [
-    "coverage",
-    "docker-services-cli",
-    "pytest-invenio",
-    "pytest-black",
-  "pytest-invenio",
-    "sphinx>=4.5.0",
-  "selenium",
-]
-dev = [
+optional-dependencies.dev = [
   "bumpver",
   "check-manifest",
   "ipykernel",
   "pip-tools",
 ]
+optional-dependencies.test = [
+  "coverage",
+  "docker-services-cli",
+  "pytest-black",
+  "pytest-invenio",
+  "pytest-invenio",
+  "selenium",
+  "sphinx>=4.5",
+]
+urls.Homepage = "https://github.com/MESH-Research/invenio-modular-detail-page"
+entry-points."invenio_assets.webpack".invenio_modular_detail_page_theme = "invenio_modular_detail_page.webpack:theme"
+entry-points."invenio_base.apps".invenio_modular_detail_page = "invenio_modular_detail_page:InvenioModularDetailPage"
+entry-points."invenio_base.blueprints".invenio_modular_detail_page = "invenio_modular_detail_page.ext:create_blueprint"
+entry-points."invenio_i18n.translations".messages = "invenio_modular_detail_page"
 
-[project.urls]
-Homepage = "https://github.com/MESH-Research/invenio-modular-detail-page"
-
-[project.entry-points."invenio_base.apps"]
-invenio_modular_detail_page = "invenio_modular_detail_page:InvenioModularDetailPage"
-
-[project.entry-points."invenio_base.blueprints"]
-invenio_modular_detail_page = "invenio_modular_detail_page.ext:create_blueprint"
-
-[project.entry-points."invenio_i18n.translations"]
-messages = "invenio_modular_detail_page"
-
-[project.entry-points."invenio_assets.webpack"]
-invenio_modular_detail_page_theme = "invenio_modular_detail_page.webpack:theme"
+[tool.check-manifest]
+ignore = [
+  "PKG-INFO",
+  ".egg-info",
+  ".egg-info/*",
+  "setup.cfg",
+  ".DS_Store",
+  ".hgtags",
+  ".hgsigs",
+  ".hgignore",
+  ".gitignore",
+  ".bzrignore",
+  ".gitattributes",
+  ".github/*",
+  ".travis.yml",
+  "Jenkinsfile",
+  "* .mo",
+  "dist/*",
+  "build/*",
+  "invenio_modular_detail_page/dependencies/*",
+]
 
 [tool.pytest.ini_options]
 addopts = "--black --isort --pydocstyle --doctest-glob=\"*.rst\" --doctest-modules --cov=invenio_modular_detail_page --cov-report=term-missing"
@@ -83,28 +94,6 @@ output-dir = "invenio_modular_detail_page/translations/"
 input-file = "invenio_modular_detail_page/translations/messages.pot"
 output-dir = "invenio_modular_detail_page/translations/"
 
-[tool.check-manifest]
-ignore = [
-  "PKG-INFO",
-  ".egg-info",
-  ".egg-info/*",
-  "setup.cfg",
-  ".DS_Store",
-  ".hgtags",
-  ".hgsigs",
-  ".hgignore",
-  ".gitignore",
-  ".bzrignore",
-  ".gitattributes",
-  ".github/*",
-  ".travis.yml",
-  "Jenkinsfile",
-  "* .mo",
-  "dist/*",
-  "build/*",
-  "invenio_modular_detail_page/dependencies/*",
-]
-
 [tool.bumpver]
 current_version = "0.3.1-dev1"
 version_pattern = "MAJOR.MINOR.PATCH[-TAGNUM]"
@@ -118,16 +107,7 @@ tag = false
 push = false
 
 [tool.bumpver.file_patterns]
-"pyproject.toml" = [
-    '^version = "{version}"',
-    '^current_version = "{version}"',
-]
-"README.md" = [
-    '^Version {version}',
-]
-"VERSION" = [
-    '^"{version}"',
-]
-"invenio_modular_detail_page/__init__.py" = [
-    '^__version__ = "{version}"',
-]
+"pyproject.toml" = ['^version = "{version}"', '^current_version = "{version}"']
+"README.md" = ['^Version {version}']
+"VERSION" = ['^"{version}"']
+"invenio_modular_detail_page/__init__.py" = ['^__version__ = "{version}"']
