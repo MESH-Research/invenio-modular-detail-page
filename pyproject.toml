@@ -30,8 +30,7 @@ optional-dependencies.test = [
   "coverage",
   "docker-services-cli",
   "pytest-black",
-  "pytest-invenio",
-  "pytest-invenio",
+  "pytest-invenio>=3.3,<4",
   "selenium",
   "sphinx>=4.5",
 ]
