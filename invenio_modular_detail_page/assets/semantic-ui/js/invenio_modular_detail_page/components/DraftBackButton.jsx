@@ -7,7 +7,7 @@ const DraftBackButton = ({ show }) => {
 
   const contextStore = useContext(DetailContext);
 
-  const backPage = `${contextStore.backPage}?depositFormPage=page-7`;
+  const backPage = `${contextStore.backPage}?page=last`;
   const isPreview = contextStore.isPreview;
   const isDraft = contextStore.isDraft;
   const canManage = contextStore.canManage;
