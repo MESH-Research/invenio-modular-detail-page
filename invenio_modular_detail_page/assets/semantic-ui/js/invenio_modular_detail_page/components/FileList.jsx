@@ -178,7 +178,7 @@ const FileListTable = ({
   downloadFileUrl,
   fileCountToShow,
   files,
-  // fileTabIndex,
+  fileTabIndex,
   fullWordButtons,
   isPreview,
   previewFileUrl,
@@ -251,13 +251,13 @@ const FileListTable = ({
               downloadFileUrl={downloadFileUrl}
               key={file.key}
               file={file}
-              // fileTabIndex={fileTabIndex}
+              fileTabIndex={fileTabIndex}
               fullWordButtons={fullWordButtons}
               isPreview={isPreview}
               // previewTabIndex={previewTabIndex}
               previewFileUrl={previewFileUrl}
               setActivePreviewFile={setActivePreviewFile}
-              // setActiveTab={setActiveTab}
+              setActiveTab={setActiveTab}
               showChecksum={showChecksum}
               stackedRows={stackedRows}
               withPreview={withPreview}

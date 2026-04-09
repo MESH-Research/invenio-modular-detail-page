@@ -132,7 +132,7 @@ const Citation = ({
           className=""
           textAlign="left"
         >
-          <label basic="true" id="citation-style-label" className="">
+          <label id="citation-style-label" className="ui basic label">
             {i18next.t("Style")}
           </label>
           <Dropdown

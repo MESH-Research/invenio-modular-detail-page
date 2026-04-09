@@ -124,7 +124,7 @@ const FundingItem = ({ item, index }) => {
     const { title_l10n, number, identifiers } = award;
 
     return (
-      <dl class="details-list mt-0">
+      <dl className="details-list mt-0">
         {title_l10n && (
           <dt className="ui tiny header">
             <span className="mr-5">{title_l10n}</span>
@@ -183,6 +183,7 @@ function IdentifiersForGroup({ identifiers, identifierSchemes, landingUrls }) {
               <a
                 href={toPidUrl(identifier, scheme, landingUrls)}
                 target="_blank"
+                rel="noopener noreferrer"
                 title={i18next.t("Opens in new tab")}
               >
                 {identifier}
@@ -322,7 +323,8 @@ const URLs = ({ identifiers }) => {
               <a
                 href={identifier}
                 target="_blank"
-                title={_("Opens in new tab")}
+                rel="noopener noreferrer"
+                title={i18next.t("Opens in new tab")}
               >
                 {identifier}
               </a>
@@ -350,7 +352,8 @@ const AlternateIdentifiers = ({
               <a
                 href={toPidUrl(identifier, scheme, landingUrls)}
                 target="_blank"
-                title={_("Opens in new tab")}
+                rel="noopener noreferrer"
+                title={i18next.t("Opens in new tab")}
               >
                 {identifier}
               </a>

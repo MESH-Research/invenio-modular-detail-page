@@ -42,7 +42,14 @@ function Analytics(props) {
     this_version_data_volume,
   } = !!record.stats
     ? localizedStats
-    : { undefined, undefined, undefined, undefined, undefined, undefined };
+    : {
+        all_versions_unique_downloads: undefined,
+        this_version_unique_downloads: undefined,
+        all_versions_unique_views: undefined,
+        this_version_unique_views: undefined,
+        all_versions_data_volume: undefined,
+        this_version_data_volume: undefined,
+      };
   const formattedDataVolumeAll = all_versions
     ? formatBytes(all_versions.data_volume)
     : undefined;

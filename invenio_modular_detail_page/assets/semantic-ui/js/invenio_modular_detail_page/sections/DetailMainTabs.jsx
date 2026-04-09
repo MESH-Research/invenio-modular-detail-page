@@ -4,6 +4,7 @@ import { DetailMainTab } from "./DetailMainTab";
 import { addPropsFromChildren, filterPropsToPass } from "../util";
 import Overridable from "react-overridable";
 import { DetailContext } from "../contexts/DetailContext";
+import { componentsMap } from "../componentsMap";
 
 const DetailMainTabs = () => {
   const contextStore = useContext(DetailContext);

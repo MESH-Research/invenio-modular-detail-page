@@ -33,7 +33,7 @@ const ContentWarning = ({ record, section }) => {
           </Message.Header>
           <p>{descriptionText}</p>
           {hasLongText && (
-            <div class="buttons row">
+            <div className="buttons row">
               <Button
                 as="a"
                 onClick={() => setExpanded(!expanded)}
