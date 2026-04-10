@@ -5,15 +5,13 @@ requires = ["babel>2.8", "setuptools>=61", "wheel"]
 [project]
 name = "invenio-modular-detail-page"
 version = "0.3.1-dev1"
-
 description = "InvenioRDM extension that adds a modular record detail page"
 readme = "README.md"
 keywords = ["invenio", "modular", "ui"]
-
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "MESH Research", email = "scottia4@msu.edu" }]
 requires-python = ">=3.12"
-
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Programming Language :: Python :: 3 :: Only",
@@ -22,7 +20,6 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
 ]
 dependencies = ["invenio-app-rdm<14"]
-
 optional-dependencies.dev = [
   "bumpver",
   "check-manifest",
@@ -41,13 +38,15 @@ optional-dependencies.test = [
   "ruff>=0.3",
   "selenium",
 ]
-
 urls.Homepage = "https://github.com/MESH-Research/invenio-modular-detail-page"
-
 entry-points."invenio_assets.webpack".invenio_modular_detail_page_theme = "invenio_modular_detail_page.webpack:theme"
 entry-points."invenio_base.apps".invenio_modular_detail_page = "invenio_modular_detail_page:InvenioModularDetailPage"
 entry-points."invenio_base.blueprints".invenio_modular_detail_page = "invenio_modular_detail_page.ext:create_blueprint"
 entry-points."invenio_i18n.translations".messages = "invenio_modular_detail_page"
+
+[tool.setuptools]
+packages.find.include = ["invenio_modular_detail_page*"]
+packages.find.exclude = ["tests*", "docs*", "scripts*", "node_modules*"]
 
 [tool.ruff]
 target-version = "py312"
@@ -116,27 +115,6 @@ ignore = [
   "invenio_modular_detail_page/dependencies/*",
 ]
 
-[tool.pytest.ini_options]
-addopts = """
---ruff --doctest-modules
---log-cli-level=DEBUG
---ignore=app_data
---ignore=docs
---ignore=node_modules
---ignore=scripts
---ignore=tests/helpers
---cov=invenio_modular_detail_page 
---cov-report=term-missing
-"""
-norecursedirs = []
-log_cli_level = "DEBUG"
-isort_show_files = true
-plugins = []
-testpaths = ["docs", "tests", "invenio_modular_detail_page"]
-
-[tool.coverage.run]
-omit = []
-
 [tool.mypy]
 python_version = "3.12"
 warn_return_any = true
@@ -152,31 +130,33 @@ warn_no_return = false
 ignore_missing_imports = true
 follow_imports = "skip"
 allow_untyped_globals = true
-exclude = ['^tests/']
+exclude = ["^tests/"]
+
+[tool.pytest]
+ini_options.addopts = """
+--ruff --doctest-modules
+--log-cli-level=DEBUG
+--ignore=app_data
+--ignore=docs
+--ignore=node_modules
+--ignore=scripts
+--ignore=tests/helpers
+--cov=invenio_modular_detail_page
+--cov-report=term-missing
+"""
+ini_options.norecursedirs = []
+ini_options.log_cli_level = "DEBUG"
+ini_options.isort_show_files = true
+ini_options.plugins = []
+ini_options.testpaths = ["docs", "tests", "invenio_modular_detail_page"]
+
+[tool.coverage]
+run.omit = []
 
 [tool.sphinx]
 source-dir = "docs/"
 build-dir = "docs/_build"
 all_files = true
-
-[tool.babel.compile_catalog]
-directory = "invenio_modular_detail_page/translations/"
-use-fuzzy = true
-
-[tool.babel.extract_messages]
-copyright_holder = "MESH Research"
-msgid_bugs_address = "scottia4@msu.edu"
-mapping-file = "babel.ini"
-output-file = "invenio_modular_detail_page/translations/messages.pot"
-add-comments = "NOTE"
-
-[tool.babel.init_catalog]
-input-file = "invenio_modular_detail_page/translations/messages.pot"
-output-dir = "invenio_modular_detail_page/translations/"
-
-[tool.babel.update_catalog]
-input-file = "invenio_modular_detail_page/translations/messages.pot"
-output-dir = "invenio_modular_detail_page/translations/"
 
 [tool.bumpver]
 current_version = "0.3.1-dev1"
@@ -189,9 +169,25 @@ post_commit_hook = ""
 commit = false
 tag = false
 push = false
+file_patterns."pyproject.toml" = [
+  '^version = "{version}"',
+  '^current_version = "{version}"',
+]
+file_patterns."README.md" = ["^Version {version}"]
+file_patterns.VERSION = ['^"{version}"']
+file_patterns."invenio_modular_detail_page/__init__.py" = [
+  '^__version__ = "{version}"',
+]
 
-[tool.bumpver.file_patterns]
-"pyproject.toml" = ['^version = "{version}"', '^current_version = "{version}"']
-"README.md" = ['^Version {version}']
-"VERSION" = ['^"{version}"']
-"invenio_modular_detail_page/__init__.py" = ['^__version__ = "{version}"']
+[tool.babel]
+compile_catalog.directory = "invenio_modular_detail_page/translations/"
+compile_catalog.use-fuzzy = true
+extract_messages.copyright_holder = "MESH Research"
+extract_messages.msgid_bugs_address = "scottia4@msu.edu"
+extract_messages.mapping-file = "babel.ini"
+extract_messages.output-file = "invenio_modular_detail_page/translations/messages.pot"
+extract_messages.add-comments = "NOTE"
+init_catalog.input-file = "invenio_modular_detail_page/translations/messages.pot"
+init_catalog.output-dir = "invenio_modular_detail_page/translations/"
+update_catalog.input-file = "invenio_modular_detail_page/translations/messages.pot"
+update_catalog.output-dir = "invenio_modular_detail_page/translations/"
