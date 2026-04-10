@@ -3,12 +3,8 @@ import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Message } from "semantic-ui-react";
 import { http } from "react-invenio-forms";
-import {
-  CommunitySelectionModalComponent,
-} from "@js/invenio_modular_deposit_form/replacement_components/CommunitySelectionModal/CommunitySelectionModal";
-import {
-  SubmitReviewModal,
-} from "@js/invenio_modular_deposit_form/replacement_components/PublishButton/SubmitReviewModal";
+import { CommunitySelectionModalComponent } from "@js/kcworks/collections/selector/CommunitySelectionModal";
+import { SubmitReviewModal } from "@js/invenio_modular_deposit_form/replacement_components/alternate_components";
 
 const RecordCommunitySubmissionModal = ({
   userCommunitiesMemberships,
