@@ -12,7 +12,11 @@ theme = WebpackThemeBundle(
                 "invenio-modular-detail-page": "./js/invenio_modular_detail_page/index.js",
                 "invenio-modular-detail-page-theme": "./js/invenio_modular_detail_page/theme.js",
             },
-            dependencies={},
+            dependencies={
+                "i18next": "^20.3.0",
+                "i18next-browser-languagedetector": "^6.1.0",
+                "react-i18next": "^11.11.0",
+            },
             aliases={
                 # Define Semantic-UI theme configuration needed by
                 # Invenio-Theme in order to build Semantic UI (in theme.js
