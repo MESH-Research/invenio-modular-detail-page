@@ -1,6 +1,7 @@
 import React from "react";
 import Overridable from "react-overridable";
 import { FilePreview } from "../components/FilePreview";
+import { GlobusDetailViewer } from "../components/GlobusDetailViewer/GlobusDetailViewer";
 import { MetadataOnlyContentMessage } from "../components/MetadataOnlyContentMessage";
 
 /**
@@ -24,12 +25,14 @@ const FilePreviewWrapper = (props) => {
     setActiveTab,
     totalFileSize,
   } = props;
+
+  const globusEndpointId = record?.custom_fields?.["kcr:remote_data_collection"];
+
   return (
-    <Overridable
-      id="InvenioModularDetailPage.FilePreviewWrapper.layout"
-      {...props}
-    >
-      {hasFiles ? (
+    <Overridable id="InvenioModularDetailPage.FilePreviewWrapper.layout" {...props}>
+      {globusEndpointId ? (
+        <GlobusDetailViewer endpointId={globusEndpointId} {...props} />
+      ) : hasFiles ? (
         <FilePreview
           activePreviewFile={activePreviewFile}
           defaultPreviewFile={defaultPreviewFile}
