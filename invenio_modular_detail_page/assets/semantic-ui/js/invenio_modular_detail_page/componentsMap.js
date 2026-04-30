@@ -10,6 +10,7 @@ import { DetailMainTabs } from "./sections/DetailMainTabs";
 import { FileListBox } from "./components/FileList";
 import { FilePreview } from "./components/FilePreview";
 import { FilePreviewWrapper } from "./sections/FilePreviewWrapper";
+import { GlobusDetailViewer } from "./components/GlobusDetailViewer/GlobusDetailViewer";
 import { MainSubjectsSection } from "./sections/DetailMainSubjectsSection";
 import { PublishingDetails } from "./components/PublishingDetails";
 import { RecordTitle } from "./components/RecordTitle";
@@ -38,6 +39,7 @@ const componentsMap = {
     "FileListBox": FileListBox,
     "FilePreview": FilePreview,
     "FilePreviewWrapper": FilePreviewWrapper,
+    "GlobusDetailViewer" : GlobusDetailViewer,
     "MainSubjectsSection": MainSubjectsSection,
     "PublishingDetails": PublishingDetails,
     "RecordTitle": RecordTitle,

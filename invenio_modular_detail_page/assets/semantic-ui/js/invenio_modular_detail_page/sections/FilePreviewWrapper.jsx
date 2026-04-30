@@ -1,5 +1,6 @@
 import React from "react";
 import { FilePreview } from "../components/FilePreview";
+import { GlobusDetailViewer } from "../components/GlobusDetailViewer/GlobusDetailViewer";
 import Overridable from "react-overridable";
 
 const FilePreviewWrapper = (props) => {
@@ -17,26 +18,33 @@ const FilePreviewWrapper = (props) => {
     setActivePreviewFile,
     totalFileSize,
   } = props;
+  
+  const globusEndpointId = record?.custom_fields?.["kcr:remote_data_collection"];
+  
   return (
     <Overridable
       id="InvenioModularDetailPage.FilePreviewWrapper.layout"
       {...props}
     >
-      <FilePreview
-        activePreviewFile={activePreviewFile}
-        defaultPreviewFile={defaultPreviewFile}
-        files={files}
-        hasFiles={hasFiles}
-        hasPreviewableFiles={hasPreviewableFiles}
-        isPreview={isPreview}
-        permissions={permissions}
-        previewableExtensions={previewableExtensions}
-        previewFileUrl={previewFileUrl}
-        record={record}
-        setActivePreviewFile={setActivePreviewFile}
-        totalFileSize={totalFileSize}
-        useDynamicPreview={false}
-      />
+      {globusEndpointId ? (
+        <GlobusDetailViewer endpointId={globusEndpointId} {...props} />
+      ) : (
+        <FilePreview
+          activePreviewFile={activePreviewFile}
+          defaultPreviewFile={defaultPreviewFile}
+          files={files}
+          hasFiles={hasFiles}
+          hasPreviewableFiles={hasPreviewableFiles}
+          isPreview={isPreview}
+          permissions={permissions}
+          previewableExtensions={previewableExtensions}
+          previewFileUrl={previewFileUrl}
+          record={record}
+          setActivePreviewFile={setActivePreviewFile}
+          totalFileSize={totalFileSize}
+          useDynamicPreview={false}
+        />
+      )}
     </Overridable>
   );
 };
