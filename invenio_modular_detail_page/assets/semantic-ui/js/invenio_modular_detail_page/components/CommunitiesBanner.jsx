@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Button, Image, Grid } from "semantic-ui-react";
-import Geopattern from "geopattern";
 import { CommunitiesManagement } from "./community_management/CommunitiesManagement";
 import { DetailContext } from "../contexts/DetailContext";
 
@@ -55,25 +54,6 @@ const CommunitiesBanner = ({
     }
   }, [communities]);
 
-  const makePattern = (el, slug) => {
-    const pattern = Geopattern.generate(encodeURI(slug));
-
-    // use rgba version of svg pattern color for header background
-    const values = pattern.color.match(/\w\w/g);
-    const darkenFactor = 0.35;  // to get enough contrast for a11y
-    const [r, g, b] = values.map((k) => parseInt(k, 16));
-    const [rDark, gDark, bDark] = [r, g, b].map((k) => k * (1 - darkenFactor));
-    const wrapper = el.closest(`.row.collection-row.${slug}`);
-    if (wrapper) {
-      wrapper.querySelector("a").style = `color: rgba( ${rDark}, ${gDark}, ${bDark}, 1);`;
-      if (slug === defaultCommunity.slug) {
-        wrapper.style = `background: rgba( ${r}, ${g}, ${b}, 0.1); border-color: rgba( ${r}, ${g}, ${b}, 0.3); color: ${pattern.color};`;
-      }
-    }
-
-    return pattern.toDataUri();
-  };
-
   return !contextStore.isPreviewSubmissionRequest ? (
     <div
       id="communities"
@@ -126,10 +106,7 @@ const CommunitiesBanner = ({
                       alt={`logo for ${communityTitle} collection`}
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = makePattern(
-                          e.target,
-                          defaultCommunity.slug
-                        );
+                        e.target.src = "/static/images/square-placeholder.png";
                       }}
                     />
                   </div>
@@ -170,7 +147,7 @@ const CommunitiesBanner = ({
                               alt={`logo for ${com.metadata.title} collection`}
                               onError={(e) => {
                                 e.target.onerror = null;
-                                e.target.src = makePattern(e.target, com.slug);
+                                e.target.src = "/static/images/square-placeholder.png";
                               }}
                             />
                           </div>
