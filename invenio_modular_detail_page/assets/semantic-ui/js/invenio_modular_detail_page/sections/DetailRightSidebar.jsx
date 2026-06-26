@@ -90,13 +90,16 @@ const DetailRightSidebar = () => {
                 topLevelProps.isPreviewSubmissionRequest
               }
               currentUserId={topLevelProps.currentUserId}
+              recordOwnerId={topLevelProps.recordOwnerId}
               handleShareModalOpen={handleShareModalOpen}
             />
             {/* here to avoid the modal being closed on popup close */}
             <ShareModal
-              recid={topLevelProps.record.id}
               open={shareModalOpen}
               handleClose={handleShareModalClose}
+              record={topLevelProps.record}
+              permissions={topLevelProps.permissions}
+              groupsEnabled={topLevelProps.groupsEnabled}
             />
           </div>
         ) : null}

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 // import Overridable from "react-overridable";
 // import { NewVersionButton } from "@js/invenio_rdm_records/";
 import { http } from "react-invenio-forms";
-import { ShareModal } from "./ShareModal";
+import { ManageButton } from "./ManageButton";
 
 /**
  * Deprecated share button
@@ -144,6 +144,7 @@ function RecordManagementMenuMobile({
  * @param {boolean} isPreviewSubmissionRequest - Whether the record is
  *    a preview submission request or not.
  * @param {string} currentUserId - The current user ID.
+ * @param {string} recordOwnerId - The record owner user ID (for admin moderation).
  * @param {function} handleShareModalOpen - The function to open the
  *    share modal.
  */
@@ -157,6 +158,7 @@ const RecordManagementMenu = ({
   isDraft,
   isPreviewSubmissionRequest,
   currentUserId,
+  recordOwnerId,
   handleShareModalOpen,
 }) => {
   const [error, setError] = useState(null);
@@ -236,6 +238,9 @@ const RecordManagementMenu = ({
     options.push({ key: "share", text: i18next.t("Share"), icon: "share", value: "share" });
   }
 
+  const showOwnerMenu = options.length > 0;
+  const showModeratorMenu = permissions.can_moderate;
+
   const focusDropdownRef = () => {
     const {
       current: {
@@ -249,13 +254,19 @@ const RecordManagementMenu = ({
     <section
       id="record-manage-menu"
       aria-label={i18next.t("Record management")}
-      className="ui"
+      className="ui record-management"
     >
+      {showModeratorMenu && (
+        <div className={showOwnerMenu ? "pb-5" : undefined}>
+          <ManageButton recid={recid} recordOwnerID={recordOwnerId || ""} />
+        </div>
+      )}
+      {showOwnerMenu && (
       <Dropdown
         ref={dropdownRef}
         as={asButton ? "button" : undefined}
         id="record-management-dropdown"
-        className={`button record-management-dropdown fluid secondary sidebar-secondary icon ${classNames}`}
+        className={`button record-management-dropdown fluid secondary sidebar-secondary icon ${classNames}${showModeratorMenu ? " pt-5" : ""}`}
         options={options}
         aria-label={i18next.t("Record management menu dropdown")}
         aria-haspopup="menu"
@@ -272,6 +283,7 @@ const RecordManagementMenu = ({
         value={null} // A11y: needed to trigger the onChange (-triggers both mouse & keyboard) event on every select
         text={i18next.t("Manage this work")}
       />
+      )}
       {/* <Grid columns={1} className="record-management" id="recordManagement"> */}
         {/* {permissions.can_edit && !isDraft && (
           <Grid.Column className="pb-5">
@@ -345,6 +357,7 @@ const RecordManagementPopup = ({
   isPreviewSubmissionRequest,
   record,
   permissions,
+  recordOwnerId,
 }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -374,6 +387,7 @@ const RecordManagementPopup = ({
           isDraft={isDraft}
           isPreviewSubmissionRequest={isPreviewSubmissionRequest}
           currentUserId={currentUserId}
+          recordOwnerId={recordOwnerId}
           handleShareModalOpen={handleShareModalOpen}
           handleParentPopupClose={handleClose}
           sectionIndex={50}

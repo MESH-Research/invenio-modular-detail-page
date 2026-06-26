@@ -18,7 +18,11 @@ const MobileActionMenu = () => {
   const handleManageClose = () => {
     setManageOpen(false);
   };
-  const handleShareModalOpen = () => setShareModalOpen(true);
+  const handleShareModalOpen = () => {
+    setShareModalOpen(true);
+    setManageOpen(false);
+    setActiveItem(null);
+  };
   const handleShareModalClose = () => setShareModalOpen(false);
   const handleMobileMenuClick = (e, { name }) => {
     activeItem === name ? setActiveItem(null) : setActiveItem(name);
@@ -39,10 +43,11 @@ const MobileActionMenu = () => {
           <>
             {/* here to avoid the modal being closed on popup close */}
             <ShareModal
-              recid={topLevelProps.record.id}
               open={shareModalOpen}
               handleClose={handleShareModalClose}
-              sectionIndex={50}
+              record={topLevelProps.record}
+              permissions={topLevelProps.permissions}
+              groupsEnabled={topLevelProps.groupsEnabled}
             />
             <Popup
               content={
@@ -52,6 +57,7 @@ const MobileActionMenu = () => {
                   isDraft={topLevelProps.isDraft}
                   isPreviewSubmissionRequest={topLevelProps.isPreviewSubmissionRequest}
                   currentUserId={topLevelProps.currentUserId}
+                  recordOwnerId={topLevelProps.recordOwnerId}
                   handleShareModalOpen={handleShareModalOpen}
                   handleParentPopupClose={handleManageClose}
                   sectionIndex={70}
@@ -68,10 +74,12 @@ const MobileActionMenu = () => {
                   Manage
                 </Menu.Item>
               }
-              onClose={() => { setActiveItem(null) && handleManageClose() }}
+              open={manageOpen}
+              onClose={() => {
+                setActiveItem(null);
+                handleManageClose();
+              }}
               on="click"
-              // open={manageOpen} TODO: find another way to programmatically
-              // close the popup when the share modal opens
               onOpen={handleManageOpen}
             />
           </>

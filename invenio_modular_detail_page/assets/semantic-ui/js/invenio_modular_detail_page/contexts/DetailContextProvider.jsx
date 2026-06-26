@@ -11,7 +11,9 @@ export const DetailContextProvider = ({ children, ...rawProps }) => {
   const record = rawProps.record;
   const canManageFlag =
     rawProps.permissions !== undefined &&
-    (rawProps.permissions.can_edit || rawProps.permissions.can_review);
+    (rawProps.permissions.can_edit ||
+      rawProps.permissions.can_review ||
+      rawProps.permissions.can_moderate);
 
   const extraProps = {
     activePreviewFile: activePreviewFile,

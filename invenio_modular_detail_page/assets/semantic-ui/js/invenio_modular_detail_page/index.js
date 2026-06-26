@@ -30,6 +30,7 @@ ReactDOM.render(
     downloadFileUrl={detailMainDiv.dataset.downloadFileUrl}
     externalResources={JSON.parse(detailMainDiv.dataset.externalResources)}
     files={JSON.parse(detailMainDiv.dataset.files)}
+    groupsEnabled={JSON.parse(detailMainDiv.dataset.groupsEnabled)}
     isDraft={JSON.parse(detailMainDiv.dataset.isDraft)}
     isPreview={JSON.parse(detailMainDiv.dataset.isPreview)}
     hasPreviewableFiles={
@@ -60,6 +61,7 @@ ReactDOM.render(
     }
     recordCommunitySearchConfig={recordCommunitySearchConfig}
     recordExporters={JSON.parse(detailMainDiv.dataset.recordExporters)}
+    recordOwnerId={JSON.parse(detailMainDiv.dataset.recordOwnerId)}
     recordUserCommunitySearchConfig={JSON.parse(
       detailMainDiv.dataset.recordUserCommunitySearchConfig
     )}

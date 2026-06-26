@@ -15,6 +15,8 @@ export const DetailContext = React.createContext({
   record: null,
   community: null,
   permissions: null,
+  groupsEnabled: false,
+  recordOwnerId: null,
   recordCommunityEndpoint: null,
   recordCommunitySearchConfig: null,
   recordUserCommunitySearchConfig: null,
