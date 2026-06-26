@@ -36,8 +36,9 @@
   {%- endblock css %}
 {% endif %}
 {%- from "invenio_app_rdm/records/macros/files.html" import file_list_box, preview_file_box, media_file_list_box %}
+{%- from "kcworks/macros/embedded_metadata/coins.html" import meta_coins -%}
 {%- set title = record.metadata.title %}
-{%- set can_manage_record = permissions is defined and (permissions.can_edit or permissions.can_review) %}
+{%- set can_manage_record = permissions is defined and (permissions.can_edit or permissions.can_review or permissions.can_moderate) %}
 <!-- preview_submission_request is set to true when coming from a community submission request -->
 {%- set is_preview_submission_request = 'true' if preview_submission_request else 'false' %}
 {%- set show_record_management_menu = can_manage_record and (not is_preview or is_preview_submission_request) %}
@@ -74,6 +75,7 @@
 {%- endblock head_meta %}
 {%- block page_body %}
   <div class="ui container">
+    {{- meta_coins(record) }}
     {# Main Content #}
     {%- set id_schemes = config.get("RDM_RECORDS_IDENTIFIERS_SCHEMES", {}) -%}
     {%- set my_schemes = {} -%}
@@ -102,6 +104,7 @@
          data-download-file-url='{{ download_file_url }}'
          data-external-resources='{{ external_resources | tojson }}'
          data-files='{{ files | tojson }}'
+         data-groups-enabled='{{ config["USERS_RESOURCES_GROUPS_ENABLED"] | tojson }}'
          data-has-previewable-files='{{ has_previewable_files_flag | tojson }}'
          data-icons-ror='{{ url_for("static", filename="images/ror-icon.svg") }}'
          data-icons-orcid='{{ url_for("static", filename="images/orcid.svg") }}'
@@ -127,6 +130,7 @@
          data-record-user-community-search-config='{{ search_app_rdm_record_user_communities_config(app_id="InvenioAppRdm.RecordUserCommunitiesSuggestions", endpoint=record_ui.links["communities-suggestions"]) | tojson }}'
          data-record-user-community-search-endpoint="{{ record_ui.links['user-communities-suggestions'] }}"
          data-record-exporters='{{ config.get('APP_RDM_RECORD_EXPORTERS', {}) | tojson }}'
+         data-record-owner-id='{{ record_owner_id | default("", true) | tojson }}'
          data-show-decimal-sizes='{{ config["APP_RDM_DISPLAY_DECIMAL_FILE_SIZES"] | tojson }}'
          data-show-record-management-menu='{{ show_record_management_menu | tojson }}'
          data-sidebar-sections-left='{{ config.get('MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_LEFT', []) | tojson }}'
