@@ -16,9 +16,8 @@ import { Icon, Message } from "semantic-ui-react";
 import Overridable from "react-overridable";
 import { componentsMap } from "../componentsMap";
 import { filterPropsToPass } from "../util";
-import {
-  RecordManagementMenu,
-} from "../components/RecordManagementMenu";
+import { RecordManagementMenu } from "../components/RecordManagementMenu";
+import { RecordModerationMenu } from "../components/RecordModerationMenu";
 import { ShareModal } from "../components/ShareModal";
 import { DraftBackButton } from "../components/DraftBackButton";
 import { FlagNewerVersion } from "../components/FlagNewerVersion";
@@ -51,6 +50,9 @@ const DetailRightSidebar = () => {
       );
     }
   );
+  const showModerationMenu =
+    topLevelProps.showRecordManagementMenu &&
+    topLevelProps.permissions?.can_moderate;
   return (
     <Overridable
       id="InvenioModularDetailPage.DetailRightSidebar.layout"
@@ -77,12 +79,17 @@ const DetailRightSidebar = () => {
           latestHtml={topLevelProps.record.links.latest_html}
           show={"computer large-monitor widescreen only"}
         />
+        {showModerationMenu ? (
+          <RecordModerationMenu
+            sidebarContainer
+            recid={topLevelProps.record.id}
+            recordOwnerID={topLevelProps.recordOwnerId || ""}
+          />
+        ) : null}
         {topLevelProps.showRecordManagementMenu ? (
-          <div
-            className={`sidebar-container computer large-monitor widescreen only`}
-            id="record-management"
-          >
+          <>
             <RecordManagementMenu
+              sidebarContainer
               record={topLevelProps.record}
               permissions={topLevelProps.permissions}
               isDraft={topLevelProps.isDraft}
@@ -90,18 +97,18 @@ const DetailRightSidebar = () => {
                 topLevelProps.isPreviewSubmissionRequest
               }
               currentUserId={topLevelProps.currentUserId}
-              recordOwnerId={topLevelProps.recordOwnerId}
               handleShareModalOpen={handleShareModalOpen}
             />
-            {/* here to avoid the modal being closed on popup close */}
-            <ShareModal
-              open={shareModalOpen}
-              handleClose={handleShareModalClose}
-              record={topLevelProps.record}
-              permissions={topLevelProps.permissions}
-              groupsEnabled={topLevelProps.groupsEnabled}
-            />
-          </div>
+            {topLevelProps.permissions?.can_manage ? (
+              <ShareModal
+                open={shareModalOpen}
+                handleClose={handleShareModalClose}
+                record={topLevelProps.record}
+                permissions={topLevelProps.permissions}
+                groupsEnabled={topLevelProps.groupsEnabled}
+              />
+            ) : null}
+          </>
         ) : null}
         {activeSidebarSections.map(
           (

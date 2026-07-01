@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Placeholder } from "semantic-ui-react";
 import { EmbargoMessage } from "./EmbargoMessage";
+import { AccessRequestPanel } from "./AccessRequestPanel";
 
 const FilePreview = ({
   activePreviewFile,
@@ -40,8 +41,10 @@ const FilePreview = ({
 
   return (
     <>
-      {record.access.files === "restricted" && (
-        <EmbargoMessage record={record} />
+      {!permissions.can_read_files && hasFiles && (
+        <EmbargoMessage record={record}>
+          <AccessRequestPanel />
+        </EmbargoMessage>
       )}
       {!!hasFiles && permissions.can_read_files && (
         <section

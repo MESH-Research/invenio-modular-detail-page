@@ -1,7 +1,7 @@
 import React from "react";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 
-const EmbargoMessage = ({ record }) => {
+const EmbargoMessage = ({ children, record }) => {
   return (
     <div
       className={`ui ${record.ui.access_status.message_class} message file-box-message`}
@@ -16,6 +16,7 @@ const EmbargoMessage = ({ record }) => {
       ) : (
         ""
       )}
+      {children}
     </div>
   );
 };

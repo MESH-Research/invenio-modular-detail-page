@@ -544,9 +544,6 @@ const FileListDropdown = ({
 
   return (
     <>
-      {/* access is "restricted" also if record is metadata-only */}
-      {(record.access.files === "restricted" || files.enabled === false) &&
-        showEmbargoMessage && <EmbargoMessage record={record} />}
       {!!permissions.can_read_files &&
         !!hasFiles &&
         (files?.length < 2 ? (

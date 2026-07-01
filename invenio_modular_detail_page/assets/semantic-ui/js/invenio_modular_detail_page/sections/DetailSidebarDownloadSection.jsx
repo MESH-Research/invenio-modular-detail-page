@@ -22,7 +22,7 @@ const SidebarDownloadSection = (props) => {
     show_heading,
     totalFileSize,
   } = props;
-  return hasFiles ? (
+  return hasFiles && permissions?.can_read_files ? (
     <Overridable
       id="InvenioModularDetailPage.SidebarDownloadSection.layout"
       {...props}

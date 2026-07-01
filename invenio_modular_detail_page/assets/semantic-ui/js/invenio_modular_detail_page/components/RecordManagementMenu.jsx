@@ -1,21 +1,16 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
-import { Button, Icon, Grid, Message, Popup, Dropdown } from "semantic-ui-react";
+import { Button, Icon, Popup } from "semantic-ui-react";
 import PropTypes from "prop-types";
 // import Overridable from "react-overridable";
 // import { NewVersionButton } from "@js/invenio_rdm_records/";
 import { http } from "react-invenio-forms";
-import { ManageButton } from "./ManageButton";
+import { RecordSidebarDropdown } from "./RecordSidebarDropdown";
 
 /**
  * Deprecated share button
  */
-const ShareButton = ({
-  disabled,
-  recid,
-  handleShareModalOpen,
-  handleParentPopupClose,
-}) => {
+const ShareButton = ({ disabled, recid, handleShareModalOpen, handleParentPopupClose }) => {
   const handleClick = () => {
     handleShareModalOpen();
     handleParentPopupClose();
@@ -93,10 +88,7 @@ function RecordManagementMenuMobile({
   currentUserId,
 }) {
   return (
-    <section
-      id="mobile-record-management"
-      className="ui grid tablet only mobile only"
-    >
+    <section id="mobile-record-management" className="ui grid tablet only mobile only">
       <div className="sixteen wide column right aligned">
         <button
           id="manage-record-btn"
@@ -108,11 +100,7 @@ function RecordManagementMenuMobile({
         </button>
       </div>
 
-      <div
-        id="recordManagementMobile"
-        role="dialog"
-        className="ui flowing popup transition hidden"
-      >
+      <div id="recordManagementMobile" role="dialog" className="ui flowing popup transition hidden">
         <RecordManagementMenu
           record={record}
           permissions={permissions}
@@ -144,28 +132,25 @@ function RecordManagementMenuMobile({
  * @param {boolean} isPreviewSubmissionRequest - Whether the record is
  *    a preview submission request or not.
  * @param {string} currentUserId - The current user ID.
- * @param {string} recordOwnerId - The record owner user ID (for admin moderation).
  * @param {function} handleShareModalOpen - The function to open the
  *    share modal.
+ * @param {boolean} sidebarContainer - Wrap in `#record-management` sidebar container.
  */
 const RecordManagementMenu = ({
-  asButton=true,
+  asButton = true,
   classNames,
   record,
   permissions,
-  pointingDirection="right",
-  icon="cog",
+  pointingDirection = "right",
+  icon = "cog",
   isDraft,
   isPreviewSubmissionRequest,
   currentUserId,
-  recordOwnerId,
   handleShareModalOpen,
+  sidebarContainer = false,
 }) => {
   const [error, setError] = useState(null);
   const recid = record.id;
-  const [editLoading, setEditLoading] = useState(false);
-  const [newVersionLoading, setNewVersionLoading] = useState(false);
-  const dropdownRef = useRef(null);
 
   const handleError = (errorMessage) => {
     console.error(errorMessage);
@@ -173,14 +158,12 @@ const RecordManagementMenu = ({
   };
 
   const handleEditClick = async () => {
-    setEditLoading(true);
     if (!isDraft) {
       try {
         // Create a draft from the published record
         await http.post(`/api/records/${recid}/draft`);
         window.location = `/uploads/${recid}`;
       } catch (error) {
-        setEditLoading(false);
         handleError(error.response.data.message);
       }
     } else {
@@ -189,13 +172,11 @@ const RecordManagementMenu = ({
   };
 
   const handleNewVersionClick = async () => {
-    setNewVersionLoading(true);
     try {
       const response = await http.post(record.links.versions);
       window.location = response.data.links.self_html;
     } catch (error) {
       console.error(error);
-      setNewVersionLoading(false);
       handleError(error.response.data.message);
     }
   };
@@ -225,128 +206,61 @@ const RecordManagementMenu = ({
   const options = [];
 
   if (permissions.can_edit && !isDraft) {
-    options.push({ key: "edit", text: i18next.t("Edit"), icon: "edit", value: "edit-published" });
+    options.push({
+      key: "edit",
+      text: i18next.t("Edit"),
+      icon: "edit",
+      value: "edit-published",
+    });
   } else if (isPreviewSubmissionRequest && isDraft) {
-    options.push({ key: "edit", text: i18next.t("Edit"), icon: "edit", value: "edit-draft" });
+    options.push({
+      key: "edit",
+      text: i18next.t("Edit"),
+      icon: "edit",
+      value: "edit-draft",
+    });
   }
 
   if (!isPreviewSubmissionRequest && !isDraft && permissions.can_new_version) {
-    options.push({ key: "new-version", text: i18next.t("New version"), icon: "plus", value: "new-version" });
+    options.push({
+      key: "new-version",
+      text: i18next.t("New version"),
+      icon: "plus",
+      value: "new-version",
+    });
   }
 
-  if (!isPreviewSubmissionRequest && permissions.can_manage && permissions.can_update_draft) {
-    options.push({ key: "share", text: i18next.t("Share"), icon: "share", value: "share" });
+  if (!isPreviewSubmissionRequest && permissions.can_manage) {
+    options.push({
+      key: "share",
+      text: i18next.t("Share"),
+      icon: "share",
+      value: "share",
+      disabled: !permissions.can_update_draft,
+    });
   }
 
-  const showOwnerMenu = options.length > 0;
-  const showModeratorMenu = permissions.can_moderate;
-
-  const focusDropdownRef = () => {
-    const {
-      current: {
-        ref: { current: dropdownToggle },
-      },
-    } = dropdownRef;
-    dropdownToggle.focus();
-  };
+  if (options.length === 0 && !error) {
+    return null;
+  }
 
   return (
-    <section
-      id="record-manage-menu"
-      aria-label={i18next.t("Record management")}
-      className="ui record-management"
-    >
-      {showModeratorMenu && (
-        <div className={showOwnerMenu ? "pb-5" : undefined}>
-          <ManageButton recid={recid} recordOwnerID={recordOwnerId || ""} />
-        </div>
-      )}
-      {showOwnerMenu && (
-      <Dropdown
-        ref={dropdownRef}
-        as={asButton ? "button" : undefined}
-        id="record-management-dropdown"
-        className={`button record-management-dropdown fluid secondary sidebar-secondary icon ${classNames}${showModeratorMenu ? " pt-5" : ""}`}
-        options={options}
-        aria-label={i18next.t("Record management menu dropdown")}
-        aria-haspopup="menu"
-        basic
-        pointing={pointingDirection}
-        closeOnChange
-        floating
-        closeOnBlur={true}
-        openOnFocus={false}
-        selectOnBlur={false}
-        selectOnNavigation={false}
-        onChange={handleDropdownChange}
-        icon={icon}
-        value={null} // A11y: needed to trigger the onChange (-triggers both mouse & keyboard) event on every select
-        text={i18next.t("Manage this work")}
-      />
-      )}
-      {/* <Grid columns={1} className="record-management" id="recordManagement"> */}
-        {/* {permissions.can_edit && !isDraft && (
-          <Grid.Column className="pb-5">
-            <EditButton
-              recid={recid}
-              onError={handleError}
-            />
-          </Grid.Column>
-        )} */}
-        {/* {isPreviewSubmissionRequest && isDraft && (
-          <Grid.Column className="pb-20">
-            <Button
-              fluid
-              className="warning"
-              size="medium"
-              onClick={() => (window.location = `/uploads/${recid}`)}
-              icon
-              labelPosition="left"
-            >
-              <Icon name="edit" />
-              {i18next.t("Edit")}
-            </Button>
-          </Grid.Column>
-        )} */}
-        {/* {!isPreviewSubmissionRequest && (
-          <>
-            <Grid.Column className="pt-5 pb-5">
-              <NewVersionButton
-                fluid
-                size="medium"
-                record={record}
-                onError={handleError}
-                disabled={!permissions.can_new_version}
-              />
-            </Grid.Column>
-
-            <Grid.Column className="pt-5">
-              {permissions.can_manage && (
-                <ShareButton
-                  disabled={!permissions.can_update_draft}
-                  recid={recid}
-                  handleShareModalOpen={handleShareModalOpen}
-                  handleParentPopupClose={handleParentPopupClose}
-                />
-              )}
-            </Grid.Column>
-          </>
-        )} */}
-        {/* <Overridable
-          id="InvenioAppRdm.RecordLandingPage.RecordManagement.container"
-          isPreviewSubmissionRequest={isPreviewSubmissionRequest}
-          record={record}
-          currentUserId={currentUserId}
-        /> */}
-        {error && (
-          <Grid.Row className="record-management">
-            <Grid.Column>
-              <Message negative>{error}</Message>
-            </Grid.Column>
-          </Grid.Row>
-        )}
-      {/* </Grid> */}
-    </section>
+    <RecordSidebarDropdown
+      asButton={asButton}
+      classNames={classNames}
+      sidebarContainer={sidebarContainer}
+      containerId="record-management"
+      sectionId="record-manage-menu"
+      sectionAriaLabel={i18next.t("Record management")}
+      dropdownId="record-management-dropdown"
+      dropdownAriaLabel={i18next.t("Record management menu dropdown")}
+      text={i18next.t("Edit or share")}
+      icon={icon}
+      pointingDirection={pointingDirection}
+      options={options}
+      onChange={handleDropdownChange}
+      error={error}
+    />
   );
 };
 
@@ -357,7 +271,6 @@ const RecordManagementPopup = ({
   isPreviewSubmissionRequest,
   record,
   permissions,
-  recordOwnerId,
 }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -387,7 +300,6 @@ const RecordManagementPopup = ({
           isDraft={isDraft}
           isPreviewSubmissionRequest={isPreviewSubmissionRequest}
           currentUserId={currentUserId}
-          recordOwnerId={recordOwnerId}
           handleShareModalOpen={handleShareModalOpen}
           handleParentPopupClose={handleClose}
           sectionIndex={50}

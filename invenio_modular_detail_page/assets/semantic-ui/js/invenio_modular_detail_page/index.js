@@ -78,6 +78,13 @@ ReactDOM.render(
     userCommunitiesMemberships={JSON.parse(
       detailMainDiv.dataset.userCommunitiesMemberships
     )}
+    allowUserRequests={JSON.parse(detailMainDiv.dataset.allowUserRequests)}
+    allowGuestRequests={JSON.parse(detailMainDiv.dataset.allowGuestRequests)}
+    acceptConditionsText={JSON.parse(detailMainDiv.dataset.acceptConditionsText)}
+    userAnonymous={JSON.parse(detailMainDiv.dataset.userAnonymous)}
+    userEmail={JSON.parse(detailMainDiv.dataset.userEmail)}
+    userFullName={JSON.parse(detailMainDiv.dataset.userFullName)}
+    userAvatar={JSON.parse(detailMainDiv.dataset.userAvatar)}
 
     // badge_png
     // badge_svg

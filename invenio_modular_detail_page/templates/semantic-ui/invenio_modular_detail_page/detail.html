@@ -42,9 +42,20 @@
 <!-- preview_submission_request is set to true when coming from a community submission request -->
 {%- set is_preview_submission_request = 'true' if preview_submission_request else 'false' %}
 {%- set show_record_management_menu = can_manage_record and (not is_preview or is_preview_submission_request) %}
+{%- set allow_user_requests = false -%}
+{%- set allow_guest_requests = false -%}
+{%- set accept_conditions_text = '' -%}
 {%- if record.parent.access.settings %}
   {%- set allow_user_requests = not current_user.is_anonymous and record.parent.access.settings.allow_user_requests %}
   {%- set allow_guest_requests = current_user.is_anonymous and record.parent.access.settings.allow_guest_requests %}
+  {%- set accept_conditions_text = record.parent.access.settings.accept_conditions_text | default('') %}
+{%- endif %}
+{%- if current_user.is_anonymous %}
+  {%- set access_request_email = none %}
+  {%- set access_request_full_name = none %}
+{%- else %}
+  {%- set access_request_email = current_user.email %}
+  {%- set access_request_full_name = current_user.user_profile.full_name | default('') if current_user.user_profile else '' %}
 {%- endif %}
 {%- set has_previewable_files_flag = "false" -%}
 {%- set preview_file_item = "undefined" -%}
@@ -136,7 +147,14 @@
          data-sidebar-sections-left='{{ config.get('MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_LEFT', []) | tojson }}'
          data-sidebar-sections-right='{{ config.get('MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT', []) | tojson }}'
          data-total-file-size='{{ ( files|sum(attribute="size") |filesizeformat(binary=config["APP_RDM_DISPLAY_DECIMAL_FILE_SIZES"]) ) if (files and record.files.enabled) else 0 }}'
-         data-user-communities-memberships='{{ user_communities_memberships | tojson }}'></div>
+         data-user-communities-memberships='{{ user_communities_memberships | tojson }}'
+         data-allow-user-requests='{{ allow_user_requests | tojson }}'
+         data-allow-guest-requests='{{ allow_guest_requests | tojson }}'
+         data-accept-conditions-text='{{ accept_conditions_text | tojson }}'
+         data-user-anonymous='{{ current_user.is_anonymous | tojson }}'
+         data-user-email='{{ access_request_email | tojson }}'
+         data-user-full-name='{{ access_request_full_name | tojson }}'
+         data-user-avatar='{{ user_avatar | default("", true) | tojson }}'></div>
   </div>
 {%- endblock page_body %}
 {%- block javascript %}

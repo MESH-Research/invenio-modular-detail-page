@@ -40,6 +40,11 @@ export const DetailContextProvider = ({ children, ...rawProps }) => {
     showRecordManagementMenu:
       canManageFlag &&
       (!rawProps.isPreview || rawProps.isPreviewSubmissionRequest),
+    showAccessRequestForm:
+      record.files.enabled &&
+      !rawProps.permissions?.can_read_files &&
+      ((rawProps.allowUserRequests && !rawProps.userAnonymous) ||
+        (rawProps.allowGuestRequests && rawProps.userAnonymous)),
     setActivePreviewFile: setActivePreviewFile,
     setActiveTab: setActiveTab,
     tabbedSections: tabbedSections,

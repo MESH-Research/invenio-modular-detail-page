@@ -4,6 +4,7 @@ import { CitationModal } from "./DetailSidebarCitationSection";
 import { ExportDropdown } from "../components/ExportDropdown";
 import { FileListItemDropdown } from "../components/FileList";
 import { RecordManagementMenu } from "../components/RecordManagementMenu";
+import { RecordModerationMenu } from "../components/RecordModerationMenu";
 import { ShareModal } from "../components/ShareModal";
 import { SidebarSharingSection } from "./DetailSidebarSharingSection";
 import Overridable from "react-overridable";
@@ -42,26 +43,43 @@ const MobileActionMenu = () => {
         {topLevelProps.canManage && (
           <>
             {/* here to avoid the modal being closed on popup close */}
-            <ShareModal
-              open={shareModalOpen}
-              handleClose={handleShareModalClose}
-              record={topLevelProps.record}
-              permissions={topLevelProps.permissions}
-              groupsEnabled={topLevelProps.groupsEnabled}
-            />
+            {topLevelProps.permissions?.can_manage ? (
+              <ShareModal
+                open={shareModalOpen}
+                handleClose={handleShareModalClose}
+                record={topLevelProps.record}
+                permissions={topLevelProps.permissions}
+                groupsEnabled={topLevelProps.groupsEnabled}
+              />
+            ) : null}
             <Popup
               content={
-                <RecordManagementMenu
-                  record={topLevelProps.record}
-                  permissions={topLevelProps.permissions}
-                  isDraft={topLevelProps.isDraft}
-                  isPreviewSubmissionRequest={topLevelProps.isPreviewSubmissionRequest}
-                  currentUserId={topLevelProps.currentUserId}
-                  recordOwnerId={topLevelProps.recordOwnerId}
-                  handleShareModalOpen={handleShareModalOpen}
-                  handleParentPopupClose={handleManageClose}
-                  sectionIndex={70}
-                />
+                <>
+                  {topLevelProps.permissions?.can_moderate ? (
+                    <section
+                      id="record-moderation-mobile"
+                      className="record-moderation-mobile pb-5"
+                      aria-label="Record moderation"
+                    >
+                      <RecordModerationMenu
+                        recid={topLevelProps.record.id}
+                        recordOwnerID={topLevelProps.recordOwnerId || ""}
+                      />
+                    </section>
+                  ) : null}
+                  <RecordManagementMenu
+                    record={topLevelProps.record}
+                    permissions={topLevelProps.permissions}
+                    isDraft={topLevelProps.isDraft}
+                    isPreviewSubmissionRequest={
+                      topLevelProps.isPreviewSubmissionRequest
+                    }
+                    currentUserId={topLevelProps.currentUserId}
+                    handleShareModalOpen={handleShareModalOpen}
+                    handleParentPopupClose={handleManageClose}
+                    sectionIndex={70}
+                  />
+                </>
               }
               trigger={
                 <Menu.Item
