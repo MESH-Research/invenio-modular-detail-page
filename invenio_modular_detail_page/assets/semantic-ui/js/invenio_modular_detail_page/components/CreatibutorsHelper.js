@@ -91,8 +91,8 @@ export const mergeCreatibutorsData = (a, b) => {
 	};
 };
 
-export const buildMergedCreatibutors = (creators, contributors) => {
-	const list = (creators?.creators || []).concat(contributors?.contributors || []);
+export const buildCreatibutorsList = (items) => {
+	const list = items || [];
 	return list.reduce((acc, item) => {
 		const idx = acc.findIndex((x) => canMergeByIdentifiers(x, item));
 		if (idx === -1) return acc.concat({ ...item });
