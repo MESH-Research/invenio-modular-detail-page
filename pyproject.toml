@@ -44,6 +44,9 @@ entry-points."invenio_base.apps".invenio_modular_detail_page = "invenio_modular_
 entry-points."invenio_base.blueprints".invenio_modular_detail_page = "invenio_modular_detail_page.ext:create_blueprint"
 entry-points."invenio_i18n.translations".messages = "invenio_modular_detail_page"
 
+[tool.uv.sources]
+invenio-rdm-records = { path = "../invenio-rdm-records", editable = true }
+
 [tool.setuptools]
 packages.find.include = ["invenio_modular_detail_page*"]
 packages.find.exclude = ["tests*", "docs*", "scripts*", "node_modules*"]
