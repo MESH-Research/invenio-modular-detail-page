@@ -10,10 +10,7 @@ function StatsPopup({ number }) {
   return number[0] != number[1] ? (
     <Popup
       trigger={
-        <span
-          className="compact-number"
-          aria-label={i18next.t("See the full number")}
-        >
+        <span className="compact-number" aria-label={i18next.t("See the full number")}>
           {number[0]}
         </span>
       }
@@ -50,27 +47,21 @@ function Analytics(props) {
         all_versions_data_volume: undefined,
         this_version_data_volume: undefined,
       };
-  const formattedDataVolumeAll = all_versions
-    ? formatBytes(all_versions.data_volume)
-    : undefined;
-  const [formattedDataVolumeNum, formattedDataVolumeUnits] =
-    formattedDataVolumeAll ? formattedDataVolumeAll.split(" ") : ["", ""];
+  const formattedDataVolumeAll = all_versions ? formatBytes(all_versions.data_volume) : undefined;
+  const [formattedDataVolumeNum, formattedDataVolumeUnits] = formattedDataVolumeAll
+    ? formattedDataVolumeAll.split(" ")
+    : ["", ""];
 
   return (
     <Overridable id="InvenioModularDetailPage.Analytics.layout" {...props}>
       <div className={show}>
         {!record.stats ? (
-          <Message>
-            No statistics have been generated yet for this work. Check back
-            later.
-          </Message>
+          <Message>No statistics have been generated yet for this work. Check back later.</Message>
         ) : (
           <>
-            <Statistic.Group size="small">
+            <Statistic.Group size="small" className="rel-mt-2">
               <Statistic>
-                <Statistic.Value>
-                  {all_versions_unique_views[1]}
-                </Statistic.Value>
+                <Statistic.Value>{all_versions_unique_views[1]}</Statistic.Value>
                 <Statistic.Label>
                   <Icon name="eye" />
                   {i18next.t("Views")}
@@ -79,9 +70,7 @@ function Analytics(props) {
               {hasFiles && (
                 <>
                   <Statistic>
-                    <Statistic.Value>
-                      {all_versions_unique_downloads[1]}
-                    </Statistic.Value>
+                    <Statistic.Value>{all_versions_unique_downloads[1]}</Statistic.Value>
                     <Statistic.Label>
                       <Icon name="download" />
                       {i18next.t("Downloads")}
@@ -103,12 +92,8 @@ function Analytics(props) {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell />
-                  <Table.HeaderCell textAlign="right">
-                    {i18next.t("All versions")}
-                  </Table.HeaderCell>
-                  <Table.HeaderCell textAlign="right">
-                    {i18next.t("This version")}
-                  </Table.HeaderCell>
+                  <Table.HeaderCell textAlign="right">{i18next.t("All versions")}</Table.HeaderCell>
+                  <Table.HeaderCell textAlign="right">{i18next.t("This version")}</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
 
@@ -131,16 +116,10 @@ function Analytics(props) {
                       }
                     />
                   </Table.Cell>
-                  <Table.Cell
-                    data-label={i18next.t("All versions")}
-                    textAlign="right"
-                  >
+                  <Table.Cell data-label={i18next.t("All versions")} textAlign="right">
                     <StatsPopup number={all_versions_unique_views} />
                   </Table.Cell>
-                  <Table.Cell
-                    data-label={i18next.t("This version")}
-                    textAlign="right"
-                  >
+                  <Table.Cell data-label={i18next.t("This version")} textAlign="right">
                     <StatsPopup number={this_version_unique_views} />
                   </Table.Cell>
                 </Table.Row>
@@ -164,16 +143,10 @@ function Analytics(props) {
                           }
                         />
                       </Table.Cell>
-                      <Table.Cell
-                        data-label={i18next.t("All versions")}
-                        textAlign="right"
-                      >
+                      <Table.Cell data-label={i18next.t("All versions")} textAlign="right">
                         <StatsPopup number={all_versions_unique_downloads} />
                       </Table.Cell>
-                      <Table.Cell
-                        data-label={i18next.t("This version")}
-                        textAlign="right"
-                      >
+                      <Table.Cell data-label={i18next.t("This version")} textAlign="right">
                         <StatsPopup number={this_version_unique_downloads} />
                       </Table.Cell>
                     </Table.Row>
@@ -196,16 +169,10 @@ function Analytics(props) {
                         />
                       </Table.Cell>
                       {/* FIXME: use showBinarySizes flag to control display */}
-                      <Table.Cell
-                        data-label={i18next.t("All versions")}
-                        textAlign="right"
-                      >
+                      <Table.Cell data-label={i18next.t("All versions")} textAlign="right">
                         {formatBytes(all_versions.data_volume)}
                       </Table.Cell>
-                      <Table.Cell
-                        data-label={i18next.t("This version")}
-                        textAlign="right"
-                      >
+                      <Table.Cell data-label={i18next.t("This version")} textAlign="right">
                         {formatBytes(this_version.data_volume)}
                       </Table.Cell>
                     </Table.Row>
@@ -215,9 +182,7 @@ function Analytics(props) {
             </Table>
 
             <p className="text-muted">
-              <a href="/help/statistics">
-                {i18next.t("More info on how stats are collected")}...
-              </a>
+              <a href="/help/statistics">{i18next.t("More info on how stats are collected")}...</a>
             </p>
           </>
         )}
