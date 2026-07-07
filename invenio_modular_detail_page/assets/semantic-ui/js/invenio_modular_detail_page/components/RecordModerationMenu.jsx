@@ -14,7 +14,13 @@ import { RecordSidebarDropdown } from "./RecordSidebarDropdown";
  * @param {string} props.recordOwnerID - Record owner user id.
  * @param {boolean} props.sidebarContainer - Wrap in `#record-moderation` sidebar container.
  */
-function RecordModerationMenu({ recid, recordOwnerID, sidebarContainer = false }) {
+function RecordModerationMenu({
+  recid,
+  recordOwnerID,
+  sidebarContainer = false,
+  pointingDirection = "",
+  classNames = "",
+}) {
   const [confirmAction, setConfirmAction] = useState(null);
 
   const options = [
@@ -112,6 +118,8 @@ function RecordModerationMenu({ recid, recordOwnerID, sidebarContainer = false }
       text={i18next.t("Moderation")}
       options={options}
       onChange={handleDropdownChange}
+      pointingDirection={pointingDirection}
+      classNames={classNames}
     >
       {recordOwnerID && confirmConfig ? (
         <Modal open closeIcon onClose={handleConfirmClose} role="dialog" closeOnDimmerClick={false}>

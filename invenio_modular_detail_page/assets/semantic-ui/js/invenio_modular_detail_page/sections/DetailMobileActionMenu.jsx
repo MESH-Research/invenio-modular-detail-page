@@ -29,10 +29,7 @@ const MobileActionMenu = () => {
     activeItem === name ? setActiveItem(null) : setActiveItem(name);
   };
   return (
-    <Overridable
-      id="InvenioModularDetailPage.MobileActionMenu.layout"
-      {...topLevelProps}
-    >
+    <Overridable id="InvenioModularDetailPage.MobileActionMenu.layout" {...topLevelProps}>
       <Menu
         className="mobile tablet only sixteen wide sticky bottom"
         compact
@@ -56,28 +53,23 @@ const MobileActionMenu = () => {
               content={
                 <>
                   {topLevelProps.permissions?.can_moderate ? (
-                    <section
-                      id="record-moderation-mobile"
-                      className="record-moderation-mobile pb-5"
-                      aria-label="Record moderation"
-                    >
-                      <RecordModerationMenu
-                        recid={topLevelProps.record.id}
-                        recordOwnerID={topLevelProps.recordOwnerId || ""}
-                      />
-                    </section>
+                    <RecordModerationMenu
+                      recid={topLevelProps.record.id}
+                      recordOwnerID={topLevelProps.recordOwnerId || ""}
+                      pointingDirection="bottom"
+                      classNames="mb-5"
+                    />
                   ) : null}
                   <RecordManagementMenu
                     record={topLevelProps.record}
                     permissions={topLevelProps.permissions}
                     isDraft={topLevelProps.isDraft}
-                    isPreviewSubmissionRequest={
-                      topLevelProps.isPreviewSubmissionRequest
-                    }
+                    isPreviewSubmissionRequest={topLevelProps.isPreviewSubmissionRequest}
                     currentUserId={topLevelProps.currentUserId}
                     handleShareModalOpen={handleShareModalOpen}
                     handleParentPopupClose={handleManageClose}
                     sectionIndex={70}
+                    pointingDirection="bottom"
                   />
                 </>
               }
