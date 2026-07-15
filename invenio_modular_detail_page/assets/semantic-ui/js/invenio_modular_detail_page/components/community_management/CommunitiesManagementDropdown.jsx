@@ -15,7 +15,7 @@ import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import PropTypes from "prop-types";
 
 const CommunitiesManagementDropdown = ({
-  classNames="",
+  classNames = "",
   communities,
   direction,
   getCommunities,
@@ -176,7 +176,7 @@ const CommunitiesManagementDropdown = ({
                 <span className="manage-collections-text computer only">
                   {i18next.t("Manage collections")}
                 </span>
-                <span className="manage-collections-text widescreen large-monitor only">
+                <span className="manage-collections-text widescreen large screen only">
                   {i18next.t("Manage collections for this work")}
                 </span>
               </>
@@ -188,7 +188,7 @@ const CommunitiesManagementDropdown = ({
                 <span className="manage-collections-text computer only">
                   {i18next.t("Submit to a collection")}
                 </span>
-                <span className="manage-collections-text widescreen large-monitor only">
+                <span className="manage-collections-text widescreen large screen only">
                   {i18next.t("Submit this work to a collection")}
                 </span>
               </>
@@ -232,7 +232,7 @@ const CommunitiesManagementDropdown = ({
       />
     </>
   );
-}
+};
 
 CommunitiesManagementDropdown.propTypes = {
   classNames: PropTypes.string,

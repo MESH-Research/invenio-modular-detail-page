@@ -42,17 +42,11 @@ const DetailRightSidebar = () => {
   const [shareModalOpen, setShareModalOpen] = React.useState(false);
   const handleShareModalClose = () => setShareModalOpen(false);
   const handleShareModalOpen = () => setShareModalOpen(true);
-  let activeSidebarSections = topLevelProps.sidebarSectionsRight.filter(
-    ({ component_name }) => {
-      return (
-        component_name !== undefined &&
-        componentsMap[component_name] !== undefined
-      );
-    }
-  );
+  let activeSidebarSections = topLevelProps.sidebarSectionsRight.filter(({ component_name }) => {
+    return component_name !== undefined && componentsMap[component_name] !== undefined;
+  });
   const showModerationMenu =
-    topLevelProps.showRecordManagementMenu &&
-    topLevelProps.permissions?.can_moderate;
+    topLevelProps.showRecordManagementMenu && topLevelProps.permissions?.can_moderate;
   return (
     <Overridable
       id="InvenioModularDetailPage.DetailRightSidebar.layout"
@@ -71,13 +65,13 @@ const DetailRightSidebar = () => {
           isDraft={topLevelProps.isDraft}
           canManage={topLevelProps.canManage}
           isPreviewSubmissionRequest={topLevelProps.isPreviewSubmissionRequest}
-          show={"computer large-monitor widescreen only"}
+          show={"computer large screen widescreen only"}
         />
         <FlagNewerVersion
           isLatest={topLevelProps.record.versions.is_latest}
           isPublished={topLevelProps.record.is_published}
           latestHtml={topLevelProps.record.links.latest_html}
-          show={"computer large-monitor widescreen only"}
+          show={"computer large screen widescreen only"}
         />
         {showModerationMenu ? (
           <RecordModerationMenu
@@ -93,9 +87,7 @@ const DetailRightSidebar = () => {
               record={topLevelProps.record}
               permissions={topLevelProps.permissions}
               isDraft={topLevelProps.isDraft}
-              isPreviewSubmissionRequest={
-                topLevelProps.isPreviewSubmissionRequest
-              }
+              isPreviewSubmissionRequest={topLevelProps.isPreviewSubmissionRequest}
               currentUserId={topLevelProps.currentUserId}
               handleShareModalOpen={handleShareModalOpen}
             />
@@ -111,10 +103,7 @@ const DetailRightSidebar = () => {
           </>
         ) : null}
         {activeSidebarSections.map(
-          (
-            { section, component_name, props, subsections, show_heading, show },
-            idx
-          ) => {
+          ({ section, component_name, props, subsections, show_heading, show }, idx) => {
             const SidebarSectionComponent = componentsMap[component_name];
             return (
               <SidebarSectionComponent
@@ -124,9 +113,7 @@ const DetailRightSidebar = () => {
                 key={section}
                 show_heading={show_heading}
                 show={show}
-                sectionIndex={
-                  60 + idx + idx + idx + idx + idx + idx + idx + idx + idx + idx
-                }
+                sectionIndex={60 + idx + idx + idx + idx + idx + idx + idx + idx + idx + idx}
               />
             );
           }

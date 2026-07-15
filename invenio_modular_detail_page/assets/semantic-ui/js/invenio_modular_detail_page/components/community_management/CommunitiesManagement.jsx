@@ -69,48 +69,43 @@ const CommunitiesManagement = ({
 
   // TODO: Somehow cancel the fetch when the component unmounts
 
-  return (
-    !!canManageRecord ? (
-      <Grid.Row className={`manage-communities ${showAll ? "open" : ""} ml-0 mr-0 pt-0 pb-0`}>
+  return !!canManageRecord ? (
+    <Grid.Row className={`manage-communities ${showAll ? "open" : ""} ml-0 mr-0 pt-0 pb-0`}>
+      <CommunitiesManagementDropdown
+        classNames="mobile tablet only"
+        communities={communities}
+        direction="bottom"
+        getCommunities={getCommunities}
+        handleCommunityRemoval={handleCommunityRemoval}
+        handleDefaultCommunityChange={handleDefaultCommunityChange}
+        permissions={permissions}
+        permissionsPerField={permissionsPerField}
+        record={record}
+        recordCommunityEndpoint={recordCommunityEndpoint}
+        recordCommunitySearchConfig={recordCommunitySearchConfig}
+        recordUserCommunitySearchConfig={recordUserCommunitySearchConfig}
+        searchConfig={searchConfig}
+        userCommunitiesMemberships={userCommunitiesMemberships}
+      />
 
-        <CommunitiesManagementDropdown
-          classNames="mobile tablet only"
-          communities={communities}
-          direction="bottom"
-          getCommunities={getCommunities}
-          handleCommunityRemoval={handleCommunityRemoval}
-          handleDefaultCommunityChange={handleDefaultCommunityChange}
-          permissions={permissions}
-          permissionsPerField={permissionsPerField}
-          record={record}
-          recordCommunityEndpoint={recordCommunityEndpoint}
-          recordCommunitySearchConfig={recordCommunitySearchConfig}
-          recordUserCommunitySearchConfig={recordUserCommunitySearchConfig}
-          searchConfig={searchConfig}
-          userCommunitiesMemberships={userCommunitiesMemberships}
-        />
-
-        <CommunitiesManagementDropdown
-          classNames="computer large-monitor widescreen only"
-          communities={communities}
-          direction="left"
-          getCommunities={getCommunities}
-          handleCommunityRemoval={handleCommunityRemoval}
-          handleDefaultCommunityChange={handleDefaultCommunityChange}
-          permissions={permissions}
-          permissionsPerField={permissionsPerField}
-          record={record}
-          recordCommunityEndpoint={recordCommunityEndpoint}
-          recordCommunitySearchConfig={recordCommunitySearchConfig}
-          recordUserCommunitySearchConfig={recordUserCommunitySearchConfig}
-          searchConfig={searchConfig}
-          userCommunitiesMemberships={userCommunitiesMemberships}
-        />
-      </Grid.Row>
-    ) : (
-      null
-    )
-  )
+      <CommunitiesManagementDropdown
+        classNames="computer large screen widescreen only"
+        communities={communities}
+        direction="left"
+        getCommunities={getCommunities}
+        handleCommunityRemoval={handleCommunityRemoval}
+        handleDefaultCommunityChange={handleDefaultCommunityChange}
+        permissions={permissions}
+        permissionsPerField={permissionsPerField}
+        record={record}
+        recordCommunityEndpoint={recordCommunityEndpoint}
+        recordCommunitySearchConfig={recordCommunitySearchConfig}
+        recordUserCommunitySearchConfig={recordUserCommunitySearchConfig}
+        searchConfig={searchConfig}
+        userCommunitiesMemberships={userCommunitiesMemberships}
+      />
+    </Grid.Row>
+  ) : null;
 };
 
 export { CommunitiesManagement };

@@ -81,7 +81,7 @@ function RecordSidebarDropdown({
 
   if (sidebarContainer && containerId) {
     return (
-      <div className="sidebar-container computer large-monitor widescreen only" id={containerId}>
+      <div className="sidebar-container computer large screen widescreen only" id={containerId}>
         {menu}
       </div>
     );
