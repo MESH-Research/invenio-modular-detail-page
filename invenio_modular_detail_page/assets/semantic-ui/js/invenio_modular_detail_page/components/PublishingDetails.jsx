@@ -4,6 +4,10 @@ import { Accordion, Button, Icon, Popup } from "semantic-ui-react";
 import { Creatibutors } from "./Creatibutors";
 import { Doi } from "../components/Doi";
 import { groupObjectsBy, toPidUrl } from "../util";
+import {
+  getThesisFieldValue,
+  THESIS_DETAIL_FIELD_LABELS,
+} from "../util/thesisDetails";
 import { Analytics } from "./Analytics";
 
 function isDuration(size) {
@@ -477,12 +481,30 @@ const getDetailsComponents = ({
       ),
     },
     {
-      title: i18next.t("Awarding university"),
-      value:
-        record.ui.publishing_information &&
-        record.ui.publishing_information.thesis
-          ? record.ui.publishing_information.thesis
-          : null,
+      title: THESIS_DETAIL_FIELD_LABELS.university(),
+      value: getThesisFieldValue(record, "university"),
+    },
+    {
+      title: THESIS_DETAIL_FIELD_LABELS.department(),
+      value: getThesisFieldValue(record, "department"),
+    },
+    {
+      title: THESIS_DETAIL_FIELD_LABELS.type(),
+      value: getThesisFieldValue(record, "type"),
+    },
+    {
+      title: THESIS_DETAIL_FIELD_LABELS.date_submitted(),
+      value: getThesisFieldValue(record, "date_submitted"),
+    },
+    {
+      title: THESIS_DETAIL_FIELD_LABELS.date_defended(),
+      value: getThesisFieldValue(record, "date_defended"),
+    },
+    {
+      title: i18next.t("Discipline"),
+      value: record.custom_fields["kcr:discipline"]
+        ? record.custom_fields["kcr:discipline"]
+        : null,
     },
     {
       title: i18next.t("Chapter label"),
@@ -523,18 +545,6 @@ const getDetailsComponents = ({
         : null,
     },
     {
-      title: i18next.t("Degree"),
-      value: record.custom_fields["kcr:degree"]
-        ? record.custom_fields["kcr:degree"]
-        : null,
-    },
-    {
-      title: i18next.t("Department"),
-      value: record.custom_fields["kcr:institution_department"]
-        ? record.custom_fields["kcr:institution_department"]
-        : null,
-    },
-    {
       title: i18next.t("Development status"),
       value: record.ui.custom_fields["code:developmentStatus"]
         ? record.ui.custom_fields["code:developmentStatus"]["title_l10n"]
@@ -571,12 +581,6 @@ const getDetailsComponents = ({
         : null,
     },
     {
-      title: i18next.t("Frameworks or runtimes"),
-      value: record.custom_fields["code:runtimePlatform"]
-        ? record.custom_fields["code:runtimePlatform"]
-        : null,
-    },
-    {
       title: i18next.t("Funding"),
       value: record.ui.funding ? <Funding funding={record.ui.funding} /> : null,
     },
@@ -604,12 +608,6 @@ const getDetailsComponents = ({
       title: i18next.t("Media and materials"),
       value: record.custom_fields["kcr:media"]
         ? record.custom_fields["kcr:media"].join(",")
-        : null,
-    },
-    {
-      title: i18next.t("Operating systems supported"),
-      value: record.custom_fields["code:operatingSystem"]
-        ? record.custom_fields["code:operatingSystem"]
         : null,
     },
     {
