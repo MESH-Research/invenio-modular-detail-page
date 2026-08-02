@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Message } from "semantic-ui-react";
 import { http } from "react-invenio-forms";
-import { CommunitySelectionModalComponent } from "@js/kcworks/collections/selector/CommunitySelectionModal";
+import { CommunitySelectionModal } from "@js/kcworks/collections/selector/CommunitySelectionModal";
 import { SubmitReviewModal } from "@js/invenio_rdm_records";
 
 const RecordCommunitySubmissionModal = ({
@@ -50,7 +50,7 @@ const RecordCommunitySubmissionModal = ({
     setError(null);
 
     try {
-      let data = { communities: [ { id: selectedCommunity.id } ] };
+      let data = { communities: [{ id: selectedCommunity.id }] };
 
       if (reviewComment) {
         data = {
@@ -93,7 +93,7 @@ const RecordCommunitySubmissionModal = ({
 
   return (
     <>
-      <CommunitySelectionModalComponent
+      <CommunitySelectionModal
         onCommunityChange={changeSelectedCommunity}
         chosenCommunity={selectedCommunity}
         modalOpen={modalOpen}
@@ -121,7 +121,7 @@ const RecordCommunitySubmissionModal = ({
       )}
     </>
   );
-}
+};
 
 RecordCommunitySubmissionModal.propTypes = {
   modalOpen: PropTypes.bool,
