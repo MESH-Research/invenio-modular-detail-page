@@ -14,7 +14,6 @@ const RecordCommunitySubmissionModal = ({
   recordCommunityEndpoint,
   recordCommunitySearchConfig,
   recordUserCommunitySearchConfig,
-  handleOnClose,
   handleSuccessAction,
   record,
 }) => {
@@ -101,7 +100,6 @@ const RecordCommunitySubmissionModal = ({
         onModalChange={toggleModal}
         modalHeader={i18next.t("Select a collection")}
         apiConfigs={apiConfigs}
-        handleOnClose={handleOnClose}
         record={record}
         isInitialSubmission={false}
         permissionsPerField={permissionsPerField}
