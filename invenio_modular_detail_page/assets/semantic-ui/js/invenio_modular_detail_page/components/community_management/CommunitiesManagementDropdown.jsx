@@ -214,7 +214,7 @@ const CommunitiesManagementDropdown = ({
         modalOpen={submissionModalOpen}
         userCommunitiesMemberships={userCommunitiesMemberships}
         toggleModal={toggleSubmissionModal}
-        handleClose={() => toggleSubmissionModal(false)}
+        handleOnClose={() => toggleSubmissionModal(false)}
         handleSuccessAction={handleActionSucceed}
         permissionsPerField={permissionsPerField}
         recordCommunityEndpoint={recordCommunityEndpoint}
