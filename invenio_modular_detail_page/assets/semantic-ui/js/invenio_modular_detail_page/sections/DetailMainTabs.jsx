@@ -12,22 +12,15 @@ const DetailMainTabs = () => {
     ({ section, component_name, subsections, show }, idx) => {
       // Because can't import DetailMainTab in componentsMap (circular)
       const TabComponent =
-        component_name !== "DetailMainTab"
-          ? componentsMap[component_name]
-          : DetailMainTab;
+        component_name !== "DetailMainTab" ? componentsMap[component_name] : DetailMainTab;
       let passedProps = {
         section: section,
         subsections: subsections,
       };
       return {
-        menuItem: (
-          <Menu.Item key={section} className={show} as="button" content={section} />
-        ),
+        menuItem: <Menu.Item key={section} className={show} as="button" content={section} />,
         render: () => (
-          <Tab.Pane
-            key={section}
-            className={`record-details-tab ${section} ${show}`}
-          >
+          <Tab.Pane key={section} className={`record-details-tab ${section} ${show}`}>
             <TabComponent {...passedProps} key={section} />
           </Tab.Pane>
         ),
@@ -43,17 +36,13 @@ const DetailMainTabs = () => {
   }, []);
 
   return (
-    <Overridable
-      id="InvenioModularDetailPage.DetailMainTabs.layout"
-    >
+    <Overridable id="InvenioModularDetailPage.DetailMainTabs.layout">
       <Tab
         id="detail-main-tabs"
         panes={panes}
         menu={{ secondary: true, pointing: true }}
         activeIndex={contextStore.activeTab}
-        onTabChange={(e, { activeIndex }) =>
-          contextStore.setActiveTab(activeIndex)
-        }
+        onTabChange={(e, { activeIndex }) => contextStore.setActiveTab(activeIndex)}
       />
     </Overridable>
   );

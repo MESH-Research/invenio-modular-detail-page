@@ -75,7 +75,7 @@ const CommunitiesManagementDropdown = ({
     toggleManageCommunitiesModal(false);
   };
 
-  const handleChange = (event, data) => {
+  const handleChange = (_, data) => {
     // A11y: Needed to trigger keyboard events as well as click events
 
     switch (data.value) {
