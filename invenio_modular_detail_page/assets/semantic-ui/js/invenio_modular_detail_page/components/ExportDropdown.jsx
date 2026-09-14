@@ -29,7 +29,8 @@ const ExportDropdown = (props) => {
     formats.push({ id: name, value: exportUrl, text: name });
   }
 
-  const [activeFormat, setActiveFormat] = useState(formats[0].value);
+  // null so the first option's onChange always fires (SUI skips same-value selects)
+  const [activeFormat, setActiveFormat] = useState(null);
 
   const handleFormatChange = (e, { value }) => {
     setActiveFormat(value);
