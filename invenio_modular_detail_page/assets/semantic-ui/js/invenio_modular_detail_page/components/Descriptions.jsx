@@ -19,6 +19,11 @@ const CLAMP_CLASS = "description-clamped";
  * content overflows so Show more / Show less only appear when needed. The
  * overflow flag stays sticky while expanded (measurement is only valid while
  * the clamp class is applied). Expand/collapse animates measured height.
+ *
+ * Additional descriptions are shown only when the full description is open
+ * (always, if clamping does not apply; after "Show more" when it does). The
+ * toggle also appears when additional descriptions exist even if the main
+ * description does not overflow the clamp.
  */
 const Descriptions = ({ description, additionalDescriptions, hasFiles, permissions }) => {
   const [open, setOpen] = useState(false);
@@ -28,7 +33,9 @@ const Descriptions = ({ description, additionalDescriptions, hasFiles, permissio
     useMeasuredHeightAnimation(descriptionRef);
 
   const willClamp = Boolean(hasFiles && permissions?.can_read_files);
-  const showToggle = willClamp && isOverflowing;
+  const hasAdditionalDescriptions = Boolean(additionalDescriptions?.length);
+  // Offer expand when main text overflows *or* there is more content to reveal.
+  const showToggle = willClamp && (isOverflowing || hasAdditionalDescriptions);
   // Defer re-applying clamp until collapse animation finishes so height can tween.
   const showClampClass = willClamp && !open && !isAnimating;
 
@@ -104,8 +111,8 @@ const Descriptions = ({ description, additionalDescriptions, hasFiles, permissio
               dangerouslySetInnerHTML={{ __html: description }}
             />
           </>
-          {additionalDescriptions &&
-            ((open && showToggle) || !willClamp) &&
+          {hasAdditionalDescriptions &&
+            (open || !willClamp) &&
             additionalDescriptions.map((add_description, idx) => {
               return (
                 <section
@@ -127,7 +134,7 @@ const Descriptions = ({ description, additionalDescriptions, hasFiles, permissio
                 </section>
               );
             })}
-          {willClamp && (
+          {showToggle && (
             <Button onClick={!open ? expand : collapse} size="tiny" className="show-less">
               {!open ? i18next.t("Show more") : i18next.t("Show less")}
             </Button>
