@@ -1,23 +1,26 @@
 import React, { useState, useEffect, useContext } from "react";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
-import { Button, Image, Grid } from "semantic-ui-react";
+import { Button, Icon, Image, Grid, Label } from "semantic-ui-react";
 import { CommunitiesManagement } from "./community_management/CommunitiesManagement";
 import { DetailContext } from "../contexts/DetailContext";
 
-const CommunitiesBanner = ({
-  show,
-  sectionIndex,
-}) => {
+const CommunitiesBanner = ({ show, sectionIndex }) => {
   const contextStore = useContext(DetailContext);
   const additionalCommunities = contextStore.additionalCommunities;
   const community = contextStore.community;
   const record = contextStore.record;
-  const [communities, setCommunities] = useState(community ? (additionalCommunities ? [community, ...additionalCommunities] : [community]) : []);
+  const [communities, setCommunities] = useState(
+    community ? (additionalCommunities ? [community, ...additionalCommunities] : [community]) : []
+  );
   const [defaultCommunity, setDefaultCommunity] = useState(
-    record.parent.communities.default ? communities.find(community => community.id === record.parent.communities.default) : community
+    record.parent.communities.default
+      ? communities.find((community) => community.id === record.parent.communities.default)
+      : community
   );
   const [otherCommunities, setOtherCommunities] = useState(
-    ( communities.length > 0 && !!defaultCommunity ) ? communities.filter(community => community.id !== defaultCommunity.id) : []
+    communities.length > 0 && !!defaultCommunity
+      ? communities.filter((community) => community.id !== defaultCommunity.id)
+      : []
   );
   const isCommunityRestricted = defaultCommunity
     ? defaultCommunity.access.visibility == "restricted"
@@ -30,8 +33,8 @@ const CommunitiesBanner = ({
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
-    if ( !!defaultCommunity ) {
-      setOtherCommunities(communities.filter(community => community.id !== defaultCommunity.id));
+    if (!!defaultCommunity) {
+      setOtherCommunities(communities.filter((community) => community.id !== defaultCommunity.id));
     }
   }, [defaultCommunity]);
 
@@ -44,10 +47,10 @@ const CommunitiesBanner = ({
       setDefaultCommunity(null);
       setOtherCommunities([]);
     } else if (communities.length > 1) {
-      if (!communities.find(community => community.id === defaultCommunity?.id)) {
+      if (!communities.find((community) => community.id === defaultCommunity?.id)) {
         setDefaultCommunity(communities[0]);
       }
-      setOtherCommunities(communities.filter(community => community.id !== defaultCommunity?.id));
+      setOtherCommunities(communities.filter((community) => community.id !== defaultCommunity?.id));
     } else if (communities.length === 1) {
       setDefaultCommunity(communities[0]);
       setOtherCommunities([]);
@@ -89,13 +92,10 @@ const CommunitiesBanner = ({
                     <div
                       className="ui label horizontal small access-status restricted rel-ml-0"
                       title={i18next.t("Collection visibility")}
-                      data-tooltip={i18next.t(
-                        "The collection is restricted to users with access."
-                      )}
+                      data-tooltip={i18next.t("The collection is restricted to users with access.")}
                       data-inverted=""
                     >
-                      <i className="icon ban" aria-hidden="true"></i>{" "}
-                      {i18next.t("Restricted")}
+                      <i className="icon ban" aria-hidden="true"></i> {i18next.t("Restricted")}
                     </div>
                   )}
                 </Grid.Column>
@@ -116,29 +116,11 @@ const CommunitiesBanner = ({
                 <>
                   {showAll &&
                     otherCommunities?.map((com) => (
-                      <Grid.Row
-                        key={com.id}
-                        className={`collection-row ${com.slug}`}
-                      >
+                      <Grid.Row key={com.id} className={`collection-row ${com.slug}`}>
                         <Grid.Column width={12}>
                           <h3 className="ui header small">
-                            <a href={`/collections/${com.slug}`}>
-                              {com.metadata.title}
-                            </a>
+                            <a href={`/collections/${com.slug}`}>{com.metadata.title}</a>
                           </h3>
-                          {com.access.visibility === "restricted" && (
-                            <div
-                              className="ui label horizontal small access-status restricted rel-ml-1"
-                              title={i18next.t("Collection visibility")}
-                              data-tooltip={i18next.t(
-                                "The collection is restricted to users with access."
-                              )}
-                              data-inverted=""
-                            >
-                              <i className="icon ban" aria-hidden="true"></i>{" "}
-                              {i18next.t("Restricted")}
-                            </div>
-                          )}
                         </Grid.Column>
                         <Grid.Column width={4} className="pr-0 pl-0">
                           <div className="ui rounded image community-image">
@@ -151,18 +133,29 @@ const CommunitiesBanner = ({
                               }}
                             />
                           </div>
+                          {com.access.visibility === "restricted" && (
+                            <Label
+                              className="access-status restricted sticker"
+                              title={i18next.t("Collection visibility")}
+                              data-tooltip={i18next.t(
+                                "The collection is restricted to users with access."
+                              )}
+                              data-inverted=""
+                              floating
+                              circular
+                              size="small"
+                            >
+                              <Icon name="ban" fitted />
+                            </Label>
+                          )}
                         </Grid.Column>
                       </Grid.Row>
                     ))}
-                  <Grid.Row
-                    className={`additional-communities ${showAll && "open"}`}
-                  >
-                    <Button
-                      size="small"
-                      basic
-                      onClick={() => setShowAll(!showAll)}
-                    >
-                      {showAll ? i18next.t(`Hide other collections`) : i18next.t(`Show ${otherCommunities.length} more collections...`)}
+                  <Grid.Row className={`additional-communities ${showAll && "open"}`}>
+                    <Button size="small" basic onClick={() => setShowAll(!showAll)}>
+                      {showAll
+                        ? i18next.t(`Hide other collections`)
+                        : i18next.t(`Show ${otherCommunities.length} more collections...`)}
                     </Button>
                   </Grid.Row>
                 </>
