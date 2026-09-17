@@ -21,15 +21,23 @@ const FilePreview = ({
 }) => {
   const [loading, setLoading] = useState(true);
   const previewUrlFlag = isPreview ? "preview=1" : "";
-  const fileToShow = (useDynamicPreview && !!activePreviewFile) ? activePreviewFile : (!!defaultPreviewFile ? defaultPreviewFile : files?.[0]);
+  const fileToShow =
+    useDynamicPreview && !!activePreviewFile
+      ? activePreviewFile
+      : !!defaultPreviewFile
+        ? defaultPreviewFile
+        : files?.[0];
   // URL-encode filename for path segment - Flask's <path:filename> will decode it back
   const encodedFilename = fileToShow?.key ? encodeURIComponent(fileToShow.key) : "";
   const baseUrl = previewFileUrl ? previewFileUrl.replace("xxxx", encodedFilename) : "";
   // Only append preview flag if it exists, using & if URL already has query params
-  const previewUrl = baseUrl ? (previewUrlFlag ? `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}${previewUrlFlag}` : baseUrl) : "";
+  const previewUrl = baseUrl
+    ? previewUrlFlag
+      ? `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}${previewUrlFlag}`
+      : baseUrl
+    : "";
   const fileExtension = !!hasPreviewableFiles ? fileToShow?.key?.split(".").pop() : "no-preview";
   const currentIsPreviewable = previewableExtensions?.includes(fileExtension);
-
 
   const iFrameRef = useRef(null);
   useEffect(() => {
@@ -41,46 +49,47 @@ const FilePreview = ({
 
   return (
     <>
-      {!permissions.can_read_files && hasFiles && (
-        <EmbargoMessage record={record}>
+      {!permissions?.can_read_files && hasFiles ? (
+        record?.access_state?.is_embargoed ? (
           <AccessRequestPanel />
-        </EmbargoMessage>
-      )}
+        ) : (
+          <EmbargoMessage record={record}>
+            <AccessRequestPanel />
+          </EmbargoMessage>
+        )
+      ) : null}
       {!!hasFiles && permissions.can_read_files && (
-        <section
-          id="record-file-preview"
-          aria-label={i18next.t("File preview")}
-        >
+        <section id="record-file-preview" aria-label={i18next.t("File preview")}>
           {/* {!!hasPreviewableFiles && ( */}
-            <>
-              {!!loading && (
-                <>
-                  <div className="placeholder-header-bar" />
-                  <Placeholder fluid>
-                    {[...Array(8).keys()].map((e) => (
-                      <Placeholder.Paragraph key={e}>
-                        {[...Array(8).keys()].map((e) => (
-                          <Placeholder.Line key={e} />
-                        ))}
-                        <Placeholder.Line />
-                      </Placeholder.Paragraph>
-                    ))}
-                  </Placeholder>
-                </>
-              )}
-              <iframe
-                title={i18next.t("Preview")}
-                className={`preview-iframe ${fileExtension} ${!currentIsPreviewable ? "no-preview" : ""} ${
-                  loading ? "hidden" : ""
-                }`}
-                id={"preview-iframe"}
-                ref={iFrameRef}
-                name={record.id}
-                src={previewUrl}
-                width="100%"
-                // height="800"
-              ></iframe>
-            </>
+          <>
+            {!!loading && (
+              <>
+                <div className="placeholder-header-bar" />
+                <Placeholder fluid>
+                  {[...Array(8).keys()].map((e) => (
+                    <Placeholder.Paragraph key={e}>
+                      {[...Array(8).keys()].map((e) => (
+                        <Placeholder.Line key={e} />
+                      ))}
+                      <Placeholder.Line />
+                    </Placeholder.Paragraph>
+                  ))}
+                </Placeholder>
+              </>
+            )}
+            <iframe
+              title={i18next.t("Preview")}
+              className={`preview-iframe ${fileExtension} ${!currentIsPreviewable ? "no-preview" : ""} ${
+                loading ? "hidden" : ""
+              }`}
+              id={"preview-iframe"}
+              ref={iFrameRef}
+              name={record.id}
+              src={previewUrl}
+              width="100%"
+              // height="800"
+            ></iframe>
+          </>
           {/* )} */}
         </section>
       )}
