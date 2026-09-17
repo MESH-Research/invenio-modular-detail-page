@@ -21,7 +21,7 @@ classifiers = [
 ]
 dependencies = ["invenio-app-rdm<14"]
 optional-dependencies.dev = [
-  "bumpver",
+  "bump-my-version==1.5.1",
   "check-manifest",
   "ipykernel",
   "pip-tools",
@@ -161,26 +161,50 @@ source-dir = "docs/"
 build-dir = "docs/_build"
 all_files = true
 
-[tool.bumpver]
+[tool.bumpversion]
 current_version = "0.3.1-dev1"
-version_pattern = "MAJOR.MINOR.PATCH[-TAGNUM]"
-commit_message = "bump version {old_version} -> {new_version}"
-tag_message = "{new_version}"
-tag_scope = "default"
-pre_commit_hook = ""
-post_commit_hook = ""
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)(?:-(?P<pre_l>[a-zA-Z]+)(?P<pre_n>\\d+))?"
+serialize = [
+  "{major}.{minor}.{patch}-{pre_l}{pre_n}",
+  "{major}.{minor}.{patch}",
+]
+search = "{current_version}"
+replace = "{new_version}"
 commit = false
 tag = false
-push = false
-file_patterns."pyproject.toml" = [
-  '^version = "{version}"',
-  '^current_version = "{version}"',
-]
-file_patterns."README.md" = ["^Version {version}"]
-file_patterns.VERSION = ['^"{version}"']
-file_patterns."invenio_modular_detail_page/__init__.py" = [
-  '^__version__ = "{version}"',
-]
+allow_shell_hooks = false
+message = "Bump version: {current_version} → {new_version}"
+
+[tool.bumpversion.parts.pre_l]
+values = ["dev", "rc", "final"]
+optional_value = "final"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+key_path = "project.version"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+key_path = "tool.bumpversion.current_version"
+
+[[tool.bumpversion.files]]
+filename = "README.md"
+search = "Version {current_version}"
+replace = "Version {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "VERSION"
+search = '"{current_version}"'
+replace = '"{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "invenio_modular_detail_page/__init__.py"
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "package.json"
+key_path = "version"
 
 [tool.babel]
 compile_catalog.directory = "invenio_modular_detail_page/translations/"
