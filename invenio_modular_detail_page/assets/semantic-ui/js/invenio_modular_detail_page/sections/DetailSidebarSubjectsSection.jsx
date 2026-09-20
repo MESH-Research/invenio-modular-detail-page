@@ -43,6 +43,7 @@ function SidebarSubjectsSection({ record, showKeywords = true, show }) {
             subjectHeadings={subjectHeadings}
             keywords={keywords}
             showKeywords={showKeywords}
+            collapsible
           />
         </div>
       ) : (
