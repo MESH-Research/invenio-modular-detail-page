@@ -16,6 +16,13 @@ const SidebarDetailsSection = (props) => {
   } = props;
   const detailOrder = subsections.map(({ section }) => section);
   const idDoi = record.pids.doi ? record.pids.doi.identifier : null;
+  const resourceTypeId = record.metadata?.resource_type?.id;
+  const resourceTypeFilter = resourceTypeId?.includes("-")
+    ? `${resourceTypeId.split("-")[0]}%2Binner:${resourceTypeId}`
+    : resourceTypeId;
+  const resourceTypeSearchHref = resourceTypeFilter
+    ? `/search?q=&f=resource_type:${resourceTypeFilter}&l=list&p=1&s=10&sort=newest`
+    : null;
 
   return (
     <Overridable
@@ -34,14 +41,23 @@ const SidebarDetailsSection = (props) => {
         )}
         <div id="record-details" className="ui segment rdm-sidebar">
           <div className="badges-row">
-            {record.ui.resource_type && (
-              <span
-                className="ui label horizontal small basic mb-5"
-                title={i18next.t("Resource type")}
-              >
-                {record.ui.resource_type.title_l10n}
-              </span>
-            )}
+            {record.ui.resource_type &&
+              (resourceTypeSearchHref ? (
+                <a
+                  href={resourceTypeSearchHref}
+                  className="ui label horizontal small basic mb-5"
+                  title={i18next.t("Resource type")}
+                >
+                  {record.ui.resource_type.title_l10n}
+                </a>
+              ) : (
+                <span
+                  className="ui label horizontal small basic mb-5"
+                  title={i18next.t("Resource type")}
+                >
+                  {record.ui.resource_type.title_l10n}
+                </span>
+              ))}
 
             <span
               className={`ui label horizontal small access-status ${record.ui.access_status.id} mb-5`}
