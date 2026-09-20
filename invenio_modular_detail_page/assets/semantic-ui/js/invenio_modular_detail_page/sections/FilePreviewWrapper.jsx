@@ -7,6 +7,7 @@ const FilePreviewWrapper = (props) => {
     activePreviewFile,
     defaultPreviewFile,
     files,
+    fileTabIndex,
     hasFiles,
     hasPreviewableFiles,
     isPreview,
@@ -15,6 +16,7 @@ const FilePreviewWrapper = (props) => {
     previewFileUrl,
     record,
     setActivePreviewFile,
+    setActiveTab,
     totalFileSize,
   } = props;
   return (
@@ -26,6 +28,7 @@ const FilePreviewWrapper = (props) => {
         activePreviewFile={activePreviewFile}
         defaultPreviewFile={defaultPreviewFile}
         files={files}
+        fileTabIndex={fileTabIndex}
         hasFiles={hasFiles}
         hasPreviewableFiles={hasPreviewableFiles}
         isPreview={isPreview}
@@ -34,8 +37,9 @@ const FilePreviewWrapper = (props) => {
         previewFileUrl={previewFileUrl}
         record={record}
         setActivePreviewFile={setActivePreviewFile}
+        setActiveTab={setActiveTab}
         totalFileSize={totalFileSize}
-        useDynamicPreview={false}
+        useDynamicPreview={true}
       />
     </Overridable>
   );

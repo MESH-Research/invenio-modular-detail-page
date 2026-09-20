@@ -17,6 +17,7 @@ export const DetailContextProvider = ({ children, ...rawProps }) => {
 
   const extraProps = {
     activePreviewFile: activePreviewFile,
+    activeTab: activeTab,
     additionalDescriptions: record.ui.additional_descriptions
       ? record.ui.additional_descriptions
       : null,
@@ -28,7 +29,10 @@ export const DetailContextProvider = ({ children, ...rawProps }) => {
     canManage: canManageFlag,
     description: record.metadata.description,
     fileTabIndex: tabbedSections.findIndex(
-      ({ section }) => section === "Files"
+      ({ section, subsections }) =>
+        (subsections || []).some(
+          ({ component_name }) => component_name === "FileListBox"
+        ) || String(section) === "Files"
     ),
     hasFiles: record.files.enabled,
     previewTabIndex: tabbedSections.findIndex(({ subsections }) =>

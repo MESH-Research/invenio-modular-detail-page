@@ -63,10 +63,7 @@ const FileListTableRow = ({
               compact
             >
               <i className="eye icon"></i>
-              <span className="tablet computer only">
-                {" "}
-                {i18next.t("Preview")}
-              </span>
+              <span className="tablet computer only"> {i18next.t("Preview")}</span>
             </Button>
           )}
           <Button
@@ -85,11 +82,7 @@ const FileListTableRow = ({
             {file.key}
           </a>
         </div>
-        <small
-          className={`ui text-muted ${
-            !stackedRows ? "mobile only" : ""
-          } filesize`}
-        >
+        <small className={`ui text-muted ${!stackedRows ? "mobile only" : ""} filesize`}>
           {formatBytes(file.size)}
         </small>{" "}
         {!!showChecksum && (
@@ -106,9 +99,7 @@ const FileListTableRow = ({
           </small>
         )}
       </td>
-      <td
-        className={`single line ${!stackedRows ? "tablet computer only" : ""}`}
-      >
+      <td className={`single line ${!stackedRows ? "tablet computer only" : ""}`}>
         {formatBytes(file.size)}
       </td>
       <td className="right aligned collapsing tablet computer only">
@@ -125,10 +116,7 @@ const FileListTableRow = ({
               compact
             >
               <i className="eye icon"></i>
-              <span className="tablet computer only">
-                {" "}
-                {i18next.t("Preview")}
-              </span>
+              <span className="tablet computer only"> {i18next.t("Preview")}</span>
             </Button>
           )}
           <Button
@@ -193,8 +181,7 @@ const FileListTable = ({
   totalFileSize,
   withPreview,
 }) => {
-  const displayFiles =
-    fileCountToShow > 0 ? files.slice(0, fileCountToShow) : files;
+  const displayFiles = fileCountToShow > 0 ? files.slice(0, fileCountToShow) : files;
   return (
     <>
       <table className="ui table files fluid unstackable">
@@ -210,10 +197,7 @@ const FileListTable = ({
         )}
         <tbody>
           {!!showTotalSize && files.length > 1 && (
-            <tr
-              className={`title ${record.ui.access_status.id} total-files`}
-              tabIndex="0"
-            >
+            <tr className={`title ${record.ui.access_status.id} total-files`} tabIndex="0">
               <td></td> {/* filetype icon column */}
               <td>
                 {i18next.t(`All ${files.length} files (as zip archive)`)}
@@ -223,10 +207,7 @@ const FileListTable = ({
                   href={record.links.archive}
                 >
                   <i className="file archive icon button"></i>
-                  <span className="tablet computer only">
-                    {" "}
-                    {i18next.t("Download all")}
-                  </span>
+                  <span className="tablet computer only"> {i18next.t("Download all")}</span>
                 </a>
               </td>
               <td className="tablet computer only">{totalFileSize} in total</td>
@@ -237,10 +218,7 @@ const FileListTable = ({
                   href={record.links.archive}
                 >
                   <i className="file archive icon button"></i>
-                  <span className="tablet computer only">
-                    {" "}
-                    {i18next.t("Download all")}
-                  </span>
+                  <span className="tablet computer only"> {i18next.t("Download all")}</span>
                 </a>
               </td>
             </tr>
@@ -275,8 +253,7 @@ const FileListTable = ({
           compact
           onClick={() => setActiveTab(fileTabIndex)}
         >
-          <i className="file archive icon button"></i>{" "}
-          {i18next.t("See more files")}
+          <i className="file archive icon button"></i> {i18next.t("See more files")}
         </Button>
       )}
     </>
@@ -290,12 +267,16 @@ const FileListTable = ({
  * files. A child of FileListDropdown, which decides whether to
  * display this based on the number of files in the record.
  *
+ * Also reused by FilePreview for selecting the currently previewed file.
+ * in this case the downloadFileUrl prop should be `null`, which signals that
+ * menu option values should be file keys instead of download URLs.
+ *
  * @param {Object} props
  * @param {boolean} props.asButton - Whether to display the button.
  * @param {boolean} props.asLabeled - Whether to display the labeled.
  * @param {boolean} props.asFluid - Whether to display the fluid.
  * @param {boolean} props.asItem - Whether to display the item.
- * @param {string} props.classNames - The class names.
+ * @param {string} props.classnames - The class names.
  * @param {string} props.downloadFileUrl - The URL for downloading files.
  * @param {Object} props.files - The list of files.
  * @param {number} props.fileTabIndex - The index of the file tab.
@@ -303,6 +284,13 @@ const FileListTable = ({
  * @param {Object} props.record - The record.
  * @param {string} props.previewFileUrl - The URL for previewing files.
  * @param {string} props.previewUrlFlag - The preview URL flag.
+ * @param {function} props.handleItemClick - An override function on item click.
+ * @param {boolean} [props.includeDetailsDivider=false] - Whether to insert a
+ *   divider before the details footer item.
+ * @param {function} [props.renderItemContent] - Optional render prop for each
+ *   file row. Receives the file object and returns node(s) rendered as
+ *   children of `Dropdown.Item` (required for SUI "right floated" labels).
+ *   When omitted, the default `options` + `content` layout is used.
  * @param {function} props.setActiveTab - The function to set the active tab.
  * @param {string} props.text - The text.
  * @param {string} props.totalFileSize - The total file size.
@@ -312,42 +300,158 @@ const FileListDropdownMenu = ({
   asLabeled = false,
   asFluid = true,
   asItem = false,
-  classNames = "icon primary primary-sidebar stacked-content",
+  classnames = "icon primary primary-sidebar stacked-content",
   downloadFileUrl,
   files,
   fileCountToShow,
   fileTabIndex,
+  handleItemClick: propHandleItemClick,
   icon = "download",
   id,
   pointing = "right",
   previewUrlFlag,
   record,
+  renderItemContent,
   setActiveTab,
   text = i18next.t("Download"),
   totalFileSize,
+  includeArchiveItem = true,
+  includeDetailsDivider = false,
 }) => {
   const downloadUrl = `${downloadFileUrl}${previewUrlFlag}`;
+  const fileValue = (key) =>
+    downloadFileUrl === null ? key : downloadUrl.replace("xxxx", key);
 
-  let options = files
-    .slice(0, fileCountToShow)
-    .map(({ key, size, links }, idx) => {
-      return {
-        key,
-        text: key,
-        value: downloadUrl.replace("xxxx", key),
-        content: (
-          <>
-            <Icon name={getFileTypeIconName(key)} className="computer only" />
-            <Item.Content>
-              <Item.Header className="breakable-text">{key}</Item.Header>
-              <Item.Description>{formatBytes(size)}</Item.Description>
-            </Item.Content>
-          </>
-        ),
-      };
-    });
-  options.push(
-    {
+  // Always navigates to the files tab when "previews" is chosen
+  const goToFilesTab = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (typeof setActiveTab === "function" && fileTabIndex != null && fileTabIndex >= 0) {
+      setActiveTab(fileTabIndex);
+    }
+  };
+
+  const handleItemClick = (e, { value }) => {
+    if (value === "__divider_details__") {
+      e.preventDefault();
+      return;
+    }
+    if (value === "previews") {
+      goToFilesTab(e);
+    } else if (!!propHandleItemClick) {
+      propHandleItemClick(e, { value });
+    } else {
+      window.location.href = value;
+    }
+  };
+
+  const dropdownProps = {
+    id,
+    text,
+    as: "button",
+    button: asButton,
+    className: classnames,
+    "aria-label": i18next.t("File list dropdown"),
+    "aria-haspopup": "menu",
+    icon,
+    labeled: asLabeled,
+    pointing,
+    floating: true,
+    fluid: asFluid,
+    item: asItem,
+    openOnFocus: false,
+    closeOnBlur: true,
+    selectOnBlur: false,
+    selectOnNavigation: false,
+  };
+
+  // Custom row markup must be Dropdown.Item children so adornments like
+  // `right floated` are direct children of `.item` (SUI Floated Content).
+  if (renderItemContent) {
+    const displayFiles = files.slice(0, fileCountToShow);
+    return (
+      <Dropdown {...dropdownProps}>
+        <Dropdown.Menu>
+          {displayFiles.map((file) => {
+            const value = fileValue(file.key);
+            return (
+              <Dropdown.Item
+                key={file.key}
+                text={file.key}
+                value={value}
+                onClick={(e) => handleItemClick(e, { value })}
+              >
+                {renderItemContent(file)}
+              </Dropdown.Item>
+            );
+          })}
+          {includeArchiveItem && (
+            <Dropdown.Item
+              key="archive"
+              text={i18next.t(`Download all`)}
+              value={record.links.archive}
+              onClick={(e) => handleItemClick(e, { value: record.links.archive })}
+            >
+              <Icon name="file archive outline" className="computer only" />
+              <Item.Content>
+                <Item.Header>{i18next.t(`Download all`)}</Item.Header>
+                <Item.Description>{totalFileSize}</Item.Description>
+              </Item.Content>
+            </Dropdown.Item>
+          )}
+          {includeDetailsDivider && <Dropdown.Divider />}
+          <Dropdown.Item
+            key="details"
+            className={includeDetailsDivider ? "file-list-menu-details" : undefined}
+            text={
+              includeDetailsDivider
+                ? i18next.t("File details")
+                : i18next.t("File details and previews")
+            }
+            value="previews"
+            onClick={goToFilesTab}
+          >
+            {includeDetailsDivider ? (
+              <>
+                <Icon name="list" className="computer only" />
+                <span className="description">
+                  {i18next.t("View all files and downloads")}
+                </span>
+                <span className="text">{i18next.t("File details")}</span>
+              </>
+            ) : (
+              <>
+                <Icon name="eye" className="computer only" />
+                <Item.Content>
+                  <Item.Header>{i18next.t("File details and previews")}</Item.Header>
+                </Item.Content>
+              </>
+            )}
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  }
+
+  let options = files.slice(0, fileCountToShow).map((file) => {
+    const { key, size } = file;
+    return {
+      key,
+      text: key,
+      value: fileValue(key),
+      content: (
+        <>
+          <Icon name={getFileTypeIconName(key)} className="computer only" />
+          <Item.Content>
+            <Item.Header className="breakable-text">{key}</Item.Header>
+            <Item.Description>{formatBytes(size)}</Item.Description>
+          </Item.Content>
+        </>
+      ),
+    };
+  });
+  if (includeArchiveItem) {
+    options.push({
       key: "archive",
       text: i18next.t(`Download all`),
       value: record.links.archive,
@@ -360,54 +464,42 @@ const FileListDropdownMenu = ({
           </Item.Content>
         </>
       ),
-    }
+    });
+  }
+  if (includeDetailsDivider) {
+    options.push({
+      key: "details-divider",
+      className: "divider",
+      disabled: true,
+      value: "__divider_details__",
+    });
+  }
+  options.push(
+    includeDetailsDivider
+      ? {
+          key: "details",
+          text: i18next.t("File details"),
+          className: "file-list-menu-details",
+          icon: "list",
+          description: i18next.t("View all files and downloads"),
+          value: "previews",
+        }
+      : {
+          key: "details",
+          text: i18next.t("File details and previews"),
+          content: (
+            <>
+              <Icon name="eye" className="computer only" />
+              <Item.Content>
+                <Item.Header>{i18next.t("File details and previews")}</Item.Header>
+              </Item.Content>
+            </>
+          ),
+          value: "previews",
+        }
   );
-  options.push({
-    key: "details",
-    text: i18next.t("File details and previews"),
-    content: (
-      <>
-        <Icon name="eye" className="computer only" />
-        <Item.Content>
-          <Item.Header>{i18next.t("File details and previews")}</Item.Header>
-        </Item.Content>
-      </>
-    ),
-    value: "previews",
-  });
 
-  const handleItemClick = (e, { value }) => {
-    if (value === "previews") {
-      e.preventDefault();
-      setActiveTab(fileTabIndex);
-    } else {
-      window.location.href = value;
-    }
-  };
-
-  return (
-    <Dropdown
-      id={id}
-      text={text}
-      as="button"
-      button={asButton}
-      className={classNames}
-      aria-label={i18next.t("File list dropdown")}
-      aria-haspopup="menu"
-      icon={icon}
-      labeled={asLabeled}
-      pointing={pointing}
-      floating
-      fluid={asFluid}
-      item={asItem}
-      openOnFocus={false}
-      closeOnBlur={true}
-      selectOnBlur={false}
-      selectOnNavigation={false}
-      options={options}
-      onChange={handleItemClick}
-    />
-  );
+  return <Dropdown {...dropdownProps} options={options} onChange={handleItemClick} />;
 };
 
 /**
@@ -667,6 +759,7 @@ const FileListBox = ({
 export {
   FileListBox,
   FileListDropdown,
+  FileListDropdownMenu,
   FileListItemDropdown,
   FileListTable,
   FileListTableRow,

@@ -1,13 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
-import { Placeholder } from "semantic-ui-react";
+import { Icon, Label, Placeholder } from "semantic-ui-react";
 import { EmbargoMessage } from "./EmbargoMessage";
 import { AccessRequestPanel } from "./AccessRequestPanel";
+import { FileListDropdownMenu } from "./FileList.jsx";
+import { getFileTypeIconName } from "../util";
 
+/** Component for previewing selected record files.
+ *
+ * Used on the files tab as well as for the main content tab preview.
+ *
+ * @param props
+ */
 const FilePreview = ({
   activePreviewFile,
   defaultPreviewFile,
   files,
+  fileTabIndex,
   hasFiles,
   hasPreviewableFiles,
   isPreview,
@@ -16,6 +25,7 @@ const FilePreview = ({
   previewFileUrl,
   record,
   setActivePreviewFile,
+  setActiveTab,
   totalFileSize,
   useDynamicPreview = true,
 }) => {
@@ -36,16 +46,49 @@ const FilePreview = ({
       ? `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}${previewUrlFlag}`
       : baseUrl
     : "";
-  const fileExtension = !!hasPreviewableFiles ? fileToShow?.key?.split(".").pop() : "no-preview";
+  const fileExtension = !!hasPreviewableFiles
+    ? fileToShow?.key?.split(".").pop()?.toLowerCase()
+    : "no-preview";
   const currentIsPreviewable = previewableExtensions?.includes(fileExtension);
 
   const iFrameRef = useRef(null);
   useEffect(() => {
-    iFrameRef.current?.addEventListener("load", () => setLoading(false));
+    setLoading(true);
+    const iframe = iFrameRef.current;
+    if (!iframe) {
+      return;
+    }
+    const onLoad = () => setLoading(false);
+    iframe.addEventListener("load", onLoad);
     return () => {
-      iFrameRef.current?.removeEventListener("load", () => setLoading(false));
+      iframe.removeEventListener("load", onLoad);
     };
-  }, [iFrameRef.current]);
+  }, [previewUrl]);
+
+  const handleMenuItemClick = (e, { value }) => {
+    e.preventDefault();
+    const previewFile = files.find((f) => f.key === value);
+    if (previewFile) {
+      setActivePreviewFile(previewFile);
+    }
+  };
+
+  const renderPreviewItemContent = ({ key }) => {
+    const extension = key?.split(".").pop()?.toLowerCase();
+    const isPreviewable = previewableExtensions?.includes(extension);
+
+    return (
+      <>
+        {!isPreviewable && (
+          <Label size="mini" basic className="right floated">
+            {i18next.t("No preview")}
+          </Label>
+        )}
+        <Icon name={getFileTypeIconName(key)} />
+        <span className="breakable-text">{key}</span>
+      </>
+    );
+  };
 
   return (
     <>
@@ -60,7 +103,30 @@ const FilePreview = ({
       ) : null}
       {!!hasFiles && permissions.can_read_files && (
         <section id="record-file-preview" aria-label={i18next.t("File preview")}>
-          {/* {!!hasPreviewableFiles && ( */}
+          {!!hasPreviewableFiles && files.length > 1 && (
+            <FileListDropdownMenu
+              icon="dropdown"
+              files={files}
+              fileTabIndex={fileTabIndex}
+              handleItemClick={handleMenuItemClick}
+              id="record-file-preview-menu"
+              record={record}
+              previewUrlFlag={previewUrlFlag}
+              renderItemContent={renderPreviewItemContent}
+              setActiveTab={setActiveTab}
+              downloadFileUrl={null}
+              text="Select a file to view"
+              totalFileSize={totalFileSize}
+              asButton={true}
+              asLabeled={false}
+              asFluid={true}
+              asItem={false}
+              pointing="top"
+              includeArchiveItem={false}
+              includeDetailsDivider={true}
+              classnames="top attached basic small"
+            />
+          )}
           <>
             {!!loading && (
               <>
@@ -90,7 +156,6 @@ const FilePreview = ({
               // height="800"
             ></iframe>
           </>
-          {/* )} */}
         </section>
       )}
     </>
