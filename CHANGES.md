@@ -1,12 +1,19 @@
-..
-    Copyright (C) 2023 MESH Research.
+.. Copyright (C) 2023 MESH Research.
 
     Invenio Modular Detail Page is free software; you can redistribute it
     and/or modify it under the terms of the MIT License; see LICENSE file for
     more details.
 
-Changes
-=======
+# Changes
+
+## Unreleased
+
+- Added new file selector menu on the main content page
+- Sidebar subjects (including keywords) clamp to ~8rem with animated Show more / Show less
+- Resource type label in sidebar details links to a facet search for that type
+- Bugfixes
+  - fixed email icon in contributors tab
+  - fixed file preview size when viewing images with upper-case extensions
 
 ## Version 0.3.1
 
