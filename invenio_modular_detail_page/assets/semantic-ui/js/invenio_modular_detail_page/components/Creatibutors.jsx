@@ -70,7 +70,7 @@ const Creatibutor = ({
     <dd className="creatibutor-wrap separated">
       <List.Content as={"span"} className="creatibutor-name">
         <a
-          className="ui creatibutor-link mr-5"
+          className="ui creatibutor-link mr-10"
           href={`../search?q=metadata.${metadataField}.person_or_org.name:"${creatibutor.person_or_org.name}"`}
           {...extra_props}
         >
