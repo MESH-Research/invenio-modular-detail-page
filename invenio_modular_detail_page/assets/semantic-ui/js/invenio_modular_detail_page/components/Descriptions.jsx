@@ -10,15 +10,17 @@ import { useMeasuredHeightAnimation } from "../util/useMeasuredHeightAnimation";
 const CLAMP_CLASS = "description-clamped";
 
 /**
- * Record description block with optional CSS clamp when files are present.
+ * Record description block with optional CSS clamp when content sits below.
  *
  * Description HTML is sanitized on the backend (`SanitizedHTML` / bleach) at
  * create/update; this component renders it with `dangerouslySetInnerHTML`.
  *
- * When clamping is allowed, a `ResizeObserver` measures whether the clamped
- * content overflows so Show more / Show less only appear when needed. The
- * overflow flag stays sticky while expanded (measurement is only valid while
- * the clamp class is applied). Expand/collapse animates measured height.
+ * Clamping applies when the Content tab shows a file preview (readable files)
+ * or the metadata-only external-content message (`!hasFiles`). A
+ * `ResizeObserver` measures whether the clamped content overflows so Show
+ * more / Show less only appear when needed. The overflow flag stays sticky
+ * while expanded (measurement is only valid while the clamp class is
+ * applied). Expand/collapse animates measured height.
  *
  * Additional descriptions are shown only when the full description is open
  * (always, if clamping does not apply; after "Show more" when it does). The
@@ -32,7 +34,10 @@ const Descriptions = ({ description, additionalDescriptions, hasFiles, permissio
   const { isAnimating, scheduleHeightAnimation, prefersReducedMotion } =
     useMeasuredHeightAnimation(descriptionRef);
 
-  const willClamp = Boolean(hasFiles && permissions?.can_read_files);
+  // File preview when files are readable; metadata-only content message otherwise.
+  const willClamp = Boolean(
+    hasFiles ? permissions?.can_read_files : true
+  );
   const hasAdditionalDescriptions = Boolean(additionalDescriptions?.length);
   // Offer expand when main text overflows *or* there is more content to reveal.
   const showToggle = willClamp && (isOverflowing || hasAdditionalDescriptions);

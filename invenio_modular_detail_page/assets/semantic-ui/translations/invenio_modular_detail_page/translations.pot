@@ -306,6 +306,15 @@ msgstr "File list dropdown"
 msgid "File preview"
 msgstr "File preview"
 
+msgid "External content"
+msgstr "External content"
+
+msgid "You can find this work's content here:"
+msgstr "You can find this work's content here:"
+
+msgid "No files or external link to the content are available."
+msgstr "No files or external link to the content are available."
+
 msgid "Search results for "
 msgstr "Search results for "
 
