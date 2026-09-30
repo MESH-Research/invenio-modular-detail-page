@@ -11,15 +11,7 @@
 // License; see LICENSE file for more details.
 
 import React, { useRef, useEffect, useState } from "react";
-import {
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Icon,
-  Label,
-  Popup,
-} from "semantic-ui-react";
+import { Button, Checkbox, Form, Input, Icon, Label, Popup } from "semantic-ui-react";
 import Overridable from "react-overridable";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 
@@ -31,7 +23,11 @@ function PopupInput({ message }) {
 
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.focus();
+      window.setTimeout(() => {
+        inputRef.current.focus();
+        console.log(inputRef.current);
+        inputRef.current.scrollIntoView({ behavior: "smooth" });
+      }, 100);
     }
 
     const storedDomain = localStorage.getItem("mastodon-instance");
@@ -72,27 +68,13 @@ function PopupInput({ message }) {
     <Form>
       <Form.Field>
         <label>Your Mastodon domain</label>
-        <Input
-          ref={inputRef}
-          onChange={handleChangeDomain}
-          value={domain}
-          size="small"
-        />
+        <Input ref={inputRef} onChange={handleChangeDomain} value={domain} size="small" />
       </Form.Field>
       <Form.Field size="tiny">
-        <Checkbox
-          label="Remember me"
-          onChange={handleChangeCheckbox}
-          toggle
-          size="tiny"
-        />
+        <Checkbox label="Remember me" onChange={handleChangeCheckbox} toggle size="tiny" />
       </Form.Field>
       <Form.Field>
-        <textarea
-          rows="6"
-          defaultValue={messageText}
-          onChange={handleChangeText}
-        />
+        <textarea rows="6" defaultValue={messageText} onChange={handleChangeText} />
       </Form.Field>
       <Button type="submit" onClick={handleSubmit}>
         Toot
@@ -126,7 +108,7 @@ function SharingIconLink({ name, url, iconName }) {
           <Popup
             content={name}
             position="top center"
-            on={['hover', 'focus']}
+            on={["hover", "focus"]}
             open={mastodonHover}
             trigger={<span className="mastodon-popup" />}
           />
@@ -164,7 +146,7 @@ function SharingIconLink({ name, url, iconName }) {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              on={['hover', 'click', 'focus']}
+              on={["hover", "click", "focus"]}
               icon
               compact
               size="big"
@@ -189,7 +171,7 @@ function SharingIconLink({ name, url, iconName }) {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              on={['hover', 'click', 'focus']}
+              on={["hover", "click", "focus"]}
               icon
               compact
               size="big"
@@ -206,7 +188,7 @@ function SharingIconLink({ name, url, iconName }) {
 }
 
 function SidebarSharingSection(props) {
-  const { record, sectionIndex, show, isPreview, isPreviewSubmissionRequest, showHeading = true } = props;
+  const { record, show, isPreview, isPreviewSubmissionRequest, showHeading = true } = props;
   const pageLink = encodeURI(record.links.self_html);
 
   const socialMediaLinks = [
@@ -222,10 +204,6 @@ function SidebarSharingSection(props) {
       name: "Facebook",
       url: `https://www.facebook.com/sharer/sharer.php?u=#${encodeURIComponent(pageLink)}`,
     },
-    // {
-    //   name: "Facebook",
-    //   url: `https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href=${pageLink}&redirect_uri=https%3A%2F%2Fdevelopers.facebook.com%2Ftools%2Fexplorer`,
-    // },
     {
       name: "LinkedIn",
       url: `https://www.linkedin.com/sharing/share-offsite/?url=${pageLink}`,
@@ -243,8 +221,8 @@ function SidebarSharingSection(props) {
       url: `https://telegram.me/share/url?url=${pageLink}&text=${record.metadata.title}`,
     },
     {
-      name: "VK",
-      url: `http://vk.com/share.php?url=${pageLink}&title=${record.metadata.title}&description=${record.metadata.description}`,
+      name: "WeChat",
+      url: `https://service.wechat.com/share?title=${record.metadata.title}&url=${pageLink}`,
     },
     {
       name: "Weibo",
@@ -258,13 +236,11 @@ function SidebarSharingSection(props) {
     },
   ];
 
-  return ( (isPreview || isPreviewSubmissionRequest) ? null : (
+  return isPreview || isPreviewSubmissionRequest ? null : (
     <Overridable id="InvenioModularDetailPage.SidebarSharingSection.layout">
       <div className={`sidebar-container ${show}`} id="social-sharing">
         {showHeading === true && (
-          <h2 className="ui medium top attached header mt-0">
-            {i18next.t("Share this work")}
-          </h2>
+          <h2 className="ui medium top attached header mt-0">{i18next.t("Share this work")}</h2>
         )}
         <div className="ui segment bottom attached rdm-sidebar">
           {/* <h2 className="ui medium top attached header mt-0">Share</h2> */}
@@ -279,7 +255,6 @@ function SidebarSharingSection(props) {
         </div>
       </div>
     </Overridable>
-  )
   );
 }
 
