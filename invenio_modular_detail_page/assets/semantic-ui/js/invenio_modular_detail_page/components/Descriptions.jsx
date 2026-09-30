@@ -1,10 +1,6 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Button } from "semantic-ui-react";
-import {
-  measureClientHeightWithClass,
-  measureScrollHeightWithoutClass,
-} from "../util/animateElementHeight";
 import { useMeasuredHeightAnimation } from "../util/useMeasuredHeightAnimation";
 
 const CLAMP_CLASS = "description-clamped";
@@ -16,11 +12,9 @@ const CLAMP_CLASS = "description-clamped";
  * create/update; this component renders it with `dangerouslySetInnerHTML`.
  *
  * Clamping applies when the Content tab shows a file preview (readable files)
- * or the metadata-only external-content message (`!hasFiles`). A
- * `ResizeObserver` measures whether the clamped content overflows so Show
- * more / Show less only appear when needed. The overflow flag stays sticky
- * while expanded (measurement is only valid while the clamp class is
- * applied). Expand/collapse animates measured height.
+ * or the metadata-only external-content message (`!hasFiles`). Overflow is
+ * measured via {@link useMeasuredHeightAnimation} so Show more / Show less
+ * only appear when needed. Expand/collapse animates measured height.
  *
  * Additional descriptions are shown only when the full description is open
  * (always, if clamping does not apply; after "Show more" when it does). The
@@ -29,78 +23,25 @@ const CLAMP_CLASS = "description-clamped";
  */
 const Descriptions = ({ description, additionalDescriptions, hasFiles, permissions }) => {
   const [open, setOpen] = useState(false);
-  const [isOverflowing, setIsOverflowing] = useState(false);
   const descriptionRef = useRef(null);
-  const { isAnimating, scheduleHeightAnimation, prefersReducedMotion } =
-    useMeasuredHeightAnimation(descriptionRef);
 
   // File preview when files are readable; metadata-only content message otherwise.
-  const willClamp = Boolean(
-    hasFiles ? permissions?.can_read_files : true
-  );
+  const willClamp = Boolean(hasFiles ? permissions?.can_read_files : true);
   const hasAdditionalDescriptions = Boolean(additionalDescriptions?.length);
+
+  const { isAnimating, expand, collapse, isOverflowing, showClampClass } =
+    useMeasuredHeightAnimation(descriptionRef, {
+      open,
+      onOpen: () => setOpen(true),
+      onClose: () => setOpen(false),
+      openMeasure: { removeClass: CLAMP_CLASS },
+      closeMeasure: { addClass: CLAMP_CLASS },
+      clampEnabled: willClamp,
+      contentKey: description,
+    });
+
   // Offer expand when main text overflows *or* there is more content to reveal.
   const showToggle = willClamp && (isOverflowing || hasAdditionalDescriptions);
-  // Defer re-applying clamp until collapse animation finishes so height can tween.
-  const showClampClass = willClamp && !open && !isAnimating;
-
-  const expand = useCallback(
-    (event) => {
-      event.preventDefault();
-      const el = descriptionRef.current;
-      if (!el || open || isAnimating) {
-        return;
-      }
-      if (prefersReducedMotion()) {
-        setOpen(true);
-        return;
-      }
-
-      const fromPx = el.getBoundingClientRect().height;
-      const toPx = measureScrollHeightWithoutClass(el, CLAMP_CLASS);
-      scheduleHeightAnimation(fromPx, toPx);
-      setOpen(true);
-    },
-    [open, isAnimating, prefersReducedMotion, scheduleHeightAnimation]
-  );
-
-  const collapse = useCallback(() => {
-    const el = descriptionRef.current;
-    if (!el || !open || isAnimating) {
-      return;
-    }
-    if (prefersReducedMotion()) {
-      setOpen(false);
-      return;
-    }
-
-    const fromPx = el.getBoundingClientRect().height;
-    const toPx = measureClientHeightWithClass(el, CLAMP_CLASS);
-    scheduleHeightAnimation(fromPx, toPx);
-    setOpen(false);
-  }, [open, isAnimating, prefersReducedMotion, scheduleHeightAnimation]);
-
-  useLayoutEffect(() => {
-    const el = descriptionRef.current;
-    if (!el || !willClamp) {
-      setIsOverflowing(false);
-      return undefined;
-    }
-
-    const measure = () => {
-      // Overflow is only detectable while clamped; keep sticky value when expanded
-      // or mid-animation.
-      if (open || isAnimating || !el.classList.contains(CLAMP_CLASS)) {
-        return;
-      }
-      setIsOverflowing(el.scrollHeight > el.clientHeight + 1);
-    };
-
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [description, willClamp, open, isAnimating]);
 
   return (
     <>
@@ -128,7 +69,7 @@ const Descriptions = ({ description, additionalDescriptions, hasFiles, permissio
                 >
                   <h2>
                     {i18next.t(add_description.type.title_l10n)}
-                    <span className="text-muted language">
+                    <span className="text-muted language ml-10">
                       {add_description.lang ? `(${add_description.lang.title_l10n})` : ""}
                     </span>
                   </h2>
@@ -140,7 +81,7 @@ const Descriptions = ({ description, additionalDescriptions, hasFiles, permissio
               );
             })}
           {showToggle && (
-            <Button onClick={!open ? expand : collapse} size="tiny" className="show-less">
+            <Button onClick={!open ? expand : collapse} size="tiny" className="show-less mt-10">
               {!open ? i18next.t("Show more") : i18next.t("Show less")}
             </Button>
           )}

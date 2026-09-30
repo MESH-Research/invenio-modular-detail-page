@@ -1,11 +1,7 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Button } from "semantic-ui-react";
 import { Keywords } from "./Keywords";
-import {
-  measureClientHeightWithClass,
-  measureScrollHeightWithoutClass,
-} from "../util/animateElementHeight";
 import { useMeasuredHeightAnimation } from "../util/useMeasuredHeightAnimation";
 
 const CLAMP_CLASS = "subjects-clamped";
@@ -32,72 +28,19 @@ function SubjectHeadings({
   collapsible = false,
 }) {
   const [open, setOpen] = useState(false);
-  const [isOverflowing, setIsOverflowing] = useState(false);
   const contentRef = useRef(null);
-  const { isAnimating, scheduleHeightAnimation, prefersReducedMotion } =
-    useMeasuredHeightAnimation(contentRef);
+  const { isAnimating, expand, collapse, isOverflowing, showClampClass } =
+    useMeasuredHeightAnimation(contentRef, {
+      open,
+      onOpen: () => setOpen(true),
+      onClose: () => setOpen(false),
+      openMeasure: { removeClass: CLAMP_CLASS },
+      closeMeasure: { addClass: CLAMP_CLASS },
+      clampEnabled: collapsible,
+      contentKey: [subjectHeadings, keywords, showKeywords],
+    });
 
   const showToggle = collapsible && isOverflowing;
-  // Defer re-applying clamp until collapse animation finishes so height can tween.
-  const showClampClass = collapsible && !open && !isAnimating;
-
-  const expand = useCallback(
-    (event) => {
-      event.preventDefault();
-      const el = contentRef.current;
-      if (!el || open || isAnimating) {
-        return;
-      }
-      if (prefersReducedMotion()) {
-        setOpen(true);
-        return;
-      }
-
-      const fromPx = el.getBoundingClientRect().height;
-      const toPx = measureScrollHeightWithoutClass(el, CLAMP_CLASS);
-      scheduleHeightAnimation(fromPx, toPx);
-      setOpen(true);
-    },
-    [open, isAnimating, prefersReducedMotion, scheduleHeightAnimation]
-  );
-
-  const collapse = useCallback(() => {
-    const el = contentRef.current;
-    if (!el || !open || isAnimating) {
-      return;
-    }
-    if (prefersReducedMotion()) {
-      setOpen(false);
-      return;
-    }
-
-    const fromPx = el.getBoundingClientRect().height;
-    const toPx = measureClientHeightWithClass(el, CLAMP_CLASS);
-    scheduleHeightAnimation(fromPx, toPx);
-    setOpen(false);
-  }, [open, isAnimating, prefersReducedMotion, scheduleHeightAnimation]);
-
-  useLayoutEffect(() => {
-    const el = contentRef.current;
-    if (!el || !collapsible) {
-      setIsOverflowing(false);
-      return undefined;
-    }
-
-    const measure = () => {
-      // Overflow is only detectable while clamped; keep sticky value when expanded
-      // or mid-animation.
-      if (open || isAnimating || !el.classList.contains(CLAMP_CLASS)) {
-        return;
-      }
-      setIsOverflowing(el.scrollHeight > el.clientHeight + 1);
-    };
-
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [subjectHeadings, keywords, showKeywords, collapsible, open, isAnimating]);
 
   const content = (
     <>

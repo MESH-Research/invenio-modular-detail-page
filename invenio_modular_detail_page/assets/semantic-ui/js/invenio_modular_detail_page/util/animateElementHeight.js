@@ -6,14 +6,15 @@
 // for more details.
 
 /**
- * Measured-height expand/collapse helpers for overflow-clamped content.
+ * Measured-height expand/collapse helpers.
  *
- * Line-clamp / max-height cannot interpolate cleanly, so callers measure start
- * and end pixel heights and tween `style.height`. Respects
- * `prefers-reduced-motion` at the call site via {@link prefersReducedMotion}.
+ * Line-clamp / max-height / `display` toggles cannot interpolate cleanly, so
+ * callers measure start and end pixel heights and tween `style.height`.
+ * Higher-level {@link animateOpen} / {@link animateClosed} wrap measurement +
+ * scheduling (including `prefers-reduced-motion`).
  */
 
-export const DEFAULT_HEIGHT_TRANSITION_MS = 300;
+export const DEFAULT_HEIGHT_TRANSITION_MS = 120;
 
 /**
  * Whether the user has requested reduced motion at the OS/browser level.
@@ -107,6 +108,26 @@ export function measureScrollHeightWithoutClass(el, className) {
 }
 
 /**
+ * Temporarily add a class, measure `scrollHeight`, then restore prior class state.
+ *
+ * Useful for accordion open: measure full open height (e.g. with `.active`
+ * padding) while the panel is still visually collapsed.
+ *
+ * @param {HTMLElement} el
+ * @param {string} className
+ * @returns {number}
+ */
+export function measureScrollHeightWithClass(el, className) {
+  const hadClass = el.classList.contains(className);
+  el.classList.add(className);
+  const height = el.scrollHeight;
+  if (!hadClass) {
+    el.classList.remove(className);
+  }
+  return height;
+}
+
+/**
  * Temporarily add a class, measure bounding height, then restore prior class state.
  *
  * Useful for collapse: measure the clamped target height while still expanded.
@@ -123,4 +144,79 @@ export function measureClientHeightWithClass(el, className) {
     el.classList.remove(className);
   }
   return height;
+}
+
+/**
+ * Result of {@link animateOpen} / {@link animateClosed}.
+ *
+ * - `animated` — height tween was scheduled
+ * - `instant` — reduced motion; caller should flip open state with no tween
+ * - `skipped` — no element; caller should no-op
+ *
+ * @typedef {'animated' | 'instant' | 'skipped'} HeightAnimationResult
+ */
+
+/**
+ * Measure and schedule a measured-height open (current height → full content).
+ *
+ * @param {HTMLElement | null | undefined} el
+ * @param {(fromPx: number, toPx: number) => void} scheduleHeightAnimation
+ * @param {object} [options]
+ * @param {string} [options.removeClass] Temporarily remove before measuring end
+ *   height (clamp expand).
+ * @param {string} [options.addClass] Temporarily add before measuring end height
+ *   (e.g. lift a CSS `height: 0` rule).
+ * @param {HTMLElement} [options.measureElement] Measure this element's border-box
+ *   height as `toPx` instead of `el.scrollHeight` (use when `el` is CSS-clamped
+ *   to 0 and its `scrollHeight` reads as 0, but an inner child still has natural
+ *   layout height).
+ * @returns {HeightAnimationResult}
+ */
+export function animateOpen(el, scheduleHeightAnimation, options = {}) {
+  const { removeClass, addClass, measureElement } = options;
+  if (!el) {
+    return "skipped";
+  }
+  if (prefersReducedMotion()) {
+    return "instant";
+  }
+
+  const fromPx = el.getBoundingClientRect().height;
+  let toPx = el.scrollHeight;
+  if (removeClass) {
+    toPx = measureScrollHeightWithoutClass(el, removeClass);
+  } else if (addClass) {
+    toPx = measureScrollHeightWithClass(el, addClass);
+  } else if (measureElement) {
+    toPx = measureElement.getBoundingClientRect().height;
+  }
+  scheduleHeightAnimation(fromPx, toPx);
+  return "animated";
+}
+
+/**
+ * Measure and schedule a measured-height close (current height → target).
+ *
+ * @param {HTMLElement | null | undefined} el
+ * @param {(fromPx: number, toPx: number) => void} scheduleHeightAnimation
+ * @param {object} [options]
+ * @param {string} [options.addClass] Temporarily add before measuring end height
+ *   (clamp collapse).
+ * @param {number} [options.toPx=0] End height when `addClass` is omitted
+ *   (accordion collapse).
+ * @returns {HeightAnimationResult}
+ */
+export function animateClosed(el, scheduleHeightAnimation, options = {}) {
+  const { addClass, toPx = 0 } = options;
+  if (!el) {
+    return "skipped";
+  }
+  if (prefersReducedMotion()) {
+    return "instant";
+  }
+
+  const fromPx = el.getBoundingClientRect().height;
+  const endPx = addClass ? measureClientHeightWithClass(el, addClass) : toPx;
+  scheduleHeightAnimation(fromPx, endPx);
+  return "animated";
 }
