@@ -49,21 +49,14 @@ const AIUsageAlert = ({ record, section }) => {
   }
 
   return (
-    <Overridable
-      id="InvenioModularDetailPage.AIUsageAlert.layout"
-      {...{ record, section }}
-    >
+    <Overridable id="InvenioModularDetailPage.AIUsageAlert.layout" {...{ record, section }}>
       <FadeCollapse
         visible={visible}
         durationMs={DISMISS_MS}
         className="detail-alert-fade-collapse"
       >
-        <div className="ai-usage-alert ui message warning">
-          <i
-            aria-hidden="true"
-            className="close icon"
-            onClick={() => setVisible(false)}
-          ></i>
+        <div className="ai-usage-alert ui message">
+          <i aria-hidden="true" className="close icon" onClick={() => setVisible(false)}></i>
           <div className="content">
             <div className="header">
               <Icon name="microchip" /> {section}
@@ -81,11 +74,10 @@ const AIUsageAlert = ({ record, section }) => {
             {showToggle && (
               <div className="buttons row">
                 <Button
-                  as="a"
                   onClick={!open ? expand : collapse}
                   basic
                   compact
-                  className="warning"
+                  className="borderless tiny"
                 >
                   {!open ? i18next.t("Show more") : i18next.t("Show less")}
                 </Button>
