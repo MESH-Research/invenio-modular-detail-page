@@ -300,7 +300,7 @@ const FileListDropdownMenu = ({
   asLabeled = false,
   asFluid = true,
   asItem = false,
-  classnames = "icon primary primary-sidebar stacked-content",
+  classnames = "icon primary primary-sidebar stacked-content left aligned",
   downloadFileUrl,
   files,
   fileCountToShow,
@@ -644,6 +644,7 @@ const FileListDropdown = ({
             primary
             fluid
             as="button"
+            className="left aligned"
             href={downloadUrl.replace("xxxx", files?.[0]?.key)}
             content={i18next.t("Download")}
             icon="download"

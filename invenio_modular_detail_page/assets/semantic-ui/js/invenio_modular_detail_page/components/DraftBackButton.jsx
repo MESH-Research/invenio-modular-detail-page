@@ -23,7 +23,7 @@ const DraftBackButton = ({ show }) => {
           labelPosition="right"
           icon="angle left"
           content={i18next.t("Back to edit")}
-          className="secondary basic"
+          className="secondary basic left aligned"
           onClick={() => {
             window.location.href = backPage;
           }}

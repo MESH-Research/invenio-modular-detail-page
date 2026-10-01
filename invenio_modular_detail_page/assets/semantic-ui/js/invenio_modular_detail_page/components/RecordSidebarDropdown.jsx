@@ -51,7 +51,7 @@ function RecordSidebarDropdown({
         ref={dropdownRef}
         as={asButton ? "button" : undefined}
         id={dropdownId}
-        className={`button record-management-dropdown fluid secondary sidebar-secondary icon ${classNames}`}
+        className={`button record-management-dropdown fluid secondary sidebar-secondary icon left aligned ${classNames}`}
         options={options}
         aria-label={dropdownAriaLabel}
         aria-haspopup="menu"

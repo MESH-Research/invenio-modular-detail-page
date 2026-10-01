@@ -86,6 +86,7 @@ const CitationSection = (props) => {
           trigger={
             <Button
               fluid
+              className="left aligned"
               content={i18next.t("Cite this")}
               icon="quote right"
               labelPosition="right"

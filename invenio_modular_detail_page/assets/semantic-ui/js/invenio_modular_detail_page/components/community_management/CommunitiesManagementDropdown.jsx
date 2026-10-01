@@ -152,7 +152,7 @@ const CommunitiesManagementDropdown = ({
           ref={dropdownRef}
           as="button"
           id="modal-dropdown"
-          className={`button manage-menu-dropdown fluid secondary sidebar-secondary icon ${classNames}`}
+          className={`button manage-menu-dropdown fluid secondary sidebar-secondary icon left aligned ${classNames}`}
           aria-label={i18next.t("Collection management menu dropdown")}
           aria-haspopup="menu"
           basic
