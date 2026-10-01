@@ -128,6 +128,7 @@
          data-is-draft='{{ is_draft | tojson }}'
          data-landing-urls='{{ config["LANDING_URLS"] | tojson }}'
          data-localized-stats='{{ localized_stats | tojson }}'
+         data-detail-display-type-to-family='{{ config.get("DETAIL_DISPLAY_TYPE_TO_FAMILY", {}) | tojson }}'
          data-main-sections='{{ config["MODULAR_DETAIL_PAGE_MAIN_SECTIONS"] | tojson }}'
          data-pending-communities-search-config='{{ search_app_rdm_record_requests_config(app_id="InvenioAppRdm.RecordRequests", endpoint=record.links.requests) | tojson }}'
          data-permissions='{{ permissions | tojson }}'

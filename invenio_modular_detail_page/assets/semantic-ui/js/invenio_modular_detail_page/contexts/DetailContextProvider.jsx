@@ -41,6 +41,7 @@ export const DetailContextProvider = ({ children, ...rawProps }) => {
         .includes("FilePreview")
     ),
     rights: record.ui.rights,
+    copyright: record.metadata?.copyright || null,
     showRecordManagementMenu:
       canManageFlag &&
       (!rawProps.isPreview || rawProps.isPreviewSubmissionRequest),

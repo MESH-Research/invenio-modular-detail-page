@@ -49,6 +49,9 @@ ReactDOM.render(
     ) === true ? true : false }
     landingUrls={JSON.parse(detailMainDiv.dataset.landingUrls)}
     localizedStats={JSON.parse(detailMainDiv.dataset.localizedStats)}
+    detailDisplayTypeToFamily={JSON.parse(
+      detailMainDiv.dataset.detailDisplayTypeToFamily || "{}"
+    )}
     mainSections={JSON.parse(detailMainDiv.dataset.mainSections)}
     permissions={JSON.parse(detailMainDiv.dataset.permissions)}
     permissionsPerField={JSON.parse(detailMainDiv.dataset.permissionsPerField)}

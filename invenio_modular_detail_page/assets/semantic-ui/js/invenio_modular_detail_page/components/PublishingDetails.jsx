@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { Accordion, Button, Icon, Popup } from "semantic-ui-react";
 import { Creatibutors } from "./Creatibutors";
 import { Doi } from "../components/Doi";
 import { groupObjectsBy, toPidUrl } from "../util";
-import {
-  getThesisFieldValue,
-  THESIS_DETAIL_FIELD_LABELS,
-} from "../util/thesisDetails";
+import { getThesisFieldValue, THESIS_DETAIL_FIELD_LABELS } from "../util/thesisDetails";
+import { resolveFamilySubsections } from "../util/detailDisplayFamilies";
+import { imprintDisplayForRecord } from "../util/imprintDisplay";
+import { useMeasuredHeightAnimation } from "../util/useMeasuredHeightAnimation";
 import { Analytics } from "./Analytics";
 
 function isDuration(size) {
@@ -30,14 +30,10 @@ function isDuration(size) {
   return durationUnits.some((unit) => size.includes(unit));
 }
 
-function getCustomFieldComponents({
-  sectionFields,
-  customFields,
-  detailOrder,
-}) {
+function getCustomFieldComponents({ sectionFields, customFields, detailOrder }) {
   if (detailOrder) {
     sectionFields = detailOrder.map(({ section, subsections }) =>
-      sectionFields.find((fieldCfg) => fieldCfg.field === section),
+      sectionFields.find((fieldCfg) => fieldCfg.field === section)
     );
   }
 
@@ -47,7 +43,7 @@ function getCustomFieldComponents({
       if (typeof fieldValue === "object") {
         let entries = Object.entries(fieldValue);
         const orderSubsections = detailOrder.find(
-          ({ section }) => section === fieldCfg.field,
+          ({ section }) => section === fieldCfg.field
         )?.subsections;
         if (orderSubsections) {
           entries = orderSubsections.reduce((acc, { section }) => {
@@ -94,9 +90,7 @@ const References = ({ references, identifierSchemes }) => {
         <dd>
           {reference.reference}
           {identifier &&
-            (scheme
-              ? ` (${identifierSchemes[scheme]} - ${identifier})`
-              : ` (${identifier})`)}
+            (scheme ? ` (${identifierSchemes[scheme]} - ${identifier})` : ` (${identifier})`)}
         </dd>
       ))}
     </>
@@ -111,9 +105,7 @@ const AdditionalDates = ({ dates }) => {
           <dt className="ui tiny header">{type.title_l10n}</dt>
           <dd>
             {dateValue}
-            {description && (
-              <span className="text-muted"> ({description})</span>
-            )}
+            {description && <span className="text-muted"> ({description})</span>}
           </dd>
         </React.Fragment>
       ))}
@@ -133,10 +125,7 @@ const FundingItem = ({ item, index }) => {
           <dt className="ui tiny header">
             <span className="mr-5">{title_l10n}</span>
             {number && (
-              <span
-                className="ui mini basic label ml-0 mr-5"
-                id={`number-label-${index}`}
-              >
+              <span className="ui mini basic label ml-0 mr-5" id={`number-label-${index}`}>
                 {number}
               </span>
             )}
@@ -179,9 +168,7 @@ function IdentifiersForGroup({ identifiers, identifierSchemes, landingUrls }) {
     <>
       {identifiers.map(({ scheme, identifier, resource_type }) => (
         <dd key={identifier}>
-          {scheme && (
-            <span className="text-muted">{`${identifierSchemes[scheme]}: `}</span>
-          )}
+          {scheme && <span className="text-muted">{`${identifierSchemes[scheme]}: `}</span>}
           {identifier && (
             <>
               <a
@@ -201,14 +188,10 @@ function IdentifiersForGroup({ identifiers, identifierSchemes, landingUrls }) {
   );
 }
 
-function RelatedIdentifiers({
-  relatedIdentifiers,
-  identifierSchemes,
-  landingUrls,
-}) {
+function RelatedIdentifiers({ relatedIdentifiers, identifierSchemes, landingUrls }) {
   const groups = groupObjectsBy(
     relatedIdentifiers,
-    ({ relation_type }) => relation_type.title_l10n,
+    ({ relation_type }) => relation_type.title_l10n
   );
 
   return (
@@ -243,9 +226,7 @@ const DOITextLink = ({ doi, doiLink, workDoi }) => {
       <dt className="ui tiny header">
         DOI (this version)
         <Popup
-          content={i18next.t(
-            "A unique identifier for this version of the work",
-          )}
+          content={i18next.t("A unique identifier for this version of the work")}
           trigger={<Icon size="tiny" name="info circle" className="ml-5" />}
         />
       </dt>
@@ -262,11 +243,7 @@ const DOITextLink = ({ doi, doiLink, workDoi }) => {
           on="hover"
           onClose={resetCopyMessage}
         />
-        <a
-          href={`https://doi.org/${doi}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={`https://doi.org/${doi}`} target="_blank" rel="noopener noreferrer">
           {doi}
         </a>{" "}
         &nbsp;
@@ -279,7 +256,7 @@ const DOITextLink = ({ doi, doiLink, workDoi }) => {
               content={
                 <small>
                   {i18next.t(
-                    "A unique identifier that always points to the latest version of the work",
+                    "A unique identifier that always points to the latest version of the work"
                   )}
                 </small>
               }
@@ -300,11 +277,7 @@ const DOITextLink = ({ doi, doiLink, workDoi }) => {
               on="hover"
               onClose={resetCopyMessage}
             />
-            <a
-              href={`https://doi.org/${workDoi}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={`https://doi.org/${workDoi}`} target="_blank" rel="noopener noreferrer">
               {workDoi}
             </a>{" "}
             &nbsp;
@@ -339,11 +312,7 @@ const URLs = ({ identifiers }) => {
   );
 };
 
-const AlternateIdentifiers = ({
-  alternateIdentifiers,
-  identifierSchemes,
-  landingUrls,
-}) => {
+const AlternateIdentifiers = ({ alternateIdentifiers, identifierSchemes, landingUrls }) => {
   const groups = groupObjectsBy(alternateIdentifiers, ({ scheme }) => scheme);
   return Object.keys(groups)
     .filter((scheme) => scheme !== "url")
@@ -373,9 +342,7 @@ const TitleDetail = ({ titleType, titleLang, title }) => {
     <React.Fragment key={title}>
       <dt className="ui tiny header">
         {titleType}
-        {titleLang && (
-          <span className="language text-muted">{` (${titleLang})`}</span>
-        )}
+        {titleLang && <span className="language text-muted">{` (${titleLang})`}</span>}
       </dt>
       <dd>{title}</dd>
     </React.Fragment>
@@ -427,6 +394,7 @@ const Volumes = ({ volumes }) => {
  */
 const getDetailsComponents = ({
   customFieldsUi,
+  detailDisplayTypeToFamily,
   detailOrder,
   doiBadgeUrl,
   hasFiles,
@@ -441,15 +409,12 @@ const getDetailsComponents = ({
   showDecimalSizes,
 }) => {
   const idDoi = record.pids.doi ? record.pids.doi.identifier : null;
-  const workDoi = record.parent.pids.doi
-    ? record.parent.pids.doi.identifier
-    : null;
+  const workDoi = record.parent.pids.doi ? record.parent.pids.doi.identifier : null;
+  const imprintDisplay = imprintDisplayForRecord(record, detailDisplayTypeToFamily);
   const detailsInfo = [
     {
       title: i18next.t("Additional dates"),
-      value: record.ui.dates ? (
-        <AdditionalDates dates={record.ui.dates} />
-      ) : null,
+      value: record.ui.dates ? <AdditionalDates dates={record.ui.dates} /> : null,
     },
     {
       title: i18next.t("Additional titles"),
@@ -459,9 +424,7 @@ const getDetailsComponents = ({
     },
     {
       title: i18next.t("Alternate identifiers"),
-      value: record.metadata.identifiers?.filter(
-        (id) => id.scheme !== "url",
-      ) ? (
+      value: record.metadata.identifiers?.filter((id) => id.scheme !== "url") ? (
         <AlternateIdentifiers
           alternateIdentifiers={record.metadata.identifiers}
           identifierSchemes={identifierSchemes}
@@ -502,9 +465,7 @@ const getDetailsComponents = ({
     },
     {
       title: i18next.t("Discipline"),
-      value: record.custom_fields["kcr:discipline"]
-        ? record.custom_fields["kcr:discipline"]
-        : null,
+      value: record.custom_fields["kcr:discipline"] ? record.custom_fields["kcr:discipline"] : null,
     },
     {
       title: i18next.t("Chapter label"),
@@ -566,37 +527,32 @@ const getDetailsComponents = ({
       title: i18next.t("DOI"),
       value:
         idDoi !== null ? (
-          <DOITextLink
-            key={"doi"}
-            doiLink={record.links.doi}
-            doi={idDoi}
-            workDoi={workDoi}
-          />
+          <DOITextLink key={"doi"} doiLink={record.links.doi} doi={idDoi} workDoi={workDoi} />
         ) : null,
     },
     {
       title: i18next.t("Edition"),
-      value: record.custom_fields["kcr:edition"]
-        ? record.custom_fields["kcr:edition"]
-        : null,
+      value: record.custom_fields["kcr:edition"] ? record.custom_fields["kcr:edition"] : null,
     },
     {
       title: i18next.t("Funding"),
       value: record.ui.funding ? <Funding funding={record.ui.funding} /> : null,
     },
     {
-      title: i18next.t("Imprint"),
-      value:
-        record.ui.publishing_information &&
-        record.ui.publishing_information.imprint
-          ? record.ui.publishing_information.imprint
-          : null,
+      title: i18next.t("ISBN"),
+      value: imprintDisplay.isbn,
+    },
+    {
+      title: i18next.t("ISSN"),
+      value: imprintDisplay.issn,
+    },
+    {
+      title: i18next.t("In proceedings"),
+      value: imprintDisplay.inProceedings,
     },
     {
       title: i18next.t("Formats"),
-      value: record.metadata.formats
-        ? record.metadata.formats.join(", ")
-        : null,
+      value: record.metadata.formats ? record.metadata.formats.join(", ") : null,
     },
     {
       title: i18next.t("Languages"),
@@ -606,9 +562,7 @@ const getDetailsComponents = ({
     },
     {
       title: i18next.t("Media and materials"),
-      value: record.custom_fields["kcr:media"]
-        ? record.custom_fields["kcr:media"].join(",")
-        : null,
+      value: record.custom_fields["kcr:media"] ? record.custom_fields["kcr:media"].join(",") : null,
     },
     {
       title: i18next.t("Programming languages"),
@@ -624,7 +578,7 @@ const getDetailsComponents = ({
     },
     {
       title: i18next.t("Publication date"),
-      value: record.ui.publication_date_l10n_long,
+      value: imprintDisplay.suppressPublicationDate ? null : record.ui.publication_date_l10n_long,
     },
     {
       title: i18next.t("Project or publication website"),
@@ -632,22 +586,19 @@ const getDetailsComponents = ({
         ? record.custom_fields["kcr:publication_url"]
         : null,
     },
+    {
+      title: i18next.t("Place"),
+      value: imprintDisplay.place,
+    },
     { title: i18next.t("Publisher"), value: record.metadata.publisher },
     {
       title: i18next.t("Published in"),
-      value:
-        record.ui.publishing_information &&
-        record.ui.publishing_information.journal
-          ? record.ui.publishing_information.journal
-          : null,
+      value: imprintDisplay.publishedIn,
     },
     {
       title: i18next.t("References"),
       value: record.ui.references ? (
-        <References
-          references={record.ui.references}
-          identifierSchemes={identifierSchemes}
-        />
+        <References references={record.ui.references} identifierSchemes={identifierSchemes} />
       ) : null,
     },
     {
@@ -672,23 +623,19 @@ const getDetailsComponents = ({
     },
     {
       title: i18next.t("Series"),
-      value: record.custom_fields["kcr:series"]
-        ? record.custom_fields["kcr:series"]
-        : null,
+      value: record.custom_fields["kcr:series"] ? record.custom_fields["kcr:series"] : null,
     },
     {
       title: i18next.t("Sizes"), // FIXME: Hack because the size field is used for both sizes and duration
       value:
-        record.metadata.sizes &&
-        !record.metadata.sizes.find((size) => isDuration(size))
+        record.metadata.sizes && !record.metadata.sizes.find((size) => isDuration(size))
           ? record.metadata.sizes.join(", ")
           : null,
     },
     {
       title: i18next.t("Duration"), // FIXME: Hack because the size field is used for both sizes and duration
       value:
-        record.metadata.sizes &&
-        record.metadata.sizes.find((size) => isDuration(size))
+        record.metadata.sizes && record.metadata.sizes.find((size) => isDuration(size))
           ? record.metadata.sizes.join(", ")
           : null,
     },
@@ -700,9 +647,7 @@ const getDetailsComponents = ({
     },
     {
       title: i18next.t("URLs"),
-      value: record.metadata.identifiers?.filter(
-        (id) => id.scheme === "url",
-      ) ? (
+      value: record.metadata.identifiers?.filter((id) => id.scheme === "url") ? (
         <URLs identifiers={record.metadata.identifiers} />
       ) : null,
     },
@@ -720,19 +665,14 @@ const getDetailsComponents = ({
 
   const filteredDetailsInfo = detailsInfo.filter(
     ({ title, value }) =>
-      (typeof value === "string" || React.isValidElement(value)) &&
-      detailOrder.includes(title),
+      (typeof value === "string" || React.isValidElement(value)) && detailOrder.includes(title)
   );
   const sortedDetailsInfo = filteredDetailsInfo.toSorted(
-    (a, b) => detailOrder.indexOf(a.title) - detailOrder.indexOf(b.title),
+    (a, b) => detailOrder.indexOf(a.title) - detailOrder.indexOf(b.title)
   );
 
   const detailsComponentArray = sortedDetailsInfo.map(({ title, value }) =>
-    typeof value === "string" ? (
-      <DetailItem title={title} value={value} key={title} />
-    ) : (
-      value
-    ),
+    typeof value === "string" ? <DetailItem title={title} value={value} key={title} /> : value
   );
 
   return detailsComponentArray.length > 0 ? detailsComponentArray : null;
@@ -746,11 +686,7 @@ const DetailItem = ({ title, value, trueLabel, falseLabel, isVocabulary }) => {
     valueComponent = <dd>{value ? trueLabel : falseLabel}</dd>;
   } else if (isVocabulary) {
     valueComponent = <dd>{value.join(", ")}</dd>;
-  } else if (
-    Array.isArray(value) &&
-    value.length > 0 &&
-    typeof value[0] === "string"
-  ) {
+  } else if (Array.isArray(value) && value.length > 0 && typeof value[0] === "string") {
     valueComponent = <dd>{value.join(", ")}</dd>;
   } else {
     valueComponent = <dd>{value}</dd>;
@@ -791,8 +727,7 @@ const ConferenceDetailSection = ({ conference }) => {
           <dt className="ui tiny header">Event</dt>
           <dd>
             <a href={conference.url}>
-              <i className="fa fa-external-link"></i>{" "}
-              {i18next.t("Conference website")}
+              <i className="fa fa-external-link"></i> {i18next.t("Conference website")}
             </a>
           </dd>
         </>
@@ -803,6 +738,7 @@ const ConferenceDetailSection = ({ conference }) => {
 
 const PublishingDetails = ({
   customFieldsUi,
+  detailDisplayTypeToFamily,
   doiBadgeUrl,
   hasFiles,
   iconsKcUsername,
@@ -819,15 +755,19 @@ const PublishingDetails = ({
   showAccordionIcons = false,
   subsections: accordionSections,
 }) => {
-  const [activeIndex, setActiveIndex] = React.useState([1]);
+  const [activeIndex, setActiveIndex] = useState([1]);
   const customFieldSectionNames = customFieldsUi.map(({ section }) => section);
-  const sectionsArray = accordionSections.reduce(
+  const resourceTypeId = record.metadata?.resource_type?.id;
+  const resolvedAccordionSections = resolveFamilySubsections(
+    accordionSections,
+    resourceTypeId,
+    detailDisplayTypeToFamily
+  );
+  const sectionsArray = resolvedAccordionSections.reduce(
     (acc, { section: sectionTitle, subsections, icon, show }) => {
       if (customFieldSectionNames.includes(sectionTitle)) {
         const detailOrder = subsections;
-        const sectionCustomFields = customFieldsUi.find(
-          ({ section }) => section === sectionTitle,
-        );
+        const sectionCustomFields = customFieldsUi.find(({ section }) => section === sectionTitle);
         const fieldContent = getCustomFieldComponents({
           sectionFields: sectionCustomFields.fields,
           customFields: record.custom_fields,
@@ -849,6 +789,7 @@ const PublishingDetails = ({
           content: {
             content: getDetailsComponents({
               customFieldsUi: customFieldsUi,
+              detailDisplayTypeToFamily: detailDisplayTypeToFamily,
               detailOrder: detailOrder,
               doiBadgeUrl: doiBadgeUrl,
               hasFiles: hasFiles,
@@ -868,51 +809,108 @@ const PublishingDetails = ({
       }
       return acc;
     },
-    [],
+    []
   );
 
-  const handleHeaderClick = (index) => {
-    const newIndex = activeIndex.includes(index)
-      ? activeIndex.filter((i) => i !== index)
-      : [...activeIndex, index];
-    setActiveIndex(newIndex);
-  };
+  const handleOpen = useCallback((index) => {
+    setActiveIndex((prev) => (prev.includes(index) ? prev : [...prev, index]));
+  }, []);
+
+  const handleClose = useCallback((index) => {
+    setActiveIndex((prev) => prev.filter((i) => i !== index));
+  }, []);
 
   return (
-    <Accordion fluid exclusive={false} defaultActiveIndex={[1]}>
+    <Accordion fluid exclusive={false} className="publishing-details-accordion">
       {sectionsArray.map(
         ({ title, content, show }, idx) =>
           content.content && (
-            <>
-              <Accordion.Title
-                as="button"
-                active={activeIndex.includes(idx)}
-                index={idx}
-                onClick={() => handleHeaderClick(idx)}
-                className={`${title.content} ${show}`}
-              >
-                <Icon
-                  name={
-                    !!title.icon && !!showAccordionIcons
-                      ? title.icon
-                      : "dropdown"
-                  }
-                />
-                {title.content}
-              </Accordion.Title>
-              <Accordion.Content
-                active={activeIndex.includes(idx)}
-                className={`ui ${title.content} ${show}`}
-              >
-                <dl className="details-list mt-0">
-                  {content.content.map((component) => component)}
-                </dl>
-              </Accordion.Content>
-            </>
-          ),
+            <PublishingDetailsAccordionPanel
+              key={title.content || idx}
+              title={title}
+              content={content}
+              show={show}
+              index={idx}
+              open={activeIndex.includes(idx)}
+              onOpen={handleOpen}
+              onClose={handleClose}
+              showAccordionIcons={showAccordionIcons}
+            />
+          )
       )}
     </Accordion>
   );
 };
+
+/**
+ * One PublishingDetails accordion panel with measured-height open/close.
+ *
+ * Uses a plain `.content` div (not `Accordion.Content`) so we can attach a ref
+ * and keep the panel measurable while collapsed via CSS (`display: block` +
+ * `height: 0`), matching Semantic UI's jQuery slide behavior.
+ *
+ * @param {object} props
+ * @param {{ content: string, icon?: string }} props.title
+ * @param {{ content: React.ReactNode[] }} props.content
+ * @param {string} [props.show]
+ * @param {number} props.index
+ * @param {boolean} props.open
+ * @param {(index: number) => void} props.onOpen
+ * @param {(index: number) => void} props.onClose
+ * @param {boolean} [props.showAccordionIcons]
+ */
+function PublishingDetailsAccordionPanel({
+  title,
+  content,
+  show,
+  index,
+  open,
+  onOpen,
+  onClose,
+  showAccordionIcons = false,
+}) {
+  const contentRef = useRef(null);
+  const { isAnimating, expand, collapse } = useMeasuredHeightAnimation(
+    contentRef,
+    {
+      open,
+      onOpen: () => onOpen(index),
+      onClose: () => onClose(index),
+      // Lift CSS `height: 0` briefly so scrollHeight is the full open size.
+      // (Parent must also stay `display: block` when closed — see accordion.overrides.)
+      openMeasure: { addClass: "details-height-animating" },
+    }
+  );
+  // Keep `.active` (background) through the close tween; padding lives on the
+  // inner `.details-list` so it clips with height instead of leftover strip.
+  const contentActive = open || isAnimating;
+
+  return (
+    <>
+      <Accordion.Title
+        as="button"
+        active={open}
+        index={index}
+        onClick={() => (open ? collapse() : expand())}
+        className={`${title.content} ${show}`}
+      >
+        <Icon
+          name={!!title.icon && !!showAccordionIcons ? title.icon : "dropdown"}
+        />
+        {title.content}
+      </Accordion.Title>
+      <div
+        ref={contentRef}
+        className={`content ui ${title.content} ${show}${
+          contentActive ? " active" : ""
+        }${isAnimating ? " details-height-animating" : ""}`}
+      >
+        <dl className="details-list mt-0 rel-pt-1 rel-pr-1 rel-pb-1 rel-pl-1">
+          {content.content.map((component) => component)}
+        </dl>
+      </div>
+    </>
+  );
+}
 
 export { PublishingDetails, getDetailsComponents };

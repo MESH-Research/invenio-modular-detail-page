@@ -12,10 +12,8 @@
 
 import React, { useContext } from "react";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
-import { Icon, Message } from "semantic-ui-react";
 import Overridable from "react-overridable";
 import { componentsMap } from "../componentsMap";
-import { filterPropsToPass } from "../util";
 import { RecordManagementMenu } from "../components/RecordManagementMenu";
 import { RecordModerationMenu } from "../components/RecordModerationMenu";
 import { ShareModal } from "../components/ShareModal";
@@ -47,6 +45,10 @@ const DetailRightSidebar = () => {
   });
   const showModerationMenu =
     topLevelProps.showRecordManagementMenu && topLevelProps.permissions?.can_moderate;
+  const dateFormatter = new Intl.DateTimeFormat(undefined, {
+    dateStyle: "long",
+    timeStyle: "short",
+  });
   return (
     <Overridable
       id="InvenioModularDetailPage.DetailRightSidebar.layout"
@@ -103,7 +105,7 @@ const DetailRightSidebar = () => {
           </>
         ) : null}
         {activeSidebarSections.map(
-          ({ section, component_name, props, subsections, show_heading, show }, idx) => {
+          ({ section, component_name, subsections, show_heading, show }, idx) => {
             const SidebarSectionComponent = componentsMap[component_name];
             return (
               <SidebarSectionComponent
@@ -118,6 +120,16 @@ const DetailRightSidebar = () => {
             );
           }
         )}
+        <div className="sidebar-dates-container flex justify-space-between stackable-computer stackable-mobile">
+          <span className="text-muted-darken mobile mb-5">
+            {i18next.t("Created")}&nbsp;
+            {dateFormatter.format(new Date(topLevelProps.record?.created))}
+          </span>
+          <span className="text-muted-darken">
+            {i18next.t("Updated")}&nbsp;
+            {dateFormatter.format(new Date(topLevelProps.record?.updated))}
+          </span>
+        </div>
       </aside>
     </Overridable>
   );

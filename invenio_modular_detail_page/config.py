@@ -11,7 +11,12 @@ from invenio_i18n import lazy_gettext as _
 
 # top-level objects are sections in sidebar
 # available sections defined in DetailRightSidebar.jsx:
-# "details", "manage_menu", "downloads", "sidebar_details", "versions", "citation", "communities", "keywords_subjects", "export", "social_share"
+# "details", "manage_menu", "downloads", "sidebar_details", "versions",
+# "citation", "communities", "keywords_subjects", "export", "social_share"
+#
+# ``subsections`` may be a plain array (default here) or a family-keyed dict
+# ``{ "journal": [...], "default": [...], ... }`` as in KCWorks
+# ``detail_page_layout.py``. Clients resolve via ``resolveFamilySubsections``.
 MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT = [
     {"section": _("Manage")},
     {
@@ -75,10 +80,11 @@ MODULAR_DETAIL_PAGE_SIDEBAR_SECTIONS_RIGHT = [
         "subsections": [
             # {"section": "Resource type"},
             {"section": "Published in"},
-            {"section": "Imprint"},
-            {"section": "Publisher"},
+            {"section": "In proceedings"},
             {"section": "Awarding university"},
             {"section": "Conference"},
+            {"section": "Publisher"},
+            {"section": "ISBN"},
             {"section": "Publication date"},
             {"section": "Languages"},
             {"section": "Formats"},
@@ -199,8 +205,11 @@ MODULAR_DETAIL_PAGE_MAIN_SECTIONS = [
                                 "subsections": [
                                     {"section": "URLs"},
                                     {"section": "Published in"},
-                                    {"section": "Imprint"},
+                                    {"section": "In proceedings"},
+                                    {"section": "Place"},
                                     {"section": "Publisher"},
+                                    {"section": "ISBN"},
+                                    {"section": "ISSN"},
                                     {"section": "Conference"},
                                     {"section": "Languages"},
                                     {"section": "Publication date"},

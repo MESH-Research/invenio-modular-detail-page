@@ -1,11 +1,13 @@
 import React from "react";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 import { getDetailsComponents } from "../components/PublishingDetails";
+import { resolveFamilySubsections } from "../util/detailDisplayFamilies";
 import Overridable from "react-overridable";
 
 const SidebarDetailsSection = (props) => {
   const {
     customFieldsUi,
+    detailDisplayTypeToFamily,
     doiBadgeUrl,
     identifierSchemes,
     landingUrls,
@@ -14,9 +16,13 @@ const SidebarDetailsSection = (props) => {
     show,
     show_heading,
   } = props;
-  const detailOrder = subsections.map(({ section }) => section);
-  const idDoi = record.pids.doi ? record.pids.doi.identifier : null;
   const resourceTypeId = record.metadata?.resource_type?.id;
+  const resolvedSubsections = resolveFamilySubsections(
+    subsections,
+    resourceTypeId,
+    detailDisplayTypeToFamily,
+  );
+  const detailOrder = resolvedSubsections.map(({ section }) => section);
   const resourceTypeFilter = resourceTypeId?.includes("-")
     ? `${resourceTypeId.split("-")[0]}%2Binner:${resourceTypeId}`
     : resourceTypeId;
@@ -75,6 +81,7 @@ const SidebarDetailsSection = (props) => {
           <dl className="details-list mt-0">
             {getDetailsComponents({
               customFieldsUi,
+              detailDisplayTypeToFamily,
               detailOrder,
               doiBadgeUrl,
               identifierSchemes,
