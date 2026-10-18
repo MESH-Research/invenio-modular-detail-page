@@ -7,7 +7,7 @@
  * Place / ISBN / ISSN are always surfaced when present (layout decides rows).
  *
  * Citation fragments follow MLA container-segment conventions (not full
- * citations): italicized title, ``vol.`` / ``no.`` / ``p.``/``pp.``, year
+ * citations): italicized title, `vol.` / `no.` / `p.`/`pp.`, year
  * before pages for journals; title, edition, pages for book containers.
  * No terminal period.
  */
@@ -20,8 +20,9 @@ import { resolveDisplayFamily } from "./detailDisplayFamilies";
 
 /**
  * @typedef {object} ImprintDisplay
- * @property {string|null} publishedIn Container or journal citation (HTML; title in ``<em>``).
+ * @property {string|null} publishedIn Container or journal citation (HTML; title in `<em>`).
  * @property {string|null} inProceedings Container citation for proceedings papers.
+ * @property {string|null} course Combined course line for instructional types.
  * @property {string|null} isbn Discrete ISBN from imprint when present.
  * @property {string|null} issn Discrete ISSN from journal when present.
  * @property {string|null} place Discrete place from imprint when present.
@@ -100,7 +101,7 @@ function escapeHtml(text) {
 }
 
 /**
- * MLA page locator: ``p.`` for a single page, ``pp.`` for a range/list.
+ * MLA page locator: `p.` for a single page, `pp.` for a range/list.
  *
  * @param {string} pages
  * @returns {string}
@@ -113,8 +114,8 @@ function formatPagesLocator(pages) {
 /**
  * Format a journal issue for an MLA container fragment.
  *
- * Numeric issues use ``no.`` (e.g. ``no. 2``). Seasonal or other non-numeric
- * labels are left bare (e.g. ``Spring``) so we do not emit ``no. Spring``.
+ * Numeric issues use `no.` (e.g. `no. 2`). Seasonal or other non-numeric
+ * labels are left bare (e.g. `Spring`) so we do not emit `no. Spring`.
  *
  * @param {string} issue
  * @returns {string}
@@ -131,9 +132,9 @@ function formatIssuePart(issue) {
 /**
  * Format an edition for an MLA container fragment.
  *
- * Values that already look like an edition phrase (contain ``ed`` / ``edition``)
- * are used as-is; bare numbers or short labels get `` ed.`` appended
- * (e.g. ``2`` → ``2 ed.``, ``2nd ed.`` unchanged).
+ * Values that already look like an edition phrase (contain `ed` / `edition`)
+ * are used as-is; bare numbers or short labels get ` ed.` appended
+ * (e.g. `2` → `2 ed.`, `2nd ed.` unchanged).
  *
  * @param {string} edition
  * @returns {string}
@@ -148,12 +149,12 @@ function formatEditionPart(edition) {
 
 /**
  * Format container citation as MLA fragment:
- * ``<em>Title</em>{, edition}{, p./pp. pages}``
+ * `<em>Title</em>{, edition}{, p./pp. pages}`
  * Place/ISBN omitted (separate rows). Requires a non-URL title.
  * No terminal period — this is not a complete citation.
  *
- * Edition prefers ``editionOverride`` (KCWorks ``kcr:edition``) and falls
- * back to ``imprint.edition`` when present.
+ * Edition prefers `editionOverride` (KCWorks `kcr:edition`) and falls
+ * back to `imprint.edition` when present.
  *
  * @param {ImprintFields|null|undefined} imprint
  * @param {string|null|undefined} [editionOverride]
@@ -211,10 +212,10 @@ function publicationYearFromRecord(record) {
 
 /**
  * Journal Published-in as an MLA container fragment (not a full citation):
- * ``<em>Title</em>, vol. 10, no. 2, 2023, pp. 15-22``
+ * `<em>Title</em>, vol. 10, no. 2, 2023, pp. 15-22`
  * Requires a journal title — volume, issue, pages, and year alone do not
  * produce a citation. Any subset of vol / year / pages with a title is fine.
- * Numeric issues use ``no.``; non-numeric issues (e.g. ``Spring``) are bare.
+ * Numeric issues use `no.`; non-numeric issues (e.g. `Spring`) are bare.
  * No ISSN (separate row). No terminal period.
  *
  * @param {JournalFields|null|undefined} journal
@@ -257,6 +258,35 @@ function formatJournalCitation(journal, publicationYear) {
 }
 
 /**
+ * Course sidebar/details line for instructional types.
+ *
+ * Requires a course title. Institution and department/discipline are optional
+ * trailing parts. Plain text (not italicized). No terminal period.
+ *
+ * @param {string|null|undefined} courseTitle
+ * @param {string|null|undefined} institution
+ * @param {string|null|undefined} department
+ * @returns {string|null}
+ */
+function formatCourseLine(courseTitle, institution, department) {
+  const title = trimmedField(courseTitle);
+  if (!title) {
+    return null;
+  }
+
+  const parts = [escapeHtml(title)];
+  const institutionPart = trimmedField(institution);
+  if (institutionPart) {
+    parts.push(escapeHtml(institutionPart));
+  }
+  const departmentPart = trimmedField(department);
+  if (departmentPart) {
+    parts.push(escapeHtml(departmentPart));
+  }
+  return parts.join(", ");
+}
+
+/**
  * @param {string|null|undefined} resourceTypeId
  * @param {Record<string, string>|null|undefined} familyMap
  * @returns {boolean}
@@ -266,11 +296,11 @@ function isJournalLikeResourceType(resourceTypeId, familyMap) {
 }
 
 /**
- * Map a record to imprint/journal display values.
+ * Map a record to imprint/journal/course display values.
  *
  * Family selects citation source and slot (`publishedIn` vs `inProceedings`)
- * only. Discrete Place / ISBN / ISSN come from the raw fields when present;
- * layout subsections decide which of those rows appear.
+ * and whether to assemble a Course line. Discrete Place / ISBN / ISSN come
+ * from the raw fields when present; layout subsections decide which rows appear.
  *
  * @param {object} record
  * @param {Record<string, string>|null|undefined} [familyMap]
@@ -281,11 +311,13 @@ function imprintDisplayForRecord(record, familyMap) {
   const family = resolveDisplayFamily(resourceTypeId, familyMap);
   const imprint = getImprint(record);
   const journal = getJournal(record);
+  const customFields = record?.custom_fields || {};
 
   let publishedIn = null;
   let inProceedings = null;
+  let course = null;
   let suppressPublicationDate = false;
-  const kcrEdition = trimmedField(record?.custom_fields?.["kcr:edition"]);
+  const kcrEdition = trimmedField(customFields["kcr:edition"]);
 
   if (family === "journal") {
     const year = publicationYearFromRecord(record);
@@ -295,11 +327,20 @@ function imprintDisplayForRecord(record, familyMap) {
     publishedIn = formatContainerCitation(imprint, kcrEdition);
   } else if (family === "proceedings_paper") {
     inProceedings = formatContainerCitation(imprint, kcrEdition);
+  } else if (family === "instructional") {
+    // Published in only when an imprint container title exists (imports / rare).
+    publishedIn = formatContainerCitation(imprint, kcrEdition);
+    course = formatCourseLine(
+      customFields["kcr:course_title"],
+      customFields["kcr:sponsoring_institution"],
+      customFields["kcr:discipline"],
+    );
   }
 
   return {
     publishedIn,
     inProceedings,
+    course,
     isbn: trimmedField(imprint?.isbn),
     issn: trimmedField(journal?.issn),
     place: trimmedField(imprint?.place),
@@ -312,6 +353,7 @@ export {
   getResourceTypeId,
   isUrlLike,
   formatContainerCitation,
+  formatCourseLine,
   formatJournalCitation,
   isJournalLikeResourceType,
   imprintDisplayForRecord,

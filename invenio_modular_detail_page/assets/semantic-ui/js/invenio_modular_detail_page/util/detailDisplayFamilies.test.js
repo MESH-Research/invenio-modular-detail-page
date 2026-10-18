@@ -19,6 +19,9 @@ describe("resolveDisplayFamily", () => {
     expect(resolveDisplayFamily("textDocument-proceedingsPaper")).toBe(
       "proceedings_paper",
     );
+    expect(resolveDisplayFamily("instructionalResource-syllabus")).toBe(
+      "instructional",
+    );
   });
 
   it("returns default for unknown or missing types", () => {

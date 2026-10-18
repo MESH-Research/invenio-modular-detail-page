@@ -26,6 +26,11 @@ const FALLBACK_DETAIL_DISPLAY_TYPE_TO_FAMILY = {
   "textDocument-conferenceProceeding": "book",
   "textDocument-musicalNotation": "book",
   "textDocument-thesis": "thesis",
+  "instructionalResource": "instructional",
+  "instructionalResource-syllabus": "instructional",
+  "instructionalResource-lessonPlan": "instructional",
+  "instructionalResource-curriculum": "instructional",
+  "instructionalResource-other": "instructional",
 };
 
 const DEFAULT_FAMILY = "default";

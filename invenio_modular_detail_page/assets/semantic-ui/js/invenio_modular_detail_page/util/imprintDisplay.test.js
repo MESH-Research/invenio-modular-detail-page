@@ -1,5 +1,6 @@
 import {
   formatContainerCitation,
+  formatCourseLine,
   formatJournalCitation,
   getImprint,
   getResourceTypeId,
@@ -150,6 +151,33 @@ describe("formatJournalCitation", () => {
   });
 });
 
+describe("formatCourseLine", () => {
+  it("requires a course title", () => {
+    expect(formatCourseLine(null, "U of M", "English")).toBeNull();
+    expect(formatCourseLine("", "U of M", null)).toBeNull();
+  });
+
+  it("joins title, institution, and department when present", () => {
+    expect(formatCourseLine("Intro to DH", null, null)).toBe("Intro to DH");
+    expect(formatCourseLine("Intro to DH", "University of Michigan", null)).toBe(
+      "Intro to DH, University of Michigan",
+    );
+    expect(
+      formatCourseLine(
+        "Intro to DH",
+        "University of Michigan",
+        "English",
+      ),
+    ).toBe("Intro to DH, University of Michigan, English");
+  });
+
+  it("escapes HTML in course parts", () => {
+    expect(formatCourseLine('A <B> & "C"', "U & M", null)).toBe(
+      "A &lt;B&gt; &amp; &quot;C&quot;, U &amp; M",
+    );
+  });
+});
+
 describe("getImprint / getResourceTypeId", () => {
   it("reads imprint and resource type from the record", () => {
     const record = {
@@ -200,6 +228,7 @@ describe("imprintDisplayForRecord", () => {
       isbn: "978-1-234567-89-0",
       issn: null,
       place: "London",
+      course: null,
       suppressPublicationDate: false,
     });
   });
@@ -220,6 +249,7 @@ describe("imprintDisplayForRecord", () => {
       isbn: "978-1-234567-89-0",
       issn: null,
       place: "London",
+      course: null,
       suppressPublicationDate: false,
     });
   });
@@ -243,6 +273,7 @@ describe("imprintDisplayForRecord", () => {
       isbn: "978-0-00-000000-0",
       issn: null,
       place: "NY",
+      course: null,
       suppressPublicationDate: false,
     });
   });
@@ -260,6 +291,7 @@ describe("imprintDisplayForRecord", () => {
       isbn: "978-1-234567-89-0",
       issn: null,
       place: "London",
+      course: null,
       suppressPublicationDate: false,
     });
   });
@@ -277,6 +309,40 @@ describe("imprintDisplayForRecord", () => {
       isbn: "978-1-234567-89-0",
       issn: null,
       place: "London",
+      course: null,
+      suppressPublicationDate: false,
+    });
+    expect(
+      imprintDisplayForRecord(
+        recordWith("textDocument-monograph", {
+          custom_fields: { "imprint:imprint": fullImprint },
+        }),
+      ),
+    ).toEqual({
+      publishedIn: null,
+      inProceedings: null,
+      isbn: "978-1-234567-89-0",
+      issn: null,
+      place: "London",
+      course: null,
+      suppressPublicationDate: false,
+    });
+  });
+
+  it("maps book_section aliases (essay) the same as bookSection", () => {
+    expect(
+      imprintDisplayForRecord(
+        recordWith("textDocument-essay", {
+          custom_fields: { "imprint:imprint": fullImprint },
+        }),
+      ),
+    ).toEqual({
+      publishedIn: "<em>Container Title</em>, pp. 99-101",
+      inProceedings: null,
+      isbn: "978-1-234567-89-0",
+      issn: null,
+      place: "London",
+      course: null,
       suppressPublicationDate: false,
     });
   });
@@ -304,6 +370,7 @@ describe("imprintDisplayForRecord", () => {
       isbn: "978-1-234567-89-0",
       issn: null,
       place: "London",
+      course: null,
       suppressPublicationDate: true,
     });
     expect(
@@ -314,6 +381,7 @@ describe("imprintDisplayForRecord", () => {
       isbn: "978-1-234567-89-0",
       issn: null,
       place: "London",
+      course: null,
       suppressPublicationDate: true,
     });
     expect(
@@ -338,6 +406,7 @@ describe("imprintDisplayForRecord", () => {
       isbn: null,
       issn: "1234-5678",
       place: null,
+      course: null,
       suppressPublicationDate: true,
     });
     expect(
@@ -355,6 +424,7 @@ describe("imprintDisplayForRecord", () => {
       isbn: null,
       issn: null,
       place: "Lagos",
+      course: null,
       suppressPublicationDate: false,
     });
   });
@@ -380,6 +450,7 @@ describe("imprintDisplayForRecord", () => {
       isbn: null,
       issn: "1234-5678",
       place: "Berlin",
+      course: null,
       suppressPublicationDate: false,
     });
   });
@@ -402,6 +473,7 @@ describe("imprintDisplayForRecord", () => {
       isbn: null,
       issn: null,
       place: "Ann Arbor",
+      course: null,
       suppressPublicationDate: false,
     });
     expect(
@@ -416,6 +488,7 @@ describe("imprintDisplayForRecord", () => {
       isbn: "978-1-234567-89-0",
       issn: null,
       place: "London",
+      course: null,
       suppressPublicationDate: false,
     });
   });
@@ -433,6 +506,7 @@ describe("imprintDisplayForRecord", () => {
       isbn: "978-1-234567-89-0",
       issn: null,
       place: "London",
+      course: null,
       suppressPublicationDate: false,
     });
   });
@@ -450,6 +524,52 @@ describe("imprintDisplayForRecord", () => {
     ).toEqual({
       publishedIn: "<em>Container Title</em>, pp. 99-101",
       inProceedings: null,
+      isbn: "978-1-234567-89-0",
+      issn: null,
+      place: "London",
+      course: null,
+      suppressPublicationDate: false,
+    });
+  });
+
+  it("assembles Course for instructional types and Published in only with imprint title", () => {
+    expect(
+      imprintDisplayForRecord(
+        recordWith("instructionalResource-syllabus", {
+          custom_fields: {
+            "kcr:course_title": "Intro to DH",
+            "kcr:sponsoring_institution": "University of Michigan",
+            "kcr:discipline": "English",
+            "imprint:imprint": {
+              place: "Ann Arbor",
+              isbn: "978-0-00-000000-0",
+            },
+          },
+        }),
+      ),
+    ).toEqual({
+      publishedIn: null,
+      inProceedings: null,
+      course: "Intro to DH, University of Michigan, English",
+      isbn: "978-0-00-000000-0",
+      issn: null,
+      place: "Ann Arbor",
+      suppressPublicationDate: false,
+    });
+    expect(
+      imprintDisplayForRecord(
+        recordWith("instructionalResource-lessonPlan", {
+          custom_fields: {
+            "kcr:course_title": "Intro to DH",
+            "imprint:imprint": fullImprint,
+            "kcr:edition": "2",
+          },
+        }),
+      ),
+    ).toEqual({
+      publishedIn: "<em>Container Title</em>, 2 ed., pp. 99-101",
+      inProceedings: null,
+      course: "Intro to DH",
       isbn: "978-1-234567-89-0",
       issn: null,
       place: "London",
