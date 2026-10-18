@@ -80,7 +80,7 @@ const ContentWarning = ({ record, section }) => {
                   onClick={!open ? expand : collapse}
                   basic
                   compact
-                  className="warning"
+                  className="warning borderless borderless-hover"
                 >
                   {!open ? i18next.t("Show more") : i18next.t("Show less")}
                 </Button>

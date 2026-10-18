@@ -86,7 +86,11 @@ function SubjectHeadings({
         {content}
       </div>
       {showToggle && (
-        <Button onClick={!open ? expand : collapse} size="tiny" className="show-less compact mb-0">
+        <Button
+          onClick={!open ? expand : collapse}
+          size="tiny"
+          className="show-less compact mb-0 mt-10"
+        >
           {!open ? i18next.t("Show more") : i18next.t("Show less")}
         </Button>
       )}

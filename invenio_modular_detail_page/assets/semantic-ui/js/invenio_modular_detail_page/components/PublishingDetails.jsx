@@ -465,7 +465,16 @@ const getDetailsComponents = ({
     },
     {
       title: i18next.t("Discipline"),
-      value: record.custom_fields["kcr:discipline"] ? record.custom_fields["kcr:discipline"] : null,
+      value: record.custom_fields["kcr:discipline"]
+        ? record.custom_fields["kcr:discipline"]
+        : null,
+    },
+    {
+      // Instructional Details tab (thesis panel keeps "Discipline").
+      title: i18next.t("Department or discipline"),
+      value: record.custom_fields["kcr:discipline"]
+        ? record.custom_fields["kcr:discipline"]
+        : null,
     },
     {
       title: i18next.t("Chapter label"),
@@ -500,9 +509,19 @@ const getDetailsComponents = ({
       ),
     },
     {
+      title: i18next.t("Course"),
+      value: imprintDisplay.course,
+    },
+    {
       title: i18next.t("Course title"),
       value: record.custom_fields["kcr:course_title"]
         ? record.custom_fields["kcr:course_title"]
+        : null,
+    },
+    {
+      title: i18next.t("Course URL"),
+      value: record.custom_fields["kcr:publication_url"]
+        ? record.custom_fields["kcr:publication_url"]
         : null,
     },
     {
@@ -549,6 +568,12 @@ const getDetailsComponents = ({
     {
       title: i18next.t("In proceedings"),
       value: imprintDisplay.inProceedings,
+    },
+    {
+      title: i18next.t("Institution"),
+      value: record.custom_fields["kcr:sponsoring_institution"]
+        ? record.custom_fields["kcr:sponsoring_institution"]
+        : null,
     },
     {
       title: i18next.t("Formats"),
@@ -612,7 +637,7 @@ const getDetailsComponents = ({
       ) : null,
     },
     {
-      title: i18next.t("Source code repository"),
+      title: i18next.t("Source repository"),
       value: record.custom_fields["code:codeRepository"]
         ? record.custom_fields["code:codeRepository"]
         : null,

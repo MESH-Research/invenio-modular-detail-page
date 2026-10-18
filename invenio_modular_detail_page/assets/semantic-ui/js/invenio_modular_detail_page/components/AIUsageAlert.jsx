@@ -77,7 +77,7 @@ const AIUsageAlert = ({ record, section }) => {
                   onClick={!open ? expand : collapse}
                   basic
                   compact
-                  className="borderless tiny"
+                  className="borderless borderless-hover tiny"
                 >
                   {!open ? i18next.t("Show more") : i18next.t("Show less")}
                 </Button>

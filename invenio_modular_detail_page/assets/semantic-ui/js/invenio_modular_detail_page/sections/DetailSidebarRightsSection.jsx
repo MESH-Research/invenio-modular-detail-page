@@ -110,7 +110,7 @@ const SidebarRightsSection = (props) => {
                         trigger={
                           <button
                             id={`title-${license.id}-${index}`}
-                            className="ui button license transparent borderless borderless-hover basic fluid left aligned p-0"
+                            className="ui button license transparent borderless borderless-hover basic fluid left aligned"
                             role="button"
                           >
                             {license.icon && (
