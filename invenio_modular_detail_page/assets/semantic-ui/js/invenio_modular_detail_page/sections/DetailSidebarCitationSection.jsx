@@ -18,13 +18,7 @@ import { Citation } from "../components/Citation";
 import Overridable from "react-overridable";
 
 const CitationModal = (props) => {
-  const {
-    record,
-    citationStyles,
-    citationStyleDefault,
-    onCloseHandler,
-    trigger,
-  } = props;
+  const { record, citationStyles, citationStyleDefault, onCloseHandler, trigger } = props;
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -67,13 +61,9 @@ const CitationModal = (props) => {
 };
 
 const CitationSection = (props) => {
-  const { record, citationStyles, citationStyleDefault, sectionIndex, show } =
-    props;
+  const { record, citationStyles, citationStyleDefault, sectionIndex, show } = props;
   return (
-    <Overridable
-      id="InvenioModularDetailPage.CitationSection.layout"
-      {...props}
-    >
+    <Overridable id="InvenioModularDetailPage.CitationSection.layout" {...props}>
       <div
         id="citation"
         className={`sidebar-container ${show}`}
@@ -86,10 +76,9 @@ const CitationSection = (props) => {
           trigger={
             <Button
               fluid
-              className="left aligned"
+              className="right icon left aligned"
               content={i18next.t("Cite this")}
               icon="quote right"
-              labelPosition="right"
             ></Button>
           }
         />

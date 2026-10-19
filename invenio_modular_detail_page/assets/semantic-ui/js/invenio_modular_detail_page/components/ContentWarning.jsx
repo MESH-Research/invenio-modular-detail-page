@@ -47,20 +47,13 @@ const ContentWarning = ({ record, section }) => {
   }
 
   return (
-    <Overridable
-      id="InvenioModularDetailPage.ContentWarning.layout"
-      {...{ record, section }}
-    >
+    <Overridable id="InvenioModularDetailPage.ContentWarning.layout" {...{ record, section }}>
       <FadeCollapse
         visible={visible}
         durationMs={DISMISS_MS}
         className="detail-alert-fade-collapse"
       >
-        <Message
-          warning
-          className="content-warning"
-          onDismiss={() => setVisible(false)}
-        >
+        <Message warning className="content-warning" onDismiss={() => setVisible(false)}>
           <Message.Content>
             <Message.Header>
               <Icon name="exclamation triangle" /> {section}
@@ -80,7 +73,7 @@ const ContentWarning = ({ record, section }) => {
                   onClick={!open ? expand : collapse}
                   basic
                   compact
-                  className="warning borderless borderless-hover"
+                  className="warning"
                 >
                   {!open ? i18next.t("Show more") : i18next.t("Show less")}
                 </Button>

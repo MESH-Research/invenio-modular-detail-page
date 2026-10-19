@@ -104,7 +104,7 @@ function SharingIconLink({ name, url, iconName }) {
   switch (name) {
     case "Mastodon":
       component = (
-        <>
+        <span className="sharing-icon">
           <Popup
             content={name}
             position="top center"
@@ -133,53 +133,57 @@ function SharingIconLink({ name, url, iconName }) {
             }
             message={url}
           />
-        </>
+        </span>
       );
       break;
     case "Bluesky":
       component = (
-        <Popup
-          content={name}
-          position="top center"
-          trigger={
-            <Button
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              on={["hover", "click", "focus"]}
-              icon
-              compact
-              size="big"
-            >
-              <i className="icon bluesky">
-                <svg alt="Bluesky" viewBox="0 0 600 600">
-                  <use xlinkHref={`/static/images/bluesky.svg#bluesky`} />
-                </svg>
-              </i>
-            </Button>
-          }
-        />
+        <span className="sharing-icon">
+          <Popup
+            content={name}
+            position="top center"
+            trigger={
+              <Button
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                on={["hover", "click", "focus"]}
+                icon
+                compact
+                size="big"
+              >
+                <i className="icon bluesky">
+                  <svg alt="Bluesky" viewBox="0 0 600 600">
+                    <use xlinkHref={`/static/images/bluesky.svg#bluesky`} />
+                  </svg>
+                </i>
+              </Button>
+            }
+          />
+        </span>
       );
       break;
     default:
       component = (
-        <Popup
-          content={name}
-          position="top center"
-          trigger={
-            <Button
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              on={["hover", "click", "focus"]}
-              icon
-              compact
-              size="big"
-            >
-              <Icon name={iconName} />
-            </Button>
-          }
-        />
+        <span className="sharing-icon">
+          <Popup
+            content={name}
+            position="top center"
+            trigger={
+              <Button
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                on={["hover", "click", "focus"]}
+                icon
+                compact
+                size="big"
+              >
+                <Icon name={iconName} />
+              </Button>
+            }
+          />
+        </span>
       );
       break;
   }
@@ -243,15 +247,16 @@ function SidebarSharingSection(props) {
           <h2 className="ui medium top attached header mt-0">{i18next.t("Share this work")}</h2>
         )}
         <div className="ui segment bottom attached rdm-sidebar">
-          {/* <h2 className="ui medium top attached header mt-0">Share</h2> */}
-          {socialMediaLinks.map(({ name, url }, idx) => (
-            <SharingIconLink
-              key={name}
-              name={name}
-              url={url}
-              iconName={name === "Email" ? "mail" : name.toLowerCase()}
-            />
-          ))}
+          <div className="sharing-icons">
+            {socialMediaLinks.map(({ name, url }) => (
+              <SharingIconLink
+                key={name}
+                name={name}
+                url={url}
+                iconName={name === "Email" ? "mail" : name.toLowerCase()}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </Overridable>

@@ -300,7 +300,7 @@ const FileListDropdownMenu = ({
   asLabeled = false,
   asFluid = true,
   asItem = false,
-  classnames = "icon primary primary-sidebar stacked-content left aligned",
+  classnames = "icon primary stacked-content left aligned",
   downloadFileUrl,
   files,
   fileCountToShow,
@@ -319,8 +319,7 @@ const FileListDropdownMenu = ({
   includeDetailsDivider = false,
 }) => {
   const downloadUrl = `${downloadFileUrl}${previewUrlFlag}`;
-  const fileValue = (key) =>
-    downloadFileUrl === null ? key : downloadUrl.replace("xxxx", key);
+  const fileValue = (key) => (downloadFileUrl === null ? key : downloadUrl.replace("xxxx", key));
 
   // Always navigates to the files tab when "previews" is chosen
   const goToFilesTab = (e) => {
@@ -414,9 +413,7 @@ const FileListDropdownMenu = ({
             {includeDetailsDivider ? (
               <>
                 <Icon name="list" className="computer only" />
-                <span className="description">
-                  {i18next.t("View all files and downloads")}
-                </span>
+                <span className="description">{i18next.t("View all files and downloads")}</span>
                 <span className="text">{i18next.t("File details")}</span>
               </>
             ) : (

@@ -73,12 +73,7 @@ const AIUsageAlert = ({ record, section }) => {
             )}
             {showToggle && (
               <div className="buttons row">
-                <Button
-                  onClick={!open ? expand : collapse}
-                  basic
-                  compact
-                  className="borderless borderless-hover tiny"
-                >
+                <Button onClick={!open ? expand : collapse} basic compact className="">
                   {!open ? i18next.t("Show more") : i18next.t("Show less")}
                 </Button>
               </div>

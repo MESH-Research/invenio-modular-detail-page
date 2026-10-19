@@ -37,15 +37,10 @@ const NUMBER_OF_VERSIONS = 5;
 const RecordVersionItem = ({ item, activeVersion }) => {
   const doi = _get(item.pids, "doi.identifier", "");
   return (
-    <List.Item
-      key={item.id}
-      {...(activeVersion && { className: "version active" })}
-    >
+    <List.Item key={item.id} {...(activeVersion && { className: "version active" })}>
       <List.Content floated="left">
         {activeVersion ? (
-          <span>
-            {i18next.t("Version {{version}}", { version: item.version })}
-          </span>
+          <span>{i18next.t("Version {{version}}", { version: item.version })}</span>
         ) : (
           <a href={`/records/${item.id}`}>
             {i18next.t("Version {{version}}", { version: item.version })}
@@ -55,9 +50,7 @@ const RecordVersionItem = ({ item, activeVersion }) => {
         {doi && (
           <a
             href={`https://doi.org/${doi}`}
-            className={
-              "doi" + (activeVersion ? " text-muted-darken" : " text-muted")
-            }
+            className={"doi" + (activeVersion ? " text-muted-darken" : " text-muted")}
           >
             {doi}
           </a>
@@ -141,17 +134,9 @@ const VersionsContentDropdown = ({
   const allVersionsLink = `/search?q=parent.id:${recordDeserialized.parent_id}&sort=version&f=allversions:true`;
 
   return (
-    <div
-      className={`ui clearing segment rdm-sidebar pr-0 pt-0 pb-0 ${
-        isPreview && "preview"
-      }`}
-    >
+    <div className={`ui segment rdm-sidebar pr-0 pt-0 pb-0 ${isPreview && "preview"}`}>
       <>
-        <h3
-          className={`version-label ${
-            isPreview ? "preview" : ""
-          } ui header tiny`}
-        >
+        <h3 className={`version-label ${isPreview ? "preview" : ""} ui header tiny`}>
           {isPreview ? (
             <>
               {i18next.t("Preview")}
@@ -160,11 +145,7 @@ const VersionsContentDropdown = ({
           ) : (
             <>
               {i18next.t("Version ")}
-              {loading ? (
-                <Icon loading name="spinner" size="tiny" />
-              ) : (
-                recordDeserialized.version
-              )}
+              {loading ? <Icon loading name="spinner" size="tiny" /> : recordDeserialized.version}
             </>
           )}
         </h3>
@@ -172,7 +153,7 @@ const VersionsContentDropdown = ({
           <Dropdown
             as="button"
             id="versions-dropdown"
-            className="button versions-dropdown primary-sidebar right floated stacked-items"
+            className="button versions-dropdown right floated borderless stacked-items mr-0 pr-10"
             aria-label={i18next.t("Other versions")}
             aria-haspopup="menu"
             basic
@@ -247,11 +228,7 @@ const VersionsContentList = ({
           <>
             {isPreview ? <PreviewMessage /> : null}
             {recordVersions.hits.map((item) => (
-              <RecordVersionItem
-                key={item.id}
-                item={item}
-                activeVersion={item.id === recid}
-              />
+              <RecordVersionItem key={item.id} item={item} activeVersion={item.id === recid} />
             ))}
             {!currentRecordInResults && (
               <>
@@ -280,12 +257,7 @@ const VersionsContentList = ({
   );
 };
 
-const RecordVersionsList = ({
-  record,
-  isPreview,
-  sectionIndex,
-  widgetStyle = "list",
-}) => {
+const RecordVersionsList = ({ record, isPreview, sectionIndex, widgetStyle = "list" }) => {
   const recordDeserialized = deserializeRecord(record);
   const recid = recordDeserialized.id;
   const [loading, setLoading] = useState(true);
