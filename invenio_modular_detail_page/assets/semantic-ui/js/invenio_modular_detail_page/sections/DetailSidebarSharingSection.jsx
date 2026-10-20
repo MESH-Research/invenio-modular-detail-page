@@ -11,7 +11,7 @@
 // License; see LICENSE file for more details.
 
 import React, { useRef, useEffect, useState } from "react";
-import { Button, Checkbox, Form, Input, Icon, Label, Popup } from "semantic-ui-react";
+import { Button, Checkbox, Form, Input, Icon, Popup } from "semantic-ui-react";
 import Overridable from "react-overridable";
 import { i18next } from "@translations/invenio_modular_detail_page/i18next";
 
@@ -25,7 +25,6 @@ function PopupInput({ message }) {
     if (inputRef.current) {
       window.setTimeout(() => {
         inputRef.current.focus();
-        console.log(inputRef.current);
         inputRef.current.scrollIntoView({ behavior: "smooth" });
       }, 100);
     }
@@ -191,11 +190,15 @@ function SharingIconLink({ name, url, iconName }) {
   return component;
 }
 
-function SidebarSharingSection(props) {
-  const { record, show, isPreview, isPreviewSubmissionRequest, showHeading = true } = props;
+/**
+ * Build social share link defs for a record page URL.
+ *
+ * @param {object} record - Record object with metadata and links.
+ * @returns {Array<{name: string, url: string}>}
+ */
+function buildSocialMediaLinks(record) {
   const pageLink = encodeURI(record.links.self_html);
-
-  const socialMediaLinks = [
+  return [
     {
       name: "Mastodon",
       url: `${record.metadata.title}%0A${pageLink}`,
@@ -239,6 +242,32 @@ function SidebarSharingSection(props) {
       }%0A${pageLink}%0A${record.metadata.description}`,
     },
   ];
+}
+
+/**
+ * Social share button grid only (no sidebar heading/segment chrome).
+ *
+ * @param {object} props
+ * @param {object} props.record - Record object.
+ */
+function SharingIconsGrid({ record }) {
+  const socialMediaLinks = buildSocialMediaLinks(record);
+  return (
+    <div className="sharing-icons">
+      {socialMediaLinks.map(({ name, url }) => (
+        <SharingIconLink
+          key={name}
+          name={name}
+          url={url}
+          iconName={name === "Email" ? "mail" : name.toLowerCase()}
+        />
+      ))}
+    </div>
+  );
+}
+
+function SidebarSharingSection(props) {
+  const { record, show, isPreview, isPreviewSubmissionRequest, showHeading = true } = props;
 
   return isPreview || isPreviewSubmissionRequest ? null : (
     <Overridable id="InvenioModularDetailPage.SidebarSharingSection.layout">
@@ -247,20 +276,11 @@ function SidebarSharingSection(props) {
           <h2 className="ui medium top attached header mt-0">{i18next.t("Share this work")}</h2>
         )}
         <div className="ui segment bottom attached rdm-sidebar">
-          <div className="sharing-icons">
-            {socialMediaLinks.map(({ name, url }) => (
-              <SharingIconLink
-                key={name}
-                name={name}
-                url={url}
-                iconName={name === "Email" ? "mail" : name.toLowerCase()}
-              />
-            ))}
-          </div>
+          <SharingIconsGrid record={record} />
         </div>
       </div>
     </Overridable>
   );
 }
 
-export { SidebarSharingSection };
+export { SharingIconsGrid, SidebarSharingSection };

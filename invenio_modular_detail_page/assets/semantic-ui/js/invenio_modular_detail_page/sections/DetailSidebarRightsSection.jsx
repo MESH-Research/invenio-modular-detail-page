@@ -91,7 +91,7 @@ const SidebarRightsSection = (props) => {
           )}
           {hasLicenses && (
             <>
-              <h3 id="licenses-header" className="ui tiny header mt-10">
+              <h3 id="licenses-header" className="ui tiny header">
                 {i18next.t("Licenses")}
               </h3>
               <div id="licenses" className="p-0">
