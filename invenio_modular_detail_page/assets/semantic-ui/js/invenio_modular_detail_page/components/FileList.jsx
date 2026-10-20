@@ -525,6 +525,7 @@ const FileListDropdownMenu = ({
  */
 const FileListItemDropdown = ({
   defaultPreviewFile,
+  downloadFileUrl,
   fileCountToShow,
   files,
   fileTabIndex,
@@ -568,6 +569,8 @@ const FileListItemDropdown = ({
           <FileListDropdownMenu
             {...{
               icon: false,
+              classnames: "pointing stacked-content",
+              downloadFileUrl,
               files: files,
               fileTabIndex: fileTabIndex,
               id: id,

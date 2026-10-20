@@ -4,7 +4,6 @@ import { Button } from "semantic-ui-react";
 import { DetailContext } from "../contexts/DetailContext";
 
 const DraftBackButton = ({ show }) => {
-
   const contextStore = useContext(DetailContext);
 
   const backPage = `${contextStore.backPage}?page=last`;
@@ -18,20 +17,17 @@ const DraftBackButton = ({ show }) => {
       className={`back-navigation rel-pb-2 pl-0 pr-0 ${show} sidebar-container`}
       aria-label={i18next.t("Back-navigation")}
     >
-        <Button
-          fluid
-          labelPosition="right"
-          icon="angle left"
-          content={i18next.t("Back to edit")}
-          className="secondary basic left aligned"
-          onClick={() => {
-            window.location.href = backPage;
-          }}
-        />
+      <Button
+        fluid
+        icon="angle left"
+        content={i18next.t("Back to edit")}
+        className="icon right secondary basic left aligned"
+        onClick={() => {
+          window.location.href = backPage;
+        }}
+      />
     </nav>
-  ) : (
-    null
-  );
+  ) : null;
 };
 
 export { DraftBackButton };
