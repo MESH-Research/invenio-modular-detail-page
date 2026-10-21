@@ -24,7 +24,6 @@ optional-dependencies.dev = [
   "bump-my-version==1.5.1",
   "check-manifest",
   "ipykernel",
-  "pip-tools",
 ]
 optional-dependencies.test = [
   "mypy>=1.8",
@@ -44,12 +43,12 @@ entry-points."invenio_base.apps".invenio_modular_detail_page = "invenio_modular_
 entry-points."invenio_base.blueprints".invenio_modular_detail_page = "invenio_modular_detail_page.ext:create_blueprint"
 entry-points."invenio_i18n.translations".messages = "invenio_modular_detail_page"
 
-[tool.uv.sources]
-invenio-rdm-records = { path = "../invenio-rdm-records", editable = true }
-
 [tool.setuptools]
 packages.find.include = ["invenio_modular_detail_page*"]
 packages.find.exclude = ["tests*", "docs*", "scripts*", "node_modules*"]
+
+[tool.uv]
+sources.invenio-rdm-records = { path = "../invenio-rdm-records", editable = true }
 
 [tool.ruff]
 target-version = "py312"
@@ -156,11 +155,6 @@ ini_options.testpaths = ["docs", "tests", "invenio_modular_detail_page"]
 [tool.coverage]
 run.omit = []
 
-[tool.sphinx]
-source-dir = "docs/"
-build-dir = "docs/_build"
-all_files = true
-
 [tool.bumpversion]
 current_version = "0.3.1-dev1"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)(?:-(?P<pre_l>[a-zA-Z]+)(?P<pre_n>\\d+))?"
@@ -174,15 +168,12 @@ commit = false
 tag = false
 allow_shell_hooks = false
 message = "Bump version: {current_version} → {new_version}"
-
-[tool.bumpversion.parts.pre_l]
-values = ["dev", "rc", "final"]
-optional_value = "final"
+parts.pre_l.values = ["dev", "rc", "final"]
+parts.pre_l.optional_value = "final"
 
 # pyproject.toml project.version and tool.bumpversion.current_version are
 # updated automatically by bump-my-version's update_config_file; listing them
 # here double-applies a whole-file search and fails on the second entry.
-
 [[tool.bumpversion.files]]
 filename = "README.md"
 search = "Version {current_version}"
@@ -201,6 +192,11 @@ replace = '__version__ = "{new_version}"'
 [[tool.bumpversion.files]]
 filename = "package.json"
 key_path = "version"
+
+[tool.sphinx]
+source-dir = "docs/"
+build-dir = "docs/_build"
+all_files = true
 
 [tool.babel]
 compile_catalog.directory = "invenio_modular_detail_page/translations/"
