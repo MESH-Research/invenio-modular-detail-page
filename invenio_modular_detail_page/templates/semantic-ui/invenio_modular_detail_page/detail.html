@@ -168,10 +168,7 @@
     {% include config.THEME_JAVASCRIPT_TEMPLATE %}
   {% endif %}
   {%- block record_jsonld %}
-    {% set jsonld_serialization = record | transform_record('SchemaorgJSONLDSerializer', throws=False) %}
-    {%- if jsonld_serialization %}
-      <script type='application/ld+json'>{{ jsonld_serialization | tojson }}</script>
-    {%- endif %}
+    {% include "invenio_modular_detail_page/record_jsonld.html" %}
   {%- endblock record_jsonld %}
   {{ webpack['invenio-app-rdm-landing-page-theme.js'] }}
   {{ webpack['invenio-app-rdm-landing-page.js'] }}

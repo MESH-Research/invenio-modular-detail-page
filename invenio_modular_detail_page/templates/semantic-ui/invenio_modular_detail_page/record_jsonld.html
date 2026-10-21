@@ -1,0 +1,10 @@
+{#
+  Schema.org JSON-LD for the record landing page.
+
+  Must receive record_ui (dumped dict), not record (RecordItem). Schemaorg
+  get_creation_date / get_modification_date call obj.get("created"|"updated").
+#}
+{% set jsonld_serialization = record_ui | transform_record('SchemaorgJSONLDSerializer', throws=False) %}
+{%- if jsonld_serialization %}
+  <script type='application/ld+json'>{{ jsonld_serialization | tojson }}</script>
+{%- endif %}
