@@ -10,25 +10,35 @@ import { getFileTypeIconName } from "../util";
  *
  * Used on the files tab as well as for the main content tab preview.
  *
+ * When `lazyMount` is true (default for the Files tab `FilesPreview` section),
+ * the iframe is not created until that tab is selected once, then kept mounted
+ * so returning to the tab does not re-fetch. Content-tab preview mounts eagerly.
+ *
  * @param props
  */
 const FilePreview = ({
   activePreviewFile,
+  activeTab,
   defaultPreviewFile,
   files,
   fileTabIndex,
   hasFiles,
   hasPreviewableFiles,
   isPreview,
+  lazyMount,
   permissions,
   previewableExtensions,
   previewFileUrl,
   record,
+  section,
   setActivePreviewFile,
   setActiveTab,
   totalFileSize,
   useDynamicPreview = true,
 }) => {
+  const isFilesTabPreview = section === "FilesPreview";
+  const shouldLazyMount = lazyMount ?? isFilesTabPreview;
+  const [iframeReady, setIframeReady] = useState(!shouldLazyMount);
   const [loading, setLoading] = useState(true);
   const previewUrlFlag = isPreview ? "preview=1" : "";
   const fileToShow =
@@ -50,9 +60,25 @@ const FilePreview = ({
     ? fileToShow?.key?.split(".").pop()?.toLowerCase()
     : "no-preview";
   const currentIsPreviewable = previewableExtensions?.includes(fileExtension);
+  const previewDomId = isFilesTabPreview ? "preview-iframe-files" : "preview-iframe";
+  const sectionDomId = isFilesTabPreview
+    ? "record-file-preview-files"
+    : "record-file-preview";
+
+  useEffect(() => {
+    if (!shouldLazyMount || iframeReady) {
+      return;
+    }
+    if (activeTab === fileTabIndex) {
+      setIframeReady(true);
+    }
+  }, [shouldLazyMount, iframeReady, activeTab, fileTabIndex]);
 
   const iFrameRef = useRef(null);
   useEffect(() => {
+    if (!iframeReady) {
+      return;
+    }
     setLoading(true);
     const iframe = iFrameRef.current;
     if (!iframe) {
@@ -63,7 +89,7 @@ const FilePreview = ({
     return () => {
       iframe.removeEventListener("load", onLoad);
     };
-  }, [previewUrl]);
+  }, [previewUrl, iframeReady]);
 
   const handleMenuItemClick = (e, { value }) => {
     e.preventDefault();
@@ -102,14 +128,14 @@ const FilePreview = ({
         )
       ) : null}
       {!!hasFiles && permissions.can_read_files && (
-        <section id="record-file-preview" aria-label={i18next.t("File preview")}>
+        <section id={sectionDomId} aria-label={i18next.t("File preview")}>
           {!!hasPreviewableFiles && files.length > 1 && (
             <FileListDropdownMenu
               icon="dropdown"
               files={files}
               fileTabIndex={fileTabIndex}
               handleItemClick={handleMenuItemClick}
-              id="record-file-preview-menu"
+              id={`${sectionDomId}-menu`}
               record={record}
               previewUrlFlag={previewUrlFlag}
               renderItemContent={renderPreviewItemContent}
@@ -127,35 +153,37 @@ const FilePreview = ({
               classnames="top attached basic small"
             />
           )}
-          <>
-            {!!loading && (
-              <>
-                <div className="placeholder-header-bar" />
-                <Placeholder fluid>
-                  {[...Array(8).keys()].map((e) => (
-                    <Placeholder.Paragraph key={e}>
-                      {[...Array(8).keys()].map((e) => (
-                        <Placeholder.Line key={e} />
-                      ))}
-                      <Placeholder.Line />
-                    </Placeholder.Paragraph>
-                  ))}
-                </Placeholder>
-              </>
-            )}
-            <iframe
-              title={i18next.t("Preview")}
-              className={`preview-iframe ${fileExtension} ${!currentIsPreviewable ? "no-preview" : ""} ${
-                loading ? "hidden" : ""
-              }`}
-              id={"preview-iframe"}
-              ref={iFrameRef}
-              name={record.id}
-              src={previewUrl}
-              width="100%"
-              // height="800"
-            ></iframe>
-          </>
+          {iframeReady && (
+            <>
+              {!!loading && (
+                <>
+                  <div className="placeholder-header-bar" />
+                  <Placeholder fluid>
+                    {[...Array(8).keys()].map((e) => (
+                      <Placeholder.Paragraph key={e}>
+                        {[...Array(8).keys()].map((e) => (
+                          <Placeholder.Line key={e} />
+                        ))}
+                        <Placeholder.Line />
+                      </Placeholder.Paragraph>
+                    ))}
+                  </Placeholder>
+                </>
+              )}
+              <iframe
+                title={i18next.t("Preview")}
+                className={`preview-iframe ${fileExtension} ${!currentIsPreviewable ? "no-preview" : ""} ${
+                  loading ? "hidden" : ""
+                }`}
+                id={previewDomId}
+                ref={iFrameRef}
+                name={isFilesTabPreview ? `${record.id}-files` : record.id}
+                src={previewUrl}
+                width="100%"
+                // height="800"
+              ></iframe>
+            </>
+          )}
         </section>
       )}
     </>

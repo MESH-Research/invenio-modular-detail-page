@@ -17,13 +17,16 @@ const DetailMainTabs = () => {
         section: section,
         subsections: subsections,
       };
+      // `pane` (not `render`) is required when renderActiveOnly={false} so
+      // inactive panes stay mounted; keeps Content preview iframe alive across
+      // tab switches. Files preview lazy-mounts its iframe separately.
       return {
         menuItem: <Menu.Item key={section} className={show} as="button" content={section} />,
-        render: () => (
-          <Tab.Pane key={section} className={`record-details-tab ${section} ${show}`}>
-            <TabComponent {...passedProps} key={section} />
-          </Tab.Pane>
-        ),
+        pane: {
+          key: section,
+          className: `record-details-tab ${section} ${show}`,
+          content: <TabComponent {...passedProps} key={section} />,
+        },
       };
     }
   );
@@ -41,6 +44,7 @@ const DetailMainTabs = () => {
         id="detail-main-tabs"
         panes={panes}
         menu={{ secondary: true, pointing: true }}
+        renderActiveOnly={false}
         activeIndex={contextStore.activeTab}
         onTabChange={(e, { activeIndex }) => contextStore.setActiveTab(activeIndex)}
       />
