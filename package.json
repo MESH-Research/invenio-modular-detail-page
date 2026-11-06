@@ -5,15 +5,10 @@
   "packageManager": "pnpm@12.11.2",
   "engines": {
     "node": ">=18",
-    "pnpm": ">=10.0.0"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "fsevents"
-    ]
+    "pnpm": ">=12.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.29.6",
+    "@babel/core": "^7.29.6",
     "@babel/eslint-parser": "7.26.10",
     "@babel/preset-env": "7.29.0",
     "@babel/preset-react": "7.28.5",
@@ -25,15 +20,15 @@
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "4.6.2",
-    "i18next": "20.3.0",
-    "i18next-browser-languagedetector": "6.1.8",
+    "i18next": "^20.6.1",
+    "i18next-browser-languagedetector": "^6.1.8",
     "identity-obj-proxy": "3.0.0",
     "jest": "27.5.1",
     "jest-environment-jsdom": "27.5.1",
-    "react": "16.13.0",
-    "react-dom": "16.13.0",
-    "react-i18next": "11.18.6",
-    "react-test-renderer": "16.13.0"
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-i18next": "^11.18.6",
+    "react-test-renderer": "16.14.0"
   },
   "scripts": {
     "lint": "eslint --max-warnings 0 --ext .js,.jsx invenio_modular_detail_page/assets/semantic-ui/js invenio_modular_detail_page/assets/semantic-ui/translations/invenio_modular_detail_page",
