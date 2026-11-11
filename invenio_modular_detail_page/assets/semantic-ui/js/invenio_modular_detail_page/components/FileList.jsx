@@ -631,8 +631,10 @@ const FileListDropdown = ({
   showEmbargoMessage = true,
   totalFileSize,
 }) => {
+  // Only add preview=1 on actual draft/preview pages; hardcoding it forces the
+  // draft files service and denies ordinary viewers of published public records.
   const previewUrlFlag = isPreview ? "&preview=1" : "";
-  const downloadUrl = downloadFileUrl + "&preview=1";
+  const downloadUrl = `${downloadFileUrl}${previewUrlFlag}`;
 
   return (
     <>
